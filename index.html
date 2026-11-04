@@ -1,5 +1,5 @@
 <!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>QEC Medha Onneshon 2026 | Registration Check</title><meta name="description" content="Check registration and exam eligibility for QEC Medha Onneshon 2026."><meta name="theme-color" content="#5b1462">
+<title>QEC Medha Onneshon 2026 | Registration Check</title><meta name="description" content="Check Registration and exam eligibility for QEC Medha Onneshon 2026."><meta name="theme-color" content="#5b1462">
 <link rel="icon" type="image/png" href="assets/mark.png?v=6"><link rel="apple-touch-icon" href="assets/mark180.png?v=6">
 <link rel="preload" href="assets/kalpurush.woff?v=6" as="font" type="font/woff" crossorigin><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Hind+Siliguri:wght@400;500;600;700&family=Noto+Serif:wght@400;600&display=swap" rel="stylesheet">
@@ -120,16 +120,16 @@ font-weight:800;font-size:17px;color:#2d1500;background:linear-gradient(180deg,#
 .note{margin-top:16px;padding:18px 20px}.note h3{font-size:15.5px;font-weight:800;margin-bottom:6px}.note p{font-size:14px;color:#4a4150;margin-top:6px}
 .help{margin-top:12px;padding:14px 18px;display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;font-size:14px}
 @media(max-width:599px){.field{flex-direction:column}.field .btn{width:100%}.seg button{font-size:12.5px}.seg svg{display:none}.strip{padding:13px 15px}}
-</style></head><body><header class="top"><div class="bar"><a class="logo" href="./" aria-label="QEC Academy home"><img alt="QEC Academy" src="assets/logo.png?v=6"></a><a class="cta" href="login.html"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4M10 17l5-5-5-5M15 12H3"/></svg>Student login</a></div>
+</style></head><body><header class="top"><div class="bar"><a class="logo" href="./" aria-label="QEC Academy home"><img alt="QEC Academy" src="assets/logo.png?v=6"></a><a class="cta" href="login.html"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4M10 17l5-5-5-5M15 12H3"/></svg>Student Login</a></div>
 <div class="hero"><h1>QEC Medha Onneshon <i>2026</i></h1><p class="sub bn">QEC মেধা অন্বেষণ ২০২৬</p><p class="lead">Check your registration and exam eligibility in seconds.</p></div></header><main><section class="card pad" aria-label="Search">
 <div class="seg" role="tablist">
 <button role="tab" aria-selected="true" data-mode="phone"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="6" y="2" width="12" height="20" rx="2.5"/><path d="M11 18h2"/></svg>Mobile</button>
 <button role="tab" aria-selected="false" data-mode="name"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>Name</button>
 <button role="tab" aria-selected="false" data-mode="roll"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M7 9h10M7 13h6"/></svg>Roll</button></div>
-<form id="f" autocomplete="off"><div class="field"><input class="in" id="q" type="text" inputmode="tel" aria-label="Search" placeholder="01712-345678"><button class="btn" id="go" type="submit">Check status</button></div><p class="hint2" id="hint"></p></form>
-<div class="nudge"><span>Have your Exam Roll and PIN?</span><a href="login.html">Open my dashboard &rarr;</a></div>
+<form id="f" autocomplete="off"><div class="field"><input class="in" id="q" type="text" inputmode="tel" aria-label="Search" placeholder="01712-345678"><button class="btn" id="go" type="submit">Check Status</button></div><p class="hint2" id="hint"></p></form>
+<div class="nudge"><span>Have your Exam Roll and PIN?</span><a href="login.html">Open My Dashboard &rarr;</a></div>
 </section>
-<div class="strip"><p>Online exam: <b class="nw">Sat 7 Nov 2026</b> &middot; <span class="nw">10:00 AM &ndash; 10:35 AM</span></p><a class="cta" href="login.html">Enter via dashboard</a></div>
+<div class="strip"><p>Online Exam: <b class="nw">Sat 7 Nov 2026</b> &middot; <span class="nw">10:00 AM &ndash; 10:35 AM</span></p><a class="cta" href="login.html">Enter via Dashboard</a></div>
 <section id="results" aria-live="polite"></section><section id="info"></section></main>
 <footer>&copy; 2026 QEC Academy</footer>
 <script>
@@ -160,29 +160,30 @@ const PH={phone:'01712-345678',name:'e.g. Fatema Tasnim',roll:'e.g. 30028'};
 function setMode(m,focus){document.querySelectorAll('.seg button').forEach(t=>t.setAttribute('aria-selected',String(t.dataset.mode===m)));$('#hint').textContent=HINTS[m];const q=$('#q');q.placeholder=PH[m];q.inputMode=m==='name'?'text':(m==='roll'?'numeric':'tel');if(focus)q.focus()}
 document.querySelectorAll('.seg button').forEach(t=>t.addEventListener('click',()=>setMode(t.dataset.mode,true)));
 function renderInfo(){const d=META.disclaimer||{},h=META.helpline||HELP;const paras=(d.paras||[]).map(p=>'<p>'+esc(p)+'</p>').join('');
-$('#info').innerHTML=(paras?'<div class="card note"><h3>'+esc(d.title||'Important information')+'</h3>'+paras+'</div>':'')+
-'<div class="card help"><span>Wrong information? Call '+nw(h.display||'')+'</span>'+(h.wa?'<a class="wa" href="'+esc(h.wa)+'" target="_blank" rel="noopener">WhatsApp helpline</a>':'')+'</div>'}
+$('#info').innerHTML=(paras?'<div class="card note"><h3>'+esc(tc(d.title||'Important Information'))+'</h3>'+paras+'</div>':'')+
+'<div class="card help"><span>Wrong information? Call '+nw(h.display||'')+'</span>'+(h.wa?'<a class="wa" href="'+esc(h.wa)+'" target="_blank" rel="noopener">WhatsApp Helpline</a>':'')+'</div>'}
+function tc(t){const sm={a:1,an:1,the:1,of:1,to:1,in:1,on:1,at:1,for:1,and:1,or:1,via:1};return String(t||'').split(' ').map((w,i)=>i&&sm[w.toLowerCase()]?w.toLowerCase():w.charAt(0).toUpperCase()+w.slice(1)).join(' ')}
 function kv(k,v,extra,cls){return '<div class="kv '+(cls||'')+'"><div class="k">'+k+'</div><div class="v">'+v+(extra||'')+'</div></div>'}
 function studentCard(s,i,total){const mc=/online/i.test(s.mode)?'#2f6fd6':'#d98f17';
-return '<article class="card stu"><div class="stuh"><span class="tag">'+(total>1?'Student '+(i+1):'Student')+'</span><span class="elig">&#10003; Eligible for the exam</span></div><div class="grid">'+
+return '<article class="card stu"><div class="stuh"><span class="tag">'+(total>1?'Student '+(i+1):'Student')+'</span><span class="elig">&#10003; Eligible for the Exam</span></div><div class="grid">'+
 kv('Name',esc(s.name),s.bn?'<small class="bn" style="display:block;color:var(--mut);font-weight:600">'+esc(s.bn)+'</small>':'')+kv('Class',nw(s.cls))+
 kv('Exam Roll','<span class="nw">'+esc(s.roll)+'</span><button class="copy" type="button" data-roll="'+esc(s.roll)+'">Copy</button>')+
-kv('Exam mode','<span class="nw"><span class="dot" style="background:'+mc+';margin-right:7px"></span>'+esc(s.mode||'-')+'</span>')+'</div></article>'}
+kv('Exam Mode','<span class="nw"><span class="dot" style="background:'+mc+';margin-right:7px"></span>'+esc(s.mode||'-')+'</span>')+'</div></article>'}
 function banner(type,title,text){const icon=type==='ok'?'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.8"><path d="M20 6 9 17l-5-5"/></svg>':(type==='warn'?'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#9a5b00" stroke-width="2.4"><circle cx="12" cy="12" r="9"/><path d="M12 7v6M12 16.5v.5"/></svg>':'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#a3262a" stroke-width="2.4"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>');
 return '<div class="banner '+type+'"><span class="ico">'+icon+'</span><div><h3>'+esc(title)+'</h3><p>'+esc(text)+'</p></div></div>'}
 function render(res){const box=$('#results');
-if(!res||!res.ok){box.innerHTML=banner('bad','Please check your search',res&&res.message?res.message:'Something went wrong. Please try again.');return}
+if(!res||!res.ok){box.innerHTML=banner('bad','Please Check Your Search',res&&res.message?res.message:'Something went wrong. Please try again.');return}
 const E=res.eligible||[],P=res.pending||[];let html='';
-if(E.length){html+=E.length>1?banner('ok',E.length+' students found','Keep each Exam Roll safe.'):banner('ok','Registration confirmed','Payment received. Keep your Exam Roll safe.');html+=E.map((s,i)=>studentCard(s,i,E.length)).join('')}
-if(P.length){html+='<div class="card pend">'+banner('warn','Payment not confirmed yet','The Exam Roll is given after the fee is received. Already paid? Call the helpline.').replace('class="banner warn"','class="banner warn" style="margin:0;padding:0;background:none"')+'<ul>'+P.map(p=>'<li><span>'+esc(p.name)+(p.bn?' <span class="bn" style="color:var(--mut)">('+esc(p.bn)+')</span>':'')+'</span><span class="c">'+esc(p.cls)+'</span></li>').join('')+'</ul></div>'}
-if(!E.length&&!P.length){html=banner('bad','No registration found',res.kind==='phone'?"No student with this number. Try the other parent's number, or search by name.":(res.kind==='roll'?'Exam Roll not found. Check your confirmation message.':'No student with this name. Check the spelling, or search by mobile number.'))}
-html+='<button class="again" type="button" id="again">Search another student</button>';box.innerHTML=html;
+if(E.length){html+=E.length>1?banner('ok',E.length+' Students Found','Keep each Exam Roll safe.'):banner('ok','Registration Confirmed','Payment received. Keep your Exam Roll safe.');html+=E.map((s,i)=>studentCard(s,i,E.length)).join('')}
+if(P.length){html+='<div class="card pend">'+banner('warn','Payment Not Confirmed Yet','The Exam Roll is given after the fee is received. Already paid? Call the helpline.').replace('class="banner warn"','class="banner warn" style="margin:0;padding:0;background:none"')+'<ul>'+P.map(p=>'<li><span>'+esc(p.name)+(p.bn?' <span class="bn" style="color:var(--mut)">('+esc(p.bn)+')</span>':'')+'</span><span class="c">'+esc(p.cls)+'</span></li>').join('')+'</ul></div>'}
+if(!E.length&&!P.length){html=banner('bad','No Registration Found',res.kind==='phone'?"No student with this number. Try the other parent's number, or search by name.":(res.kind==='roll'?'Exam Roll not found. Check your confirmation message.':'No student with this name. Check the spelling, or search by mobile number.'))}
+html+='<button class="again" type="button" id="again">Search Another Student</button>';box.innerHTML=html;
 box.querySelectorAll('.copy').forEach(b=>b.addEventListener('click',()=>{(navigator.clipboard?navigator.clipboard.writeText(b.dataset.roll):Promise.reject()).then(()=>{b.textContent='Copied';setTimeout(()=>b.textContent='Copy',1500)}).catch(()=>{})}));
 $('#again').addEventListener('click',()=>{$('#q').value='';box.innerHTML='';window.scrollTo({top:0,behavior:'smooth'});$('#q').focus()});
 box.scrollIntoView({behavior:'smooth',block:'start'})}
 $('#f').addEventListener('submit',e=>{e.preventDefault();const q=$('#q').value.trim();if(!q){$('#q').focus();return}
 const btn=$('#go');btn.disabled=true;btn.textContent='Checking...';$('#results').innerHTML='<div class="skel"></div>';
-api({api:'search',q:q}).then(r=>{btn.disabled=false;btn.textContent='Check status';render(r)}).catch(()=>{btn.disabled=false;btn.textContent='Check status';render({ok:false,message:'Connection problem. Please check your internet and try again.'})})});
+api({api:'search',q:q}).then(r=>{btn.disabled=false;btn.textContent='Check Status';render(r)}).catch(()=>{btn.disabled=false;btn.textContent='Check Status';render({ok:false,message:'Connection problem. Please check your internet and try again.'})})});
 setMode('phone',false);renderInfo();
 api({api:'meta'},20000).then(m=>{if(m&&m.helpline){META=m;renderInfo()}}).catch(()=>{});
 </script></body></html>

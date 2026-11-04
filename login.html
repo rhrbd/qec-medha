@@ -115,13 +115,13 @@ font-weight:800;font-size:17px;color:#2d1500;background:linear-gradient(180deg,#
 .roll .v{font-size:22px;letter-spacing:.04em}
 @media(min-width:900px){.g1{grid-template-columns:1fr!important}}
 @media(min-width:900px){.dash{grid-template-columns:7fr 5fr;align-items:start}.dash .exc{grid-column:1/-1}.prof{padding:20px 22px}.ph{flex-basis:84px;width:84px;height:84px;font-size:28px}}
-</style></head><body><header class="top"><div class="bar"><a class="logo" href="./" aria-label="QEC Academy home"><img alt="QEC Academy" src="assets/logo.png?v=6"></a><a class="ghostl" href="./">Check registration</a></div>
+</style></head><body><header class="top"><div class="bar"><a class="logo" href="./" aria-label="QEC Academy home"><img alt="QEC Academy" src="assets/logo.png?v=6"></a><a class="ghostl" href="./">Check Registration</a></div>
 <div class="hero"><h1>QEC Medha Onneshon <i>2026</i></h1><p class="sub bn">QEC মেধা অন্বেষণ ২০২৬</p><p class="lead">Log in with your Exam Roll and PIN to see your exam and updates.</p></div></header><main>
-<section class="card pad narrow" id="loginCard"><h2 style="margin-bottom:4px">Student login</h2><p style="color:var(--mut);font-size:14px;margin-bottom:16px">Your dashboard and exam link.</p>
+<section class="card pad narrow" id="loginCard"><h2 style="margin-bottom:4px">Student Login</h2><p style="color:var(--mut);font-size:14px;margin-bottom:16px">Your dashboard and exam link.</p>
 <form id="f" autocomplete="off" novalidate><div style="display:grid;gap:13px">
 <div><label class="lbl" for="roll">Exam Roll</label><input class="in" id="roll" type="text" inputmode="text" autocapitalize="characters" maxlength="10" placeholder="e.g. 10001" autocomplete="off" spellcheck="false"></div>
-<div><label class="lbl" for="pin">6-digit PIN</label><div class="pinw"><input class="in" id="pin" type="password" inputmode="numeric" maxlength="6" placeholder="&bull;&bull;&bull;&bull;&bull;&bull;" autocomplete="off"><button type="button" id="eye" aria-label="Show PIN">Show</button></div></div>
-<button class="btn amber wide" id="go" type="submit" style="height:54px;font-size:16.5px">Log in</button></div>
+<div><label class="lbl" for="pin">6-Digit PIN</label><div class="pinw"><input class="in" id="pin" type="password" inputmode="numeric" maxlength="6" placeholder="&bull;&bull;&bull;&bull;&bull;&bull;" autocomplete="off"><button type="button" id="eye" aria-label="Show PIN">Show</button></div></div>
+<button class="btn amber wide" id="go" type="submit" style="height:54px;font-size:16.5px">Log In</button></div>
 <div class="err" id="err" role="alert" hidden></div></form>
 <p class="hint">Roll and PIN are in your SMS.<br>Need help? <a id="hl" href="tel:01841233235">01841-233235</a></p></section>
 <section id="dash" hidden></section></main>
@@ -150,7 +150,7 @@ try{const t0=Date.now();const j=await post({a:'login',roll:roll,pin:pin});
 if(j&&j.ok){creds={roll:roll,pin:pin};ss('qec_auth',creds);if(j.ex&&j.ex.now)skew=j.ex.now-Math.round((t0+Date.now())/2);data=j;render();startPoll()}
 else if(!silent){showErr((j&&j.message)||'Login failed. Please try again.')}else if(j&&j.ok===false&&!j.locked){logout()}}
 catch(e){if(!silent)showErr('Could not reach the server. Check your internet and try again.')}
-finally{busy=false;btn.disabled=false;btn.textContent='Log in'}}
+finally{busy=false;btn.disabled=false;btn.textContent='Log In'}}
 function startPoll(){clearInterval(poll);poll=setInterval(()=>{if(creds&&!document.hidden)doLogin(creds.roll,creds.pin,true)},180000)}
 function logout(){creds=null;data=null;ss('qec_auth',null);clearInterval(poll);clearInterval(tick);$('#dash').hidden=true;$('#dash').innerHTML='';$('#loginCard').hidden=false;$('#pin').value='';showErr('');window.scrollTo(0,0)}
 function initials(n){const p=String(n||'').trim().split(/\s+/).filter(Boolean);return((p[0]||'?')[0]+(p.length>1?p[p.length-1][0]:'')).toUpperCase()}
@@ -166,25 +166,25 @@ function examCard(){const j=data,ex=j.ex,s=j.student;if(!ex)return '';const st=e
 const ICO='<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2M9 2h6"/></svg>';
 let h='';
 if(st==='demo'){h='<div class="demo"><span>&#9733;</span><span><b>Demo account.</b> Practice exam of '+esc(ex.demoMin)+' minutes, open at any time. Nothing is recorded for any student.</span></div>'+
-'<span class="eyebrow">'+ICO+'Practice exam</span><h2>Online exam (demo)</h2><p class="when">Real exam: '+examWhen(ex)+'</p>'+
-'<div class="cd" id="cd">'+cdHtml(ex.opens-nowS())+'</div><a class="go pulse" href="exam.html">Click here to enter the exam &rarr;</a>'+
+'<span class="eyebrow">'+ICO+'Practice Exam</span><h2>Online Exam (Demo)</h2><p class="when">Real Exam: '+examWhen(ex)+'</p>'+
+'<div class="cd" id="cd">'+cdHtml(ex.opens-nowS())+'</div><a class="go pulse" href="exam.html">Click Here to Enter the Exam &rarr;</a>'+
 '<p class="exnote">On exam day this button appears at '+nw(fmtT(ex.opens))+' sharp. Every exam ends at '+nw(fmtT(ex.closes))+'.</p>';return '<section class="exc">'+h+'</section>'}
-if(st==='offline'){return '<section class="exc"><span class="eyebrow">'+ICO+'Offline exam</span><h2>Exam at the centre</h2><p class="when">'+esc((j.exam||{}).date||'')+(j.exam&&j.exam.time?' &middot; '+nw(j.exam.time):'')+'</p>'+
+if(st==='offline'){return '<section class="exc"><span class="eyebrow">'+ICO+'Offline Exam</span><h2>Exam at the Centre</h2><p class="when">'+esc((j.exam||{}).date||'')+(j.exam&&j.exam.time?' &middot; '+nw(j.exam.time):'')+'</p>'+
 '<p class="exnote">Venue: <b>'+esc(pl.type==='venue'?pl.value:'QEC Academy (Chottogram)')+'</b>. Pen and paper exam. Please arrive early.</p></section>'}
-if(st==='submitted'){return '<section class="exc done"><span class="eyebrow" style="color:#bff0d6">&#10003; Exam submitted</span><h2>Thank you, '+esc((s.name||'').split(' ')[0]||'student')+'!</h2>'+
+if(st==='submitted'){return '<section class="exc done"><span class="eyebrow" style="color:#bff0d6">&#10003; Exam Submitted</span><h2>Thank You, '+esc((s.name||'').split(' ')[0]||'student')+'!</h2>'+
 '<p class="when">Your answers were submitted'+(ex.at?' at '+nw(fmtT(ex.at)):'')+'.</p><p class="exnote">Results will be announced here on your dashboard.</p></section>'}
-if(st==='closed'){return '<section class="exc closed"><span class="eyebrow" style="color:#e3dbe8">'+ICO+'Exam ended</span><h2>The online exam has ended</h2><p class="when">'+examWhen(ex)+'</p><p class="exnote">Results will be announced here on your dashboard.</p></section>'}
-if(st==='none'){return '<section class="exc"><span class="eyebrow">'+ICO+'Online exam</span><h2>Exam details coming soon</h2><p class="exnote">The exam link will appear here.</p></section>'}
-h='<span class="eyebrow">'+ICO+'Online exam</span><h2>'+(st==='before'?'Your exam starts in':(st==='progress'?'Your exam is running':'The exam is open now'))+'</h2><p class="when">'+examWhen(ex)+'</p>';
-if(st==='before')h+='<div class="cd" id="cd">'+cdHtml(ex.opens-nowS())+'</div><div class="go off">The exam button opens at '+nw(fmtT(ex.opens))+'</div>';
-else h+='<a class="go pulse" href="exam.html">'+(st==='progress'?'Continue my exam &rarr;':'Click here to enter the exam &rarr;')+'</a><p class="exnote" id="left"></p>';
+if(st==='closed'){return '<section class="exc closed"><span class="eyebrow" style="color:#e3dbe8">'+ICO+'Exam Ended</span><h2>The Online Exam Has Ended</h2><p class="when">'+examWhen(ex)+'</p><p class="exnote">Results will be announced here on your dashboard.</p></section>'}
+if(st==='none'){return '<section class="exc"><span class="eyebrow">'+ICO+'Online Exam</span><h2>Exam Details Coming Soon</h2><p class="exnote">The exam link will appear here.</p></section>'}
+h='<span class="eyebrow">'+ICO+'Online Exam</span><h2>'+(st==='before'?'Your Exam Starts In':(st==='progress'?'Your Exam Is Running':'The Exam Is Open Now'))+'</h2><p class="when">'+examWhen(ex)+'</p>';
+if(st==='before')h+='<div class="cd" id="cd">'+cdHtml(ex.opens-nowS())+'</div><div class="go off">The Exam Button Opens at '+nw(fmtT(ex.opens))+'</div>';
+else h+='<a class="go pulse" href="exam.html">'+(st==='progress'?'Continue My Exam &rarr;':'Click Here to Enter the Exam &rarr;')+'</a><p class="exnote" id="left"></p>';
 h+='<p class="exnote">Strict time: the exam ends at '+nw(fmtT(ex.closes))+' for everyone. Joining late means less time. Log in a few minutes early.</p>';
 return '<section class="exc">'+h+'</section>'}
 function render(){const j=data,s=j.student||{},ex=j.exam||{},pl=ex.place||{};const online=/online/i.test(s.mode||'');
 const photo=/^data:image\/(png|jpeg|jpg|gif|webp);base64,/.test(s.photo||'')?'<img alt="" src="'+s.photo+'">':esc(initials(s.name));
 const g=safeUrl(j.group),hl=j.helpline||HELP;
 let place='';
-if(online)place=kv('Mode','<span class="nw"><span class="dot" style="background:#2f6fd6;margin-right:7px"></span>Online exam</span>');
+if(online)place=kv('Mode','<span class="nw"><span class="dot" style="background:#2f6fd6;margin-right:7px"></span>Online Exam</span>');
 else place=kv('Venue',esc(pl.type==='venue'?pl.value:'To be announced'));
 const xe=j.ex;const date=xe&&xe.set&&online?nw(fmtD(xe.opens)):esc(ex.date||'To be announced');const time=xe&&xe.set&&online?nw(fmtT(xe.opens))+' – '+nw(fmtT(xe.closes)):(ex.time?nw(ex.time):'To be announced');
 const tips=online?['Charge your phone, tablet or laptop fully.','Use a stable internet connection (Wi-Fi or mobile data).','Log in by <span class="nw">9:50 AM</span> and keep this page open.','Keep pen and paper ready for rough work.']:['Arrive 30 minutes early at the exam centre.','Bring pen, pencil, eraser and your Exam Roll.','Keep the helpline number with you.'];
@@ -192,12 +192,12 @@ $('#dash').innerHTML='<div class="dash">'+examCard()+'<div class="col">'+
 '<div class="card"><div class="prof"><div class="ph">'+photo+'</div><div style="min-width:0"><h2>'+esc(s.name)+'</h2>'+(s.bn?'<p class="bnn bn">'+esc(s.bn)+'</p>':'')+
 '<div class="chips"><span class="chip">'+esc(s.clsv||s.cls||'')+'</span><span class="chip"><span class="dot" style="background:'+(online?'#2f6fd6':'#d98f17')+'"></span>'+esc(s.mode||'-')+'</span>'+(j.demo?'<span class="chip" style="background:#fff1d6;color:#7a4b00">Demo</span>':'<span class="chip" style="background:#e7f6ee;color:#0f7a49">&#10003; Enrolled</span>')+'</div></div></div>'+
 '<div style="padding:0 20px 20px"><div class="kv roll"><div class="k">Exam Roll</div><div class="v"><span class="nw">'+esc(s.roll)+'</span><button class="copy" id="cp" type="button">Copy</button></div></div></div></div>'+
-'<div class="card"><div class="secth">Before the exam</div><ul class="tips">'+tips.map(t=>'<li><span>'+t+'</span></li>').join('')+'</ul></div></div>'+
-'<div class="card"><div class="secth">Exam details</div><div class="grid g1" style="padding:0 20px 14px">'+kv('Date',date)+kv('Time',time)+'<div style="grid-column:1/-1;display:grid">'+place+'</div></div>'+
+'<div class="card"><div class="secth">Before the Exam</div><ul class="tips">'+tips.map(t=>'<li><span>'+t+'</span></li>').join('')+'</ul></div></div>'+
+'<div class="card"><div class="secth">Exam Details</div><div class="grid g1" style="padding:0 20px 14px">'+kv('Date',date)+kv('Time',time)+'<div style="grid-column:1/-1;display:grid">'+place+'</div></div>'+
 (ex.note?'<p class="upd">'+esc(ex.note)+'</p>':'')+
-'<div class="acts">'+(g?'<a class="wa full" href="'+esc(g)+'" target="_blank" rel="noopener">Join WhatsApp group</a>':'')+
+'<div class="acts">'+(g?'<a class="wa full" href="'+esc(g)+'" target="_blank" rel="noopener">Join WhatsApp Group</a>':'')+
 '<a class="ghost full" href="tel:'+esc(hl.local)+'">Helpline '+nw(hl.display||hl.local)+'</a>'+
-'<button class="ghost" id="rf" type="button">Refresh</button><button class="ghost" id="lo" type="button">Log out</button></div>'+
+'<button class="ghost" id="rf" type="button">Refresh</button><button class="ghost" id="lo" type="button">Log Out</button></div>'+
 '<div class="upd">'+(g?'':'<span class="nw">WhatsApp group link: coming soon.</span><br>')+'<span class="nw">Updated '+esc(j.updated||'')+'</span></div></div></div>';
 $('#loginCard').hidden=true;$('#dash').hidden=false;
 $('#lo').onclick=logout;$('#rf').onclick=()=>{if(creds)doLogin(creds.roll,creds.pin,true)};

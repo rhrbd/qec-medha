@@ -200,9 +200,9 @@ function card(inner){return '<div class="paper">'+inner+'</div>'}
 function helpLine(){return 'Need help? <a href="tel:'+HELP.local+'" style="color:var(--plum);font-weight:800;text-decoration:none" class="nw">'+HELP.display+'</a>'}
 // ---------------------------------------------------------------- sign in (WhatsApp-link route)
 function loginView(msg){app.innerHTML='<div class="center">'+card('<div class="phead"><img alt="QEC Academy" src="assets/logo.png?v=6"><div class="org">QEC Academy</div><div class="ttl">Medha Onneshon Exam - 2026</div></div>'+
-'<div class="sec"><h2 style="margin-bottom:4px">Enter the exam</h2><p style="color:var(--mut);font-size:14px;margin-bottom:14px">Use the Exam Roll and PIN from your SMS.</p>'+
+'<div class="sec"><h2 style="margin-bottom:4px">Enter the Exam</h2><p style="color:var(--mut);font-size:14px;margin-bottom:14px">Use the Exam Roll and PIN from your SMS.</p>'+
 '<form id="lf" autocomplete="off" novalidate><div style="display:grid;gap:12px"><div><label class="lbl" for="r">Exam Roll</label><input class="in" id="r" type="text" autocapitalize="characters" maxlength="10" placeholder="e.g. 10001" spellcheck="false"></div>'+
-'<div><label class="lbl" for="p">6-digit PIN</label><div class="pinw"><input class="in" id="p" type="password" inputmode="numeric" maxlength="6" placeholder="&bull;&bull;&bull;&bull;&bull;&bull;"><button type="button" id="eye">Show</button></div></div>'+
+'<div><label class="lbl" for="p">6-Digit PIN</label><div class="pinw"><input class="in" id="p" type="password" inputmode="numeric" maxlength="6" placeholder="&bull;&bull;&bull;&bull;&bull;&bull;"><button type="button" id="eye">Show</button></div></div>'+
 '<button class="btn amber wide" id="lb" type="submit" style="height:54px">Continue</button></div><div class="err" id="le" role="alert"'+(msg?'':' hidden')+'>'+esc(msg||'')+'</div></form>'+
 '<p class="hint">Best way: log in at <a href="login.html">your dashboard</a>.<br>'+helpLine()+'</p></div>')+'</div>';
 $('#eye').onclick=()=>{const p=$('#p'),h=p.type==='password';p.type=h?'text':'password';$('#eye').textContent=h?'Hide':'Show'};
@@ -214,27 +214,28 @@ $('#lb').disabled=true;$('#lb').textContent='Checking...';A={roll:roll,pin:pin};
 async function peek(fromForm){try{const t0=Date.now();const j=await post({a:'exPeek',roll:A.roll,pin:A.pin});
 if(!j||!j.ok){if(fromForm){loginView((j&&j.message)||'Could not sign in.')}else{ss('qec_auth',null);loginView(j&&j.message)}return}
 ss('qec_auth',{roll:A.roll,pin:A.pin});skew=j.now-Math.round((t0+Date.now())/2);demo=!!j.demo;infoView(j)}
-catch(e){if(fromForm)loginView('Could not reach the server. Check your internet and try again.');else app.innerHTML='<div class="center">'+card('<div class="sec"><div class="err">Could not reach the server. Check your internet.</div><button class="btn wide" style="margin-top:14px" onclick="location.reload()">Try again</button></div>')+'</div>'}}
+catch(e){if(fromForm)loginView('Could not reach the server. Check your internet and try again.');else app.innerHTML='<div class="center">'+card('<div class="sec"><div class="err">Could not reach the server. Check your internet.</div><button class="btn wide" style="margin-top:14px" onclick="location.reload()">Try Again</button></div>')+'</div>'}}
 let infoT=null;
 function infoView(j){clearInterval(infoT);const s=j.student,h=j.header;const st=j.state;
-const rules=['<b>Questions:</b> Q1 &ndash; Q25 Bangla, Q26 &ndash; Q50 English, Q51 &ndash; Q75 Math. Each question has four options; choose one. <b>Each question carries <span class="nw">1 mark</span>.</b> Bangla questions are in Bangla and English questions in English; Math is in your version ('+(/\(EV\)/.test(s.clsv||'')?'English':'Bangla')+').'.replace(/Q1 &ndash; Q25/,demo?'Q1 &ndash; Q5':'Q1 &ndash; Q25').replace(/Q26 &ndash; Q50/,demo?'Q6 &ndash; Q10':'Q26 &ndash; Q50').replace(/Q51 &ndash; Q75/,demo?'Q11 &ndash; Q15':'Q51 &ndash; Q75'),
+const rules=['<b>Questions:</b> '+(demo?'Q1 &ndash; Q5':'Q1 &ndash; Q25')+' Bangla, '+(demo?'Q6 &ndash; Q10':'Q26 &ndash; Q50')+' English, '+(demo?'Q11 &ndash; Q15':'Q51 &ndash; Q75')+' Math. Each question has four options; choose one. <b>Each question carries <span class="nw">1 mark</span>.</b>',
+'Bangla questions are in Bangla and English questions are in English. Math is in your version (<b>'+(/\(EV\)/.test(s.clsv||'')?'English':'Bangla')+'</b>).',
 'You can move between Bangla, English and Math at any time and change any answer before you submit.','Every answer is <b>saved automatically</b>. No negative marking. You may leave a question blank.',
 demo?'Practice timer: <b>'+esc(j.minutes)+' minutes</b>. When the time is up, the exam submits by itself.':'Strict time: the exam ends at <b class="nw">'+esc(fmtT(j.closes))+'</b> for everyone and submits by itself. Joining late means less time.',
 'Stay on this page. Switching to other apps or tabs is recorded. Using AI tools or help from others is not allowed.','Press <b>Submit</b> when you finish. After submitting you cannot change your answers.'];
 let act='';
-if(st==='demo')act='<button class="go pulse" id="start" type="button">Start demo exam ('+esc(j.minutes)+' minutes) &rarr;</button>';
-else if(st==='open')act='<button class="go pulse" id="start" type="button">Start the exam &rarr;</button><p class="sbar" id="left"></p>';
-else if(st==='progress')act='<button class="go pulse" id="start" type="button">Continue my exam &rarr;</button><p class="sbar" id="left"></p>';
+if(st==='demo')act='<button class="go pulse" id="start" type="button">Start Demo Exam ('+esc(j.minutes)+' Minutes) &rarr;</button>';
+else if(st==='open')act='<button class="go pulse" id="start" type="button">Start the Exam &rarr;</button><p class="sbar" id="left"></p>';
+else if(st==='progress')act='<button class="go pulse" id="start" type="button">Continue My Exam &rarr;</button><p class="sbar" id="left"></p>';
 else if(st==='before')act='<div class="go off" style="background:#efe7f2;color:var(--plum)">The exam opens at '+nw(fmtT(j.opens))+' on '+nw(fmtD(j.opens))+'</div><p class="sbar" style="justify-content:center"><span>Opens in <b id="cdn" class="nw"></b></span></p>';
 else if(st==='submitted'){thanks(j.at,false);return}
 else act='<div class="err" style="text-align:center">'+esc({closed:'The exam time is over.',offline:'Your exam is offline (pen and paper) at QEC Academy (Chottogram).',disabled:'The exam is not open right now.',notset:'The exam time is not set yet.'}[st]||'The exam is not open right now.')+'</div>';
 app.innerHTML='<div class="center" style="max-width:720px">'+card(header(h)+'<div class="sec">'+
 (demo?'<div class="demo"><span>&#9733;</span><span><b>Demo exam.</b> Practice only &ndash; nothing is recorded for any student.</span></div>':'')+
-'<div class="sect" style="margin-bottom:10px"><h2>Student information</h2><span>Please check</span></div><div class="who">'+
+'<div class="sect" style="margin-bottom:10px"><h2>Student Information</h2><span>Please Check</span></div><div class="who">'+
 '<div class="kv"><div class="k">Name</div><div class="v">'+esc(s.name)+(s.bn?'<small class="bn" style="display:block;color:var(--mut);font-weight:600">'+esc(s.bn)+'</small>':'')+'</div></div>'+
 '<div class="kv"><div class="k">Exam Roll</div><div class="v nw">'+esc(s.roll)+'</div></div><div class="kv"><div class="k">Class</div><div class="v nw">'+esc(s.clsv||s.cls)+'</div></div></div>'+
-'<p class="sbar"><span>Not you? <a href="#" id="notme" style="color:var(--plum);font-weight:800">Log out</a></span><span>'+helpLine()+'</span></p>'+
-'<div class="sect" style="margin:18px 0 6px"><h2>Exam rules</h2><span class="nw">'+(demo?'Practice':nw(fmtD(j.opens)))+'</span></div><ul class="rules">'+rules.map(r=>'<li><span>'+r+'</span></li>').join('')+'</ul>'+act+'</div>')+'</div>';
+'<p class="sbar"><span>Not you? <a href="#" id="notme" style="color:var(--plum);font-weight:800">Log Out</a></span><span>'+helpLine()+'</span></p>'+
+'<div class="sect" style="margin:18px 0 6px"><h2>Exam Rules</h2><span class="nw">'+(demo?'Practice':nw(fmtD(j.opens)))+'</span></div><ul class="rules">'+rules.map(r=>'<li><span>'+r+'</span></li>').join('')+'</ul>'+act+'</div>')+'</div>';
 $('#notme').onclick=e=>{e.preventDefault();ss('qec_auth',null);A=null;loginView()};
 const b=$('#start');if(b)b.onclick=()=>start();
 const tickInfo=()=>{const c=$('#cdn');if(c){const ms=j.opens-nowS();if(ms<=0){clearInterval(infoT);peek(false);return}const x=Math.floor(ms/1000);const d=Math.floor(x/86400),hh=Math.floor(x%86400/3600),m=Math.floor(x%3600/60),sc=x%60;
@@ -242,18 +243,18 @@ c.textContent=(d?d+'d ':'')+String(hh).padStart(2,'0')+':'+String(m).padStart(2,
 const l=$('#left');if(l&&!demo){const ms=j.closes-nowS();if(ms<=0){clearInterval(infoT);peek(false);return}l.innerHTML='<span>Time left: <b class="nw">'+Math.floor(ms/60000)+' min '+String(Math.floor(ms/1000)%60).padStart(2,'0')+' sec</b></span>'}};
 tickInfo();infoT=setInterval(tickInfo,1000)}
 // ---------------------------------------------------------------- exam
-async function start(){const b=$('#start');if(b){b.disabled=true;b.textContent='Opening the question paper...'}
+async function start(){const b=$('#start');if(b){b.disabled=true;b.textContent='Opening the Question Paper...'}
 try{const t0=Date.now();const j=await post({a:'exStart',roll:A.roll,pin:A.pin,dev:(navigator.userAgent||'').replace(/\s+/g,' ').slice(0,80),att:demo?(ss('qec_att')||''):''},40000);
 if(!j||!j.ok){if(j&&j.state==='submitted'){thanks(j.at,false);return}if(j&&j.state){peek(false);toast(j.message||'The exam is not open.');return}throw new Error((j&&j.message)||'failed')}
 skew=j.now-Math.round((t0+Date.now())/2);openExam(j)}
-catch(e){if(b){b.disabled=false;b.textContent='Try again →'}toast(e&&e.message&&!/HTTP|abort|fetch|network/i.test(e.message)?e.message:'Could not open the exam. Check your internet and tap again.',5000)}}
+catch(e){if(b){b.disabled=false;b.textContent='Try Again →'}toast(e&&e.message&&!/HTTP|abort|fetch|network/i.test(e.message)?e.message:'Could not open the exam. Check your internet and tap again.',5000)}}
 function openExam(j){clearInterval(infoT);P=j;token=j.token;att=j.att||'';if(demo)ss('qec_att',att);
 const n=j.secs.reduce((s,x)=>s+x.qs.length,0);ans=(j.ans&&j.ans.length===n)?j.ans:'-'.repeat(n);sw=j.sw||0;
 const loc=lsLoad();if(loc&&loc.a&&loc.a.length===n&&loc.a!==ans&&loc.t>(j.start||0)){ans=loc.a;sw=Math.max(sw,loc.sw||0);dirty=true}
 finished=false;document.body.classList.add('noselect');$('#xtop').hidden=false;$('#xname').textContent=j.student.name+' · '+j.student.roll;
 $('#tabs').innerHTML=j.secs.map((s,i)=>'<button type="button" role="tab" data-i="'+i+'"><span>'+esc(s.name)+'</span><small><span>Q'+s.from+' – Q'+s.to+'</span> <span>&middot; <b data-c="'+i+'">0</b>/'+s.qs.length+'</span></small></button>').join('');
 $('#tabs').querySelectorAll('button').forEach(b=>b.onclick=()=>{show(+b.dataset.i);window.scrollTo({top:0,behavior:'smooth'})});
-setLangs(j.secs,/\(EV\)/.test(j.student.clsv||''));show(0);counts();clearInterval(clock);clock=setInterval(tickClock,500);tickClock();if(dirty)queueSave(500)}
+$('#subTop').onclick=confirmSubmit;setLangs(j.secs,/\(EV\)/.test(j.student.clsv||''));show(0);counts();clearInterval(clock);clock=setInterval(tickClock,500);tickClock();if(dirty)queueSave(500)}
 const isBn=t=>/[\u0980-\u09FF]/.test(t);
 function qf(t){return esc(t).replace(/&#39;(.{1,80}?)&#39;/g,'\u2018$1\u2019').replace(/&quot;(.{1,120}?)&quot;/g,'\u201C$1\u201D')}
 let QL={};
@@ -263,13 +264,13 @@ function optHtml(q,k){const L='ABCD'[k];const t=pk(q.o[k],QL[q.n]);const sel=ans
 return '<button type="button" class="opt'+(sel?' sel':'')+'" data-q="'+q.n+'" data-l="'+L+'" aria-pressed="'+sel+'"><span class="l">'+L+'</span><span class="t"><b class="'+(isBn(t)?'bn':'en')+'">'+qf(t)+'</b></span></button>'}
 function qHtml(q){const a=ans.charAt(q.n-1)!=='-';const t=pk([q.qb,q.qe],QL[q.n]);
 return '<div class="q'+(a?' ans':'')+'" id="q'+q.n+'"><div class="qt"><span class="qn">Q'+q.n+'.</span><div><div class="qb '+(isBn(t)?'bn':'en')+'">'+qf(t)+'</div></div><span class="mk" title="1 mark">[1]</span></div>'+
-'<div class="opts">'+[0,1,2,3].map(k=>optHtml(q,k)).join('')+'</div>'+(a?'<button type="button" class="clr" data-clr="'+q.n+'">Clear my answer</button>':'')+'</div>'}
+'<div class="opts">'+[0,1,2,3].map(k=>optHtml(q,k)).join('')+'</div>'+(a?'<button type="button" class="clr" data-clr="'+q.n+'">Clear My Answer</button>':'')+'</div>'}
 function show(i){cur=i;const s=P.secs[i];$('#tabs').querySelectorAll('button').forEach(b=>b.setAttribute('aria-selected',String(+b.dataset.i===i)));
 const last=i===P.secs.length-1;
 app.innerHTML=card((i===0?header(P.header):'')+'<div class="sec'+(finished?' lock':'')+'"><div class="sect"><h2>'+esc(s.name)+' <span class="bn" style="font-weight:600">('+esc(s.bn)+')</span></h2><span>Q'+s.from+' – Q'+s.to+'</span></div>'+
 '<div class="pal">'+s.qs.map(q=>'<button type="button" data-go="'+q.n+'" class="'+(ans.charAt(q.n-1)!=='-'?'on':'')+'">'+q.n+'</button>').join('')+'</div>'+
 s.qs.map(qHtml).join('')+'<div class="nav2">'+(i>0?'<button class="ghost" type="button" data-sec="'+(i-1)+'">&larr; '+esc(P.secs[i-1].name)+'</button>':'<span></span>')+
-(last?'<button class="btn amber" type="button" id="subEnd">Submit exam</button>':'<button class="btn" type="button" data-sec="'+(i+1)+'">Next: '+esc(P.secs[i+1].name)+' &rarr;</button>')+'</div></div>');
+(last?'<button class="btn amber" type="button" id="subEnd">Submit Exam</button>':'<button class="btn" type="button" data-sec="'+(i+1)+'">Next: '+esc(P.secs[i+1].name)+' &rarr;</button>')+'</div></div>');
 bindSec()}
 function bindSec(){app.querySelectorAll('.opt').forEach(b=>b.onclick=()=>pick(+b.dataset.q,b.dataset.l));
 app.querySelectorAll('[data-clr]').forEach(b=>b.onclick=()=>pick(+b.dataset.clr,'-'));
@@ -298,24 +299,24 @@ function tickClock(){if(!P)return;const ms=P.deadline-nowS();const x=Math.max(0,
 $('#tt').textContent=String(m).padStart(2,'0')+':'+String(s).padStart(2,'0');$('#timer').classList.toggle('low',ms<=300000&&ms>0);
 if(ms<=0&&!finished)timeUp();if(dirty&&!saving&&Date.now()-lastSave>20000)queueSave(100)}
 function timeUp(){if(finished)return;finished=true;clearInterval(clock);$('#tt').textContent='00:00';
-app.querySelectorAll('.sec').forEach(s=>s.classList.add('lock'));overlay('<h3>Time is up</h3><p>Submitting your answers...</p>');doSubmit('auto',0)}
+app.querySelectorAll('.sec').forEach(s=>s.classList.add('lock'));overlay('<h3>Time Is Up</h3><p>Submitting your answers...</p>');doSubmit('auto',0)}
 function overlay(html){let m=$('#modal');if(!m){m=document.createElement('div');m.id='modal';m.className='modal';document.body.appendChild(m)}m.innerHTML='<div class="box">'+html+'</div>';m.hidden=false;return m}
 function closeModal(){const m=$('#modal');if(m)m.hidden=true}
 function confirmSubmit(){if(finished)return;const c=ans.replace(/-/g,'').length;
-const m=overlay('<h3>Submit your exam?</h3><p>You answered <b>'+c+' of '+ans.length+'</b> questions. After submitting you cannot change your answers.</p><div class="row"><button class="ghost" id="no" type="button">Go back</button><button class="btn amber" id="yes" type="button">Yes, submit</button></div>');
+const m=overlay('<h3>Submit Your Exam?</h3><p>You answered <b>'+c+' of '+ans.length+'</b> questions. After submitting you cannot change your answers.</p><div class="row"><button class="ghost" id="no" type="button">Go Back</button><button class="btn amber" id="yes" type="button">Yes, Submit</button></div>');
 $('#no').onclick=closeModal;$('#yes').onclick=()=>{finished=true;clearInterval(clock);overlay('<h3>Submitting...</h3><p>Please wait. Do not close this page.</p>');doSubmit('manual',0)}}
 async function doSubmit(how,n){if(submitting&&n===0)return;submitting=true;lsSave();
 try{const j=await post({a:'exSubmit',token:token,ans:ans,sw:sw,how:how},30000);
 if(j&&j.ok){submitting=false;closeModal();try{localStorage.removeItem(lsKey())}catch(e){}if(demo)ss('qec_att',null);thanks(j.at||nowS(),true);return}
 if(j&&j.reauth){await reauth()}}
 catch(e){}
-const wait=Math.min(15000,2000*Math.pow(1.6,n))+Math.random()*2500;overlay('<h3>'+(how==='auto'?'Time is up':'Submitting...')+'</h3><p>Connection is slow. Trying again... Please keep this page open.</p>');
+const wait=Math.min(15000,2000*Math.pow(1.6,n))+Math.random()*2500;overlay('<h3>'+(how==='auto'?'Time Is Up':'Submitting...')+'</h3><p>Connection is slow. Trying again... Please keep this page open.</p>');
 setTimeout(()=>doSubmit(how,n+1),wait)}
 function thanks(at,fresh){finished=true;clearInterval(clock);clearInterval(infoT);closeModal();$('#xtop').hidden=true;$('#wm').hidden=true;document.body.classList.remove('noselect');
 app.innerHTML='<div class="center">'+card('<div class="thanks"><img alt="QEC Academy" src="assets/logo.png?v=6" style="height:56px;width:auto;display:block;margin:0 auto 18px"><div class="big"><svg width="38" height="38" viewBox="0 0 24 24" fill="none" stroke="#0f7a49" stroke-width="2.8"><path d="M20 6 9 17l-5-5"/></svg></div>'+
-'<h2>Your exam has been submitted.</h2><p>Thank you for joining <b>QEC Academy Medha Onneshon Exam 2026</b>.</p>'+(at?'<p style="font-size:13.5px;color:var(--mut)">Submitted at '+nw(fmtT(at))+'</p>':'')+
+'<h2>Your Exam Has Been Submitted</h2><p>Thank you for joining <b>QEC Academy Medha Onneshon Exam 2026</b>.</p>'+(at?'<p style="font-size:13.5px;color:var(--mut)">Submitted at '+nw(fmtT(at))+'</p>':'')+
 (demo?'<p style="font-size:13.5px;color:var(--mut)">This was a practice exam. Nothing was recorded for any student.</p>':'<p style="font-size:13.5px;color:var(--mut)">Results will be announced on your dashboard.</p>')+
-'<div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:20px"><a class="btn" href="login.html" style="display:inline-flex;align-items:center;text-decoration:none">Back to dashboard</a>'+(demo?'<button class="ghost" type="button" style="height:50px" onclick="location.reload()">Try the demo again</button>':'')+'</div></div>')+'</div>';window.scrollTo(0,0)}
+'<div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:20px"><a class="btn" href="login.html" style="display:inline-flex;align-items:center;text-decoration:none">Back to Dashboard</a>'+(demo?'<button class="ghost" type="button" style="height:50px" onclick="location.reload()">Try the Demo Again</button>':'')+'</div></div>')+'</div>';window.scrollTo(0,0)}
 function watermark(s){const t=(s.roll+'  '+s.name).replace(/[<&>]/g,'');const svg='<svg xmlns="http://www.w3.org/2000/svg" width="440" height="230"><text x="20" y="140" transform="rotate(-22 220 115)" font-family="sans-serif" font-size="15" font-weight="700" fill="#5b1462">'+t+'</text></svg>';
 const w=$('#wm');w.style.backgroundImage='url("data:image/svg+xml;charset=utf-8,'+encodeURIComponent(svg)+'")';w.hidden=false}
 // ---------------------------------------------------------------- light proctoring
