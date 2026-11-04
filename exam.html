@@ -284,9 +284,7 @@ function bindSec(){app.querySelectorAll('.opt').forEach(b=>b.onclick=()=>pick(+b
 app.querySelectorAll('[data-go]').forEach(b=>b.onclick=()=>{const e=document.getElementById('q'+b.dataset.go);if(e)e.scrollIntoView({behavior:'smooth',block:'start'})});
 app.querySelectorAll('[data-next]').forEach(b=>b.onclick=()=>confirmNext(+b.dataset.next));
 const se=$('#subEnd');if(se)se.onclick=confirmSubmit}
-function confirmNext(i){if(finished||i!==cur+1||i>=P.secs.length)return;const a=P.secs[cur],b=P.secs[i];
-overlay('<h3>Go to the '+esc(b.name)+' Section?</h3><p>After moving on you cannot return to the '+esc(a.name)+' Section, and its answers cannot be changed.</p><div class="row"><button class="ghost" id="no" type="button">Cancel</button><button class="btn amber" id="yes" type="button">Yes, Continue</button></div>');
-$('#no').onclick=closeModal;$('#yes').onclick=()=>{closeModal();if(finished)return;cur=i;lsSave();dirty=true;show(i);queueSave(200);window.scrollTo({top:0,behavior:'smooth'})}}
+function confirmNext(i){if(finished||i!==cur+1||i>=P.secs.length)return;closeModal();cur=i;lsSave();dirty=true;show(i);queueSave(200);window.scrollTo({top:0,behavior:'smooth'})}
 function pick(n,L){if(finished||submitting)return;if(!P.secs[cur].qs.some(x=>x.n===n))return;if(P.deadline-nowS()<=0){timeUp();return}
 ans=ans.slice(0,n-1)+L+ans.slice(n);lsSave();dirty=true;queueSave(2500);
 const box=document.getElementById('q'+n);if(box){const s=P.secs[cur];const q=s.qs.find(x=>x.n===n);if(q){const t=document.createElement('div');t.innerHTML=qHtml(q);box.replaceWith(t.firstChild);bindSec()}}
