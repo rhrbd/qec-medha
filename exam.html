@@ -111,9 +111,10 @@ body{background:#f3eff5}
 .sv.wait i{background:#facc15}.sv.bad i{background:#f87171}
 .subbtn{height:38px;border:0;border-radius:11px;padding:0 14px;background:linear-gradient(180deg,var(--amber2),var(--amber));color:#2d1500;font-weight:800;font-size:14px;white-space:nowrap}
 .tabs{max-width:860px;margin:0 auto;padding:0 12px 8px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
-.tabs button{border:0;border-radius:11px;background:rgba(255,255,255,.1);color:#fff;padding:7px 4px;font-weight:700;font-size:13px;line-height:1.2;min-width:0}
-.tabs button small{display:block;font-weight:600;font-size:11px;opacity:.8}.tabs button small span{white-space:nowrap}
-.tabs button[aria-selected=true]{background:#fff;color:var(--plum)}
+.tabs .tb{border-radius:11px;background:rgba(255,255,255,.08);color:rgba(255,255,255,.7);padding:7px 4px;font-weight:700;font-size:13px;line-height:1.2;min-width:0;text-align:center;user-select:none}
+.tabs .tb.done{color:rgba(255,255,255,.45)}.tabs .tb.done>span:first-child:after{content:" \2713"}
+.tabs .tb.now{background:#fff;color:var(--plum)}
+.tabs .tb small{display:block;font-weight:600;font-size:11px;opacity:.8}.tabs .tb small span{white-space:nowrap}
 .wrap{max-width:860px;margin:0 auto;padding:16px 16px 40px;width:100%;flex:1}
 .paper{background:#fff;border-radius:20px;box-shadow:var(--sh);overflow:hidden;border:1px solid rgba(91,20,98,.07)}
 .phead{text-align:center;padding:22px 18px 16px;border-bottom:3px double #e2d5e6;background:linear-gradient(180deg,#fffaf2,#fff)}
@@ -145,7 +146,7 @@ body{background:#f3eff5}
 .opt.sel{border-color:var(--plum);background:#f6eef8;box-shadow:0 0 0 3px rgba(122,36,132,.12)}
 .opt.sel .l{background:var(--plum);border-color:var(--plum);color:#fff}
 .clr{border:0;background:none;color:var(--mut);font-size:12.5px;font-weight:700;margin-top:8px;padding:2px 0;text-decoration:underline}
-.nav2{display:flex;justify-content:space-between;gap:10px;margin-top:16px;flex-wrap:wrap}
+.nav2{display:flex;gap:10px;margin-top:18px}.nav2 .btn{height:54px;font-size:16px}
 .lock .opt{pointer-events:none;opacity:.75}
 .wm{position:fixed;inset:0;pointer-events:none;z-index:20;opacity:.055;background-repeat:repeat}
 .noselect{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
@@ -156,7 +157,7 @@ body{background:#f3eff5}
 .toast{position:fixed;left:50%;bottom:18px;transform:translateX(-50%);z-index:70;background:#2b1630;color:#fff;padding:11px 16px;border-radius:13px;font-size:14px;font-weight:600;box-shadow:0 12px 30px -10px rgba(0,0,0,.6);max-width:calc(100% - 32px);text-align:center}
 .rules{list-style:none;padding:0;display:grid;gap:9px;margin-top:10px}
 .rules li{display:flex;gap:10px;font-size:15.5px;line-height:1.6}
-.rules li:before{content:"";flex:0 0 8px;height:8px;margin-top:8px;border-radius:50%;background:var(--amber)}
+.rules li:before{content:attr(data-n);flex:0 0 24px;height:24px;border-radius:50%;background:#f3e9f6;color:var(--plum);font-size:13px;display:flex;align-items:center;justify-content:center;margin-top:2px}
 .who{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-top:12px}
 .sbar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;justify-content:space-between;margin-top:14px;font-size:13.5px;color:var(--mut)}
 .thanks{text-align:center;padding:34px 22px}
@@ -192,7 +193,7 @@ const nowS=()=>Date.now()+skew;
 const app=$('#app');
 function toast(m,ms){let t=$('#toast');if(!t){t=document.createElement('div');t.id='toast';t.className='toast';document.body.appendChild(t)}t.textContent=m;t.hidden=false;clearTimeout(t._h);t._h=setTimeout(()=>{t.hidden=true},ms||3500)}
 function lsKey(){return 'qec_ans_'+(A?A.roll:'')+'_'+(att||'real')}
-function lsSave(){try{localStorage.setItem(lsKey(),JSON.stringify({a:ans,sw:sw,t:Date.now()}))}catch(e){}}
+function lsSave(){try{localStorage.setItem(lsKey(),JSON.stringify({a:ans,sw:sw,sg:cur,t:Date.now()}))}catch(e){}}
 function lsLoad(){try{return JSON.parse(localStorage.getItem(lsKey())||'null')}catch(e){return null}}
 function header(h){return '<div class="phead"><img alt="QEC Academy" src="assets/logo.png?v=6"><div class="org">'+esc(h.org)+'</div><div class="ttl">'+esc(h.title)+'</div>'+
 '<div class="cls">Class: '+esc(String(h.cls||'').replace(/\s*\(.*\)\s*/,''))+'</div><div class="fm"><span class="nw">Full Marks: '+esc(h.marks)+'</span><span class="nw">Time: '+esc(h.minutes)+' Minutes</span></div></div>'}
@@ -218,15 +219,16 @@ catch(e){if(fromForm)loginView('Could not reach the server. Check your internet 
 let infoT=null;
 function infoView(j){clearInterval(infoT);const s=j.student,h=j.header;const st=j.state;
 const bnd=x=>String(x).replace(/\d/g,d=>'০১২৩৪৫৬৭৮৯'[d]);
-const bnT=ms=>{const t=fmtT(ms),m=t.match(/(\d{1,2}):(\d{2})\s*(AM|PM)/i);if(!m)return bnd(t);const h=+m[1],pm=/pm/i.test(m[3]);return (pm?(h===12||h<4?'দুপুর ':'বিকাল '):'সকাল ')+bnd(m[1]+':'+m[2])};
-const R1=demo?['১','৫','৬','১০','১১','১৫']:['১','২৫','২৬','৫০','৫১','৭৫'];
-const rules=['<b>প্রশ্ন:</b> প্রশ্ন '+R1[0]+'–'+R1[1]+' বাংলা, '+R1[2]+'–'+R1[3]+' ইংরেজি এবং '+R1[4]+'–'+R1[5]+' গণিত। প্রতিটি প্রশ্নের চারটি অপশন আছে, যেকোনো একটি বেছে নাও। <b>প্রতিটি প্রশ্নের মান ১।</b>',
-'বাংলা প্রশ্ন বাংলায় এবং ইংরেজি প্রশ্ন ইংরেজিতে থাকবে। গণিত প্রশ্ন থাকবে তোমার ভার্সনে (<b>'+(/\(EV\)/.test(s.clsv||'')?'ইংরেজি':'বাংলা')+'</b>)।',
-'যেকোনো সময় বাংলা, ইংরেজি ও গণিত অংশে যেতে পারবে এবং জমা দেওয়ার আগে যেকোনো উত্তর পরিবর্তন করতে পারবে।',
-'প্রতিটি উত্তর <b>নিজে থেকেই সংরক্ষিত</b> হবে। কোনো নেগেটিভ মার্কিং নেই। চাইলে কোনো প্রশ্ন ফাঁকা রাখতে পারবে।',
-demo?'অনুশীলনের সময়: <b>'+bnd(j.minutes)+' মিনিট</b>। সময় শেষ হলে পরীক্ষা নিজে থেকেই জমা হয়ে যাবে।':'সময় কঠোরভাবে নির্ধারিত: সবার পরীক্ষা <b class="nw">'+bnT(j.closes)+'</b>-এ শেষ হবে এবং নিজে থেকেই জমা হয়ে যাবে। দেরিতে শুরু করলে সময় কম পাবে।',
-'পরীক্ষার সময় এই পেজেই থাকো। অন্য অ্যাপ বা ট্যাবে গেলে তা রেকর্ড হবে। AI টুল বা অন্য কারো সাহায্য নেওয়া যাবে না।',
-'শেষ হলে <b>Submit</b> বাটনে চাপ দাও। জমা দেওয়ার পর আর কোনো উত্তর পরিবর্তন করা যাবে না।'];
+const bnT=ms=>{const t=fmtT(ms),m=t.match(/(\d{1,2}):(\d{2})\s*(AM|PM)/i);if(!m)return bnd(t);const pm=/pm/i.test(m[3]);return (pm?'দুপুর ':'সকাল ')+bnd(m[1]+':'+m[2])};
+const Q=demo?['Q1–Q5','Q6–Q10','Q11–Q15','১৫']:['Q1–Q25','Q26–Q50','Q51–Q75','৭৫'];
+const rules=['প্রশ্নপত্রে মোট <b>'+Q[3]+'টি MCQ</b> প্রশ্ন রয়েছে: <b class="nw">'+Q[0]+'</b> Bangla, <b class="nw">'+Q[1]+'</b> English এবং <b class="nw">'+Q[2]+'</b> Math।',
+'প্রতিটি প্রশ্নের মান <b>১</b>। প্রতিটি প্রশ্নের চারটি Option (A, B, C, D)-এর মধ্যে একটি সঠিক উত্তর নির্বাচন করতে হবে। কোনো Negative Marking নেই।',
+'পরীক্ষা ধারাবাহিকভাবে তিনটি Section-এ হবে: <b class="nw">Bangla → English → Math</b>। একটি Section শেষ করে <b>Next</b> চাপলে পরবর্তী Section শুরু হবে।',
+'পরবর্তী Section-এ যাওয়ার পর আগের Section-এ আর ফিরে যাওয়া যাবে না এবং আগের Section-এর কোনো উত্তর পরিবর্তন করা যাবে না।',
+'চলমান Section-এ যেকোনো উত্তর পরিবর্তন করা যাবে; অন্য Option-এ ক্লিক করলেই উত্তর পরিবর্তিত হবে। প্রতিটি উত্তর স্বয়ংক্রিয়ভাবে সংরক্ষিত (Auto-save) হয়।',
+demo?'অনুশীলন পরীক্ষার সময় <b>'+bnd(j.minutes)+' মিনিট</b>। নির্ধারিত সময় শেষ হলে পরীক্ষা স্বয়ংক্রিয়ভাবে Submit হয়ে যাবে।':'পরীক্ষার সময় <b class="nw">'+bnT(j.opens)+'</b> থেকে <b class="nw">'+bnT(j.closes)+'</b> পর্যন্ত, সকলের জন্য একই। নির্ধারিত সময় শেষ হলে পরীক্ষা স্বয়ংক্রিয়ভাবে Submit হয়ে যাবে। দেরিতে শুরু করলে অতিরিক্ত সময় দেওয়া হবে না।',
+'পরীক্ষা চলাকালীন যেকোনো সময় উপরের <b>Submit</b> বাটন চেপে পরীক্ষা শেষ করা যাবে। একবার Submit করার পর কোনো উত্তর পরিবর্তন করা যাবে না।',
+'পরীক্ষা চলাকালীন অন্য App বা Tab-এ যাওয়া রেকর্ড করা হবে। AI Tool কিংবা অন্য কারো সাহায্য নেওয়া সম্পূর্ণ নিষিদ্ধ।'];
 let act='';
 if(st==='demo')act='<button class="go pulse" id="start" type="button">Start Demo Exam ('+esc(j.minutes)+' Minutes) &rarr;</button>';
 else if(st==='open')act='<button class="go pulse" id="start" type="button">Start the Exam &rarr;</button><p class="sbar" id="left"></p>';
@@ -240,7 +242,7 @@ app.innerHTML='<div class="center" style="max-width:720px">'+card(header(h)+'<di
 '<div class="kv"><div class="k">Name</div><div class="v">'+esc(s.name)+(s.bn?'<small class="bn" style="display:block;color:var(--mut);font-weight:600">'+esc(s.bn)+'</small>':'')+'</div></div>'+
 '<div class="kv"><div class="k">Exam Roll</div><div class="v nw">'+esc(s.roll)+'</div></div><div class="kv"><div class="k">Class</div><div class="v nw">'+esc(s.clsv||s.cls)+'</div></div></div>'+
 '<p class="sbar"><span>Not you? <a href="#" id="notme" style="color:var(--plum);font-weight:800">Log Out</a></span><span>'+helpLine()+'</span></p>'+
-'<div class="sect" style="margin:18px 0 6px"><h2>Exam Rules</h2><span class="nw">'+(demo?'Practice':nw(fmtD(j.opens)))+'</span></div><ul class="rules bn">'+rules.map(r=>'<li><span>'+r+'</span></li>').join('')+'</ul>'+act+'</div>')+'</div>';
+'<div class="sect" style="margin:18px 0 6px"><h2>Exam Rules</h2><span class="nw">'+(demo?'Practice':nw(fmtD(j.opens)))+'</span></div><ol class="rules bn">'+rules.map((r,k)=>'<li data-n="'+bnd(k+1)+'"><span>'+r+'</span></li>').join('')+'</ol>'+act+'</div>')+'</div>';
 $('#notme').onclick=e=>{e.preventDefault();ss('qec_auth',null);A=null;loginView()};
 const b=$('#start');if(b)b.onclick=()=>start();
 const tickInfo=()=>{const c=$('#cdn');if(c){const ms=j.opens-nowS();if(ms<=0){clearInterval(infoT);peek(false);return}const x=Math.floor(ms/1000);const d=Math.floor(x/86400),hh=Math.floor(x%86400/3600),m=Math.floor(x%3600/60),sc=x%60;
@@ -256,33 +258,36 @@ catch(e){if(b){b.disabled=false;b.textContent='Try Again →'}toast(e&&e.message
 function openExam(j){clearInterval(infoT);P=j;token=j.token;att=j.att||'';if(demo)ss('qec_att',att);
 const n=j.secs.reduce((s,x)=>s+x.qs.length,0);ans=(j.ans&&j.ans.length===n)?j.ans:'-'.repeat(n);sw=j.sw||0;
 const loc=lsLoad();if(loc&&loc.a&&loc.a.length===n&&loc.a!==ans&&loc.t>(j.start||0)){ans=loc.a;sw=Math.max(sw,loc.sw||0);dirty=true}
+let sg0=Math.max(+j.sg||0,loc&&loc.t>(j.start||0)?(+loc.sg||0):0);sg0=Math.min(Math.max(0,sg0),j.secs.length-1);if(sg0>(+j.sg||0))dirty=true;
 finished=false;document.body.classList.add('noselect');$('#xtop').hidden=false;$('#xname').textContent=j.student.name+' · '+j.student.roll;
-$('#tabs').innerHTML=j.secs.map((s,i)=>'<button type="button" role="tab" data-i="'+i+'"><span>'+esc(s.name)+'</span><small><span>Q'+s.from+' – Q'+s.to+'</span></small></button>').join('');
-$('#tabs').querySelectorAll('button').forEach(b=>b.onclick=()=>{show(+b.dataset.i);window.scrollTo({top:0,behavior:'smooth'})});
-$('#subTop').onclick=confirmSubmit;setLangs(j.secs,/\(EV\)/.test(j.student.clsv||''));show(0);counts();clearInterval(clock);clock=setInterval(tickClock,500);tickClock();if(dirty)queueSave(500)}
+$('#tabs').innerHTML=j.secs.map((s,i)=>'<div class="tb" data-i="'+i+'"><span>'+esc(s.name)+'</span><small><span>Q'+s.from+' – Q'+s.to+'</span></small></div>').join('');
+$('#subTop').onclick=confirmSubmit;setLangs(j.secs,/\(EV\)/.test(j.student.clsv||''),demo);show(sg0);counts();clearInterval(clock);clock=setInterval(tickClock,500);tickClock();if(dirty)queueSave(500)}
 const isBn=t=>/[\u0980-\u09FF]/.test(t);
 function qf(t){return esc(t).replace(/&#39;(.{1,80}?)&#39;/g,'\u2018$1\u2019').replace(/&quot;(.{1,120}?)&quot;/g,'\u201C$1\u201D')}
 let QL={};
-function setLangs(secs,ev){QL={};secs.forEach(s=>s.qs.forEach(q=>{QL[q.n]=s.name==='English'?'en':(s.name==='Math'?(ev?'en':'bn'):'bn')}))}
+function setLangs(secs,ev,dm){QL={};secs.forEach(s=>s.qs.forEach(q=>{QL[q.n]=s.name==='English'?'en':(s.name==='Math'?(dm?'both':(ev?'en':'bn')):'bn')}))}
+function second(pair,l){pair=pair||['',''];return l==='both'&&pair[0]&&pair[1]&&pair[1]!==pair[0]?pair[1]:''}
 function pk(pair,l){pair=pair||['',''];return l==='en'?(pair[1]||pair[0]||''):(pair[0]||pair[1]||'')}
-function optHtml(q,k){const L='ABCD'[k];const t=pk(q.o[k],QL[q.n]);const sel=ans.charAt(q.n-1)===L;
-return '<button type="button" class="opt'+(sel?' sel':'')+'" data-q="'+q.n+'" data-l="'+L+'" aria-pressed="'+sel+'"><span class="l">'+L+'</span><span class="t"><b class="'+(isBn(t)?'bn':'en')+'">'+qf(t)+'</b></span></button>'}
-function qHtml(q){const a=ans.charAt(q.n-1)!=='-';const t=pk([q.qb,q.qe],QL[q.n]);
-return '<div class="q'+(a?' ans':'')+'" id="q'+q.n+'"><div class="qt"><span class="qn">Q'+q.n+'.</span><div><div class="qb '+(isBn(t)?'bn':'en')+'">'+qf(t)+'</div></div><span class="mk" title="1 mark">[1]</span></div>'+
-'<div class="opts">'+[0,1,2,3].map(k=>optHtml(q,k)).join('')+'</div>'+(a?'<button type="button" class="clr" data-clr="'+q.n+'">Clear My Answer</button>':'')+'</div>'}
-function show(i){cur=i;const s=P.secs[i];$('#tabs').querySelectorAll('button').forEach(b=>b.setAttribute('aria-selected',String(+b.dataset.i===i)));
+function optHtml(q,k){const L='ABCD'[k];const t=pk(q.o[k],QL[q.n]),t2=second(q.o[k],QL[q.n]);const sel=ans.charAt(q.n-1)===L;
+return '<button type="button" class="opt'+(sel?' sel':'')+'" data-q="'+q.n+'" data-l="'+L+'" aria-pressed="'+sel+'"><span class="l">'+L+'</span><span class="t"><b class="'+(isBn(t)?'bn':'en')+'">'+qf(t)+'</b>'+(t2?'<small class="en">('+qf(t2)+')</small>':'')+'</span></button>'}
+function qHtml(q){const a=ans.charAt(q.n-1)!=='-';const t=pk([q.qb,q.qe],QL[q.n]),t2=second([q.qb,q.qe],QL[q.n]);
+return '<div class="q'+(a?' ans':'')+'" id="q'+q.n+'"><div class="qt"><span class="qn">Q'+q.n+'.</span><div><div class="qb '+(isBn(t)?'bn':'en')+'">'+qf(t)+'</div>'+(t2?'<div class="qe en">('+qf(t2)+')</div>':'')+'</div><span class="mk" title="1 mark">[1]</span></div>'+
+'<div class="opts">'+[0,1,2,3].map(k=>optHtml(q,k)).join('')+'</div></div>'}
+function show(i){cur=i;const s=P.secs[i];$('#tabs').querySelectorAll('.tb').forEach(b=>{const k=+b.dataset.i;b.className='tb'+(k===i?' now':(k<i?' done':''))});
 const last=i===P.secs.length-1;
 app.innerHTML=card((i===0?header(P.header):'')+'<div class="sec'+(finished?' lock':'')+'"><div class="sect"><h2>'+esc(s.name)+' <span class="bn" style="font-weight:600">('+esc(s.bn)+')</span></h2><span>Q'+s.from+' – Q'+s.to+'</span></div>'+
 '<div class="pal">'+s.qs.map(q=>'<button type="button" data-go="'+q.n+'" class="'+(ans.charAt(q.n-1)!=='-'?'on':'')+'">'+q.n+'</button>').join('')+'</div>'+
-s.qs.map(qHtml).join('')+'<div class="nav2">'+(i>0?'<button class="ghost" type="button" data-sec="'+(i-1)+'">&larr; '+esc(P.secs[i-1].name)+'</button>':'<span></span>')+
-(last?'<button class="btn amber" type="button" id="subEnd">Submit Exam</button>':'<button class="btn" type="button" data-sec="'+(i+1)+'">Next: '+esc(P.secs[i+1].name)+' &rarr;</button>')+'</div></div>');
+s.qs.map(qHtml).join('')+'<div class="nav2">'+
+(last?'<button class="btn amber wide" type="button" id="subEnd">Submit Exam</button>':'<button class="btn wide" type="button" data-next="'+(i+1)+'">Next: '+esc(P.secs[i+1].name)+' Section &rarr;</button>')+'</div></div>');
 bindSec()}
 function bindSec(){app.querySelectorAll('.opt').forEach(b=>b.onclick=()=>pick(+b.dataset.q,b.dataset.l));
-app.querySelectorAll('[data-clr]').forEach(b=>b.onclick=()=>pick(+b.dataset.clr,'-'));
 app.querySelectorAll('[data-go]').forEach(b=>b.onclick=()=>{const e=document.getElementById('q'+b.dataset.go);if(e)e.scrollIntoView({behavior:'smooth',block:'start'})});
-app.querySelectorAll('[data-sec]').forEach(b=>b.onclick=()=>{show(+b.dataset.sec);window.scrollTo({top:0,behavior:'smooth'})});
+app.querySelectorAll('[data-next]').forEach(b=>b.onclick=()=>confirmNext(+b.dataset.next));
 const se=$('#subEnd');if(se)se.onclick=confirmSubmit}
-function pick(n,L){if(finished||submitting)return;if(P.deadline-nowS()<=0){timeUp();return}
+function confirmNext(i){if(finished||i!==cur+1||i>=P.secs.length)return;const a=P.secs[cur],b=P.secs[i];
+overlay('<h3>Go to the '+esc(b.name)+' Section?</h3><p>After moving on you cannot return to the '+esc(a.name)+' Section, and its answers cannot be changed.</p><div class="row"><button class="ghost" id="no" type="button">Cancel</button><button class="btn amber" id="yes" type="button">Yes, Continue</button></div>');
+$('#no').onclick=closeModal;$('#yes').onclick=()=>{closeModal();if(finished)return;cur=i;lsSave();dirty=true;show(i);queueSave(200);window.scrollTo({top:0,behavior:'smooth'})}}
+function pick(n,L){if(finished||submitting)return;if(!P.secs[cur].qs.some(x=>x.n===n))return;if(P.deadline-nowS()<=0){timeUp();return}
 ans=ans.slice(0,n-1)+L+ans.slice(n);lsSave();dirty=true;queueSave(2500);
 const box=document.getElementById('q'+n);if(box){const s=P.secs[cur];const q=s.qs.find(x=>x.n===n);if(q){const t=document.createElement('div');t.innerHTML=qHtml(q);box.replaceWith(t.firstChild);bindSec()}}
 const pb=app.querySelector('[data-go="'+n+'"]');if(pb)pb.className=L!=='-'?'on':'';counts()}
@@ -290,7 +295,7 @@ function counts(){}
 function setSv(cls,txt){const e=$('#sv');e.className='sv '+cls;e.querySelector('span').textContent=txt}
 function queueSave(ms){clearTimeout(saveT);saveT=setTimeout(saveNow,ms)}
 async function saveNow(){if(!dirty||saving||finished)return;saving=true;const snap=ans;setSv('wait','Saving...');
-try{const j=await post({a:'exSave',token:token,ans:snap,sw:sw},20000);
+try{const j=await post({a:'exSave',token:token,ans:snap,sw:sw,sg:cur},20000);
 if(j&&j.ok){lastSave=Date.now();if(ans===snap)dirty=false;setSv('','Saved');if(j.now)skew=j.now-Date.now()}
 else if(j&&j.reauth){await reauth();saving=false;return saveNow()}
 else if(j&&j.submitted){finished=true;thanks(0,false)}
@@ -307,10 +312,10 @@ app.querySelectorAll('.sec').forEach(s=>s.classList.add('lock'));overlay('<h3>Ti
 function overlay(html){let m=$('#modal');if(!m){m=document.createElement('div');m.id='modal';m.className='modal';document.body.appendChild(m)}m.innerHTML='<div class="box">'+html+'</div>';m.hidden=false;return m}
 function closeModal(){const m=$('#modal');if(m)m.hidden=true}
 function confirmSubmit(){if(finished)return;const c=ans.replace(/-/g,'').length;
-const m=overlay('<h3>Submit Your Exam?</h3><p>After submitting you cannot change your answers.</p><div class="row"><button class="ghost" id="no" type="button">Go Back</button><button class="btn amber" id="yes" type="button">Yes, Submit</button></div>');
+const m=overlay('<h3>Submit Your Exam?</h3><p>After submitting you cannot change your answers.</p><div class="row"><button class="ghost" id="no" type="button">Cancel</button><button class="btn amber" id="yes" type="button">Yes, Submit</button></div>');
 $('#no').onclick=closeModal;$('#yes').onclick=()=>{finished=true;clearInterval(clock);overlay('<h3>Submitting...</h3><p>Please wait. Do not close this page.</p>');doSubmit('manual',0)}}
 async function doSubmit(how,n){if(submitting&&n===0)return;submitting=true;lsSave();
-try{const j=await post({a:'exSubmit',token:token,ans:ans,sw:sw,how:how},30000);
+try{const j=await post({a:'exSubmit',token:token,ans:ans,sw:sw,sg:cur,how:how},30000);
 if(j&&j.ok){submitting=false;closeModal();try{localStorage.removeItem(lsKey())}catch(e){}if(demo)ss('qec_att',null);thanks(j.at||nowS(),true);return}
 if(j&&j.reauth){await reauth()}}
 catch(e){}
@@ -327,7 +332,7 @@ const w=$('#wm');w.style.backgroundImage='url("data:image/svg+xml;charset=utf-8,
 ['copy','cut','paste','contextmenu','dragstart','selectstart'].forEach(ev=>document.addEventListener(ev,e=>{if(P&&!finished&&!(e.target&&e.target.closest&&e.target.closest('input'))){e.preventDefault()}}));
 document.addEventListener('keydown',e=>{if(!P||finished)return;const k=(e.key||'').toLowerCase();if((e.ctrlKey||e.metaKey)&&['c','x','p','s','u','a'].indexOf(k)>=0){e.preventDefault();toast('This action is disabled during the exam.')}
 if(k==='printscreen'){try{navigator.clipboard.writeText('')}catch(x){}toast('Screenshots are not allowed during the exam.')}});
-document.addEventListener('visibilitychange',()=>{if(!P||finished)return;if(document.hidden){sw++;lsSave();dirty=true;try{if(token&&navigator.sendBeacon){navigator.sendBeacon(API,new Blob([JSON.stringify({a:'exSave',token:token,ans:ans,sw:sw})],{type:'text/plain'}))}}catch(e){}}
+document.addEventListener('visibilitychange',()=>{if(!P||finished)return;if(document.hidden){sw++;lsSave();dirty=true;try{if(token&&navigator.sendBeacon){navigator.sendBeacon(API,new Blob([JSON.stringify({a:'exSave',token:token,ans:ans,sw:sw,sg:cur})],{type:'text/plain'}))}}catch(e){}}
 else{toast('Please stay on the exam page. Leaving the page is recorded.',4500);queueSave(300)}});
 window.addEventListener('beforeunload',e=>{if(P&&!finished){lsSave();e.preventDefault();e.returnValue=''}});
 window.addEventListener('online',()=>{if(dirty)queueSave(200)});
