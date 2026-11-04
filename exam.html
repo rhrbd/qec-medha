@@ -136,8 +136,7 @@ body{background:#f3eff5}
 .qb{font-size:18.5px;line-height:1.6;color:var(--ink)}
 .qe{font-size:14.5px;color:#5e5464;margin-top:3px;line-height:1.5}
 .mk{flex:0 0 auto;font:700 13px "Plus Jakarta Sans",sans-serif;color:#8a7f90;padding:2px 0 0 8px;white-space:nowrap}
-.vev .qb{font-size:16px;color:#4f4555}.vev .qe{font-size:16.5px;color:var(--ink)}
-.vev .opt .t b{font-size:15px;color:#4f4555}.vev .opt .t small{font-size:15px;color:var(--ink)}
+.qb.en{font-size:17px;line-height:1.55}
 .opts{display:grid;gap:8px;margin-top:12px}
 .opt{display:flex;gap:11px;align-items:center;text-align:left;width:100%;border:1.5px solid #e8dfec;background:#fff;border-radius:13px;padding:10px 12px;min-height:50px;color:var(--ink);transition:border-color .12s,background .12s}
 .opt:hover{border-color:#cdb6d6}
@@ -218,7 +217,7 @@ ss('qec_auth',{roll:A.roll,pin:A.pin});skew=j.now-Math.round((t0+Date.now())/2);
 catch(e){if(fromForm)loginView('Could not reach the server. Check your internet and try again.');else app.innerHTML='<div class="center">'+card('<div class="sec"><div class="err">Could not reach the server. Check your internet.</div><button class="btn wide" style="margin-top:14px" onclick="location.reload()">Try again</button></div>')+'</div>'}}
 let infoT=null;
 function infoView(j){clearInterval(infoT);const s=j.student,h=j.header;const st=j.state;
-const rules=['<b>Questions:</b> Q1 &ndash; Q25 Bangla, Q26 &ndash; Q50 English, Q51 &ndash; Q75 Math. Each question has four options; choose one. <b>Each question carries <span class="nw">1 mark</span>.</b>'.replace(/Q1 &ndash; Q25/,demo?'Q1 &ndash; Q5':'Q1 &ndash; Q25').replace(/Q26 &ndash; Q50/,demo?'Q6 &ndash; Q10':'Q26 &ndash; Q50').replace(/Q51 &ndash; Q75/,demo?'Q11 &ndash; Q15':'Q51 &ndash; Q75'),
+const rules=['<b>Questions:</b> Q1 &ndash; Q25 Bangla, Q26 &ndash; Q50 English, Q51 &ndash; Q75 Math. Each question has four options; choose one. <b>Each question carries <span class="nw">1 mark</span>.</b> Bangla questions are in Bangla and English questions in English; Math is in your version ('+(/\(EV\)/.test(s.clsv||'')?'English':'Bangla')+').'.replace(/Q1 &ndash; Q25/,demo?'Q1 &ndash; Q5':'Q1 &ndash; Q25').replace(/Q26 &ndash; Q50/,demo?'Q6 &ndash; Q10':'Q26 &ndash; Q50').replace(/Q51 &ndash; Q75/,demo?'Q11 &ndash; Q15':'Q51 &ndash; Q75'),
 'You can move between Bangla, English and Math at any time and change any answer before you submit.','Every answer is <b>saved automatically</b>. No negative marking. You may leave a question blank.',
 demo?'Practice timer: <b>'+esc(j.minutes)+' minutes</b>. When the time is up, the exam submits by itself.':'Strict time: the exam ends at <b class="nw">'+esc(fmtT(j.closes))+'</b> for everyone and submits by itself. Joining late means less time.',
 'Stay on this page. Switching to other apps or tabs is recorded. Using AI tools or help from others is not allowed.','Press <b>Submit</b> when you finish. After submitting you cannot change your answers.'];
@@ -254,13 +253,16 @@ const loc=lsLoad();if(loc&&loc.a&&loc.a.length===n&&loc.a!==ans&&loc.t>(j.start|
 finished=false;document.body.classList.add('noselect');$('#xtop').hidden=false;$('#xname').textContent=j.student.name+' · '+j.student.roll;
 $('#tabs').innerHTML=j.secs.map((s,i)=>'<button type="button" role="tab" data-i="'+i+'"><span>'+esc(s.name)+'</span><small><span>Q'+s.from+' – Q'+s.to+'</span> <span>&middot; <b data-c="'+i+'">0</b>/'+s.qs.length+'</span></small></button>').join('');
 $('#tabs').querySelectorAll('button').forEach(b=>b.onclick=()=>{show(+b.dataset.i);window.scrollTo({top:0,behavior:'smooth'})});
-document.body.classList.toggle('vev',/\(EV\)/.test(j.student.clsv||''));show(0);counts();clearInterval(clock);clock=setInterval(tickClock,500);tickClock();if(dirty)queueSave(500)}
+setLangs(j.secs,/\(EV\)/.test(j.student.clsv||''));show(0);counts();clearInterval(clock);clock=setInterval(tickClock,500);tickClock();if(dirty)queueSave(500)}
 const isBn=t=>/[\u0980-\u09FF]/.test(t);
 function qf(t){return esc(t).replace(/&#39;(.{1,80}?)&#39;/g,'\u2018$1\u2019').replace(/&quot;(.{1,120}?)&quot;/g,'\u201C$1\u201D')}
-function optHtml(q,k){const o=q.o[k]||['',''];const L='ABCD'[k];const bnT=o[0]||o[1],enT=o[1]&&o[1]!==o[0]?o[1]:'';const sel=ans.charAt(q.n-1)===L;
-return '<button type="button" class="opt'+(sel?' sel':'')+'" data-q="'+q.n+'" data-l="'+L+'" aria-pressed="'+sel+'"><span class="l">'+L+'</span><span class="t"><b class="'+(isBn(bnT)?'bn':'en')+'">'+qf(bnT)+'</b>'+(enT?'<small class="en">('+qf(enT)+')</small>':'')+'</span></button>'}
-function qHtml(q){const a=ans.charAt(q.n-1)!=='-';const qb=q.qb||q.qe,qe=q.qb&&q.qe&&q.qe!==q.qb?q.qe:'';
-return '<div class="q'+(a?' ans':'')+'" id="q'+q.n+'"><div class="qt"><span class="qn">Q'+q.n+'.</span><div><div class="qb '+(isBn(qb)?'bn':'en')+'">'+qf(qb)+'</div>'+(qe?'<div class="qe en">('+qf(qe)+')</div>':'')+'</div><span class="mk" title="1 mark">[1]</span></div>'+
+let QL={};
+function setLangs(secs,ev){QL={};secs.forEach(s=>s.qs.forEach(q=>{QL[q.n]=s.name==='English'?'en':(s.name==='Math'?(ev?'en':'bn'):'bn')}))}
+function pk(pair,l){pair=pair||['',''];return l==='en'?(pair[1]||pair[0]||''):(pair[0]||pair[1]||'')}
+function optHtml(q,k){const L='ABCD'[k];const t=pk(q.o[k],QL[q.n]);const sel=ans.charAt(q.n-1)===L;
+return '<button type="button" class="opt'+(sel?' sel':'')+'" data-q="'+q.n+'" data-l="'+L+'" aria-pressed="'+sel+'"><span class="l">'+L+'</span><span class="t"><b class="'+(isBn(t)?'bn':'en')+'">'+qf(t)+'</b></span></button>'}
+function qHtml(q){const a=ans.charAt(q.n-1)!=='-';const t=pk([q.qb,q.qe],QL[q.n]);
+return '<div class="q'+(a?' ans':'')+'" id="q'+q.n+'"><div class="qt"><span class="qn">Q'+q.n+'.</span><div><div class="qb '+(isBn(t)?'bn':'en')+'">'+qf(t)+'</div></div><span class="mk" title="1 mark">[1]</span></div>'+
 '<div class="opts">'+[0,1,2,3].map(k=>optHtml(q,k)).join('')+'</div>'+(a?'<button type="button" class="clr" data-clr="'+q.n+'">Clear my answer</button>':'')+'</div>'}
 function show(i){cur=i;const s=P.secs[i];$('#tabs').querySelectorAll('button').forEach(b=>b.setAttribute('aria-selected',String(+b.dataset.i===i)));
 const last=i===P.secs.length-1;
