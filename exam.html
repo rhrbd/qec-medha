@@ -1,7 +1,7 @@
 <!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>QEC Medha Onneshon Exam 2026</title><meta name="description" content="Online exam."><meta name="robots" content="noindex"><meta name="theme-color" content="#5b1462">
-<link rel="icon" type="image/png" href="assets/mark.png?v=7"><link rel="apple-touch-icon" href="assets/mark180.png?v=7">
-<link rel="preload" href="assets/kalpurush.woff?v=7" as="font" type="font/woff" crossorigin><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="icon" type="image/png" href="assets/mark.png?v=8"><link rel="apple-touch-icon" href="assets/mark180.png?v=8">
+<link rel="preload" href="assets/kalpurush.woff?v=8" as="font" type="font/woff" crossorigin><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Hind+Siliguri:wght@400;500;600;700&family=Noto+Serif:wght@400;600&display=swap" rel="stylesheet">
 <style>
 :root{--plum:#5b1462;--plum2:#7a2484;--plumd:#36093c;--amber:#f3ae3c;--amber2:#ffc864;--ink:#1c1421;--mut:#6c6273;--line:#ece6ef;--bg:#f5f1f7;--card:#fff;
@@ -11,7 +11,7 @@
 html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
 body{background:radial-gradient(1200px 500px at 50% -200px,#efe6f3,transparent 70%),var(--bg);color:var(--ink);font:400 15px/1.55 "Plus Jakarta Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;-webkit-font-smoothing:antialiased;min-height:100vh;display:flex;flex-direction:column;
 overflow-wrap:break-word;word-break:normal;hyphens:none;-webkit-hyphens:none}
-@font-face{font-family:"Kalpurush";src:url(assets/kalpurush.woff?v=7) format("woff");font-display:swap;unicode-range:U+0980-09FF,U+200C-200D,U+25CC}
+@font-face{font-family:"Kalpurush";src:url(assets/kalpurush.woff?v=8) format("woff");font-display:swap;unicode-range:U+0980-09FF,U+200C-200D,U+25CC}
 .bn{font-family:"Kalpurush","Hind Siliguri","Plus Jakarta Sans",sans-serif;font-weight:400}
 .en{font-family:"Noto Serif",Georgia,"Times New Roman",serif}
 .nw{white-space:nowrap}
@@ -105,6 +105,14 @@ font-weight:800;font-size:17px;color:#2d1500;background:linear-gradient(180deg,#
 @media print{body *{visibility:hidden}}
 
 body{background:#f3eff5}
+.rvp{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;margin-top:6px}.rvp.rv2{grid-template-columns:1fr 1fr;margin-top:10px}
+.rvb{border:2px solid #e3d6e8;background:#fff;color:var(--plum);border-radius:12px;padding:10px 4px;font:800 15px/1.2 inherit;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:3px}
+.rvb small{font-weight:600;font-size:11.5px;color:var(--mut)}.rvb.on{background:var(--plum);border-color:var(--plum);color:#fff}.rvb.on small{color:#f0dff3}.rvb:disabled{opacity:.45;cursor:not-allowed}
+@media(max-width:420px){.rvp{grid-template-columns:repeat(3,minmax(0,1fr))}}
+.go:disabled{opacity:.5;cursor:not-allowed;animation:none}
+.rvres{text-align:left;border:1px solid #e6dcea;border-radius:14px;padding:14px;margin-top:16px;background:#fbf8fc;font-size:13.5px;line-height:1.55}.rvres h3{font-size:16px;margin-bottom:8px}.rvres h3 small{font-weight:600;color:var(--mut);font-size:12px}
+.rvg{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:10px}.rvg div{background:#fff;border:1px solid #eee3f1;border-radius:10px;padding:8px 4px;text-align:center}.rvg b{display:block;font-size:16px;color:var(--plum)}.rvg span{font-size:11.5px;color:var(--mut)}
+.rvres p{margin-top:6px}
 .xtop{position:sticky;top:0;z-index:30;background:rgba(54,9,60,.97);color:#fff;backdrop-filter:blur(8px);box-shadow:0 8px 24px -14px rgba(0,0,0,.6)}
 .xbar{max-width:860px;margin:0 auto;padding:9px 16px;display:flex;align-items:center;gap:10px}
 .timer{display:inline-flex;align-items:center;gap:7px;font-weight:800;font-size:19px;font-variant-numeric:tabular-nums;background:rgba(255,255,255,.12);padding:5px 12px;border-radius:11px;white-space:nowrap}
@@ -191,24 +199,27 @@ function post(body,ms){const ctl=typeof AbortController!=='undefined'?new AbortC
 return fetch(API,{method:'POST',credentials:'omit',redirect:'follow',signal:ctl?ctl.signal:undefined,headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(body)})
 .then(r=>{if(!r.ok)throw new Error('HTTP '+r.status);return r.json()}).finally(()=>clearTimeout(t))}
 function ss(k,v){try{if(v===undefined)return JSON.parse(sessionStorage.getItem(k)||'null');if(v===null)sessionStorage.removeItem(k);else sessionStorage.setItem(k,JSON.stringify(v))}catch(e){return null}}
-function normRoll(v){const s=bn2en(v).toUpperCase().replace(/\s+/g,'');if(/^D-?\d{3,8}$/.test(s))return s.indexOf('-')<0?'D-'+s.slice(1):s;return s.replace(/\D/g,'')}
+function normRoll(v){const s=bn2en(v).toUpperCase().replace(/\s+/g,'');if(/^[DR]-?\d{3,8}$/.test(s))return s.indexOf('-')<0?s.charAt(0)+'-'+s.slice(1):s;return s.replace(/\D/g,'')}
 const HELP={local:'01841233235',display:'01841-233235',wa:'https://wa.me/8801841233235'};
 function cShown(x){return x.closesShown||x.closes}
 function meetBtn(u){const ok=/^https:\/\/\S+$/i.test(u||'');const ico='<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><rect x="2.5" y="6" width="13" height="12" rx="2.5"/><path d="M15.5 10.5 21 7v10l-5.5-3.5"/></svg>';return ok?'<a class="meet bn" href="'+esc(u)+'" target="_blank" rel="noopener">'+ico+'<span>Exam শুরু করার আগে এই লিঙ্কের মাধ্যমে Google Meet এ যুক্ত হও</span></a>':'<div class="meet off bn">'+ico+'<span>Google Meet লিঙ্ক শীঘ্রই এখানে দেওয়া হবে</span></div>'}
 
-let A=null,P=null,ans='',sw=0,skew=0,token='',dirty=false,saving=false,lastSave=0,saveT=null,clock=null,cur=0,finished=false,submitting=false,demo=false,att='';
+let A=null,P=null,ans='',sw=0,skew=0,token='',dirty=false,saving=false,lastSave=0,saveT=null,clock=null,cur=0,finished=false,submitting=false,demo=false,review=false,rvPick=null,att='';
 const nowS=()=>Date.now()+skew;
 const app=$('#app');
 function toast(m,ms){let t=$('#toast');if(!t){t=document.createElement('div');t.id='toast';t.className='toast';document.body.appendChild(t)}t.textContent=m;t.hidden=false;clearTimeout(t._h);t._h=setTimeout(()=>{t.hidden=true},ms||3500)}
 function lsKey(){return 'qec_ans_'+(A?A.roll:'')+'_'+(att||'real')}
+const RVK='qec_rv_pick';
+function rvGet(){try{const x=JSON.parse(sessionStorage.getItem(RVK)||'null');return x&&x.cls>=1&&x.cls<=5?x:null}catch(e){return null}}
+function rvSet(x){try{if(x)sessionStorage.setItem(RVK,JSON.stringify(x));else sessionStorage.removeItem(RVK)}catch(e){}}
 function lsSave(){try{localStorage.setItem(lsKey(),JSON.stringify({a:ans,sw:sw,sg:cur,t:Date.now()}))}catch(e){}}
 function lsLoad(){try{return JSON.parse(localStorage.getItem(lsKey())||'null')}catch(e){return null}}
-function header(h){return '<div class="phead"><img alt="QEC Academy" src="assets/logo.png?v=7"><div class="org">'+esc(h.org)+'</div><div class="ttl">'+esc(h.title)+'</div>'+
+function header(h){return '<div class="phead"><img alt="QEC Academy" src="assets/logo.png?v=8"><div class="org">'+esc(h.org)+'</div><div class="ttl">'+esc(h.title)+'</div>'+
 '<div class="cls">Class: '+esc(String(h.cls||'').replace(/\s*\(.*\)\s*/,''))+'</div><div class="fm"><span class="nw">Full Marks: '+esc(h.marks)+'</span><span class="nw">Time: '+esc(h.minutes)+' Minutes</span></div></div>'}
 function card(inner){return '<div class="paper">'+inner+'</div>'}
 function helpLine(){return 'Need help? <a href="tel:'+HELP.local+'" style="color:var(--plum);font-weight:800;text-decoration:none" class="nw">'+HELP.display+'</a>'}
 // ---------------------------------------------------------------- sign in (WhatsApp-link route)
-function loginView(msg){app.innerHTML='<div class="center">'+card('<div class="phead"><img alt="QEC Academy" src="assets/logo.png?v=7"><div class="org">QEC Academy</div><div class="ttl">Medha Onneshon Exam - 2026</div></div>'+
+function loginView(msg){app.innerHTML='<div class="center">'+card('<div class="phead"><img alt="QEC Academy" src="assets/logo.png?v=8"><div class="org">QEC Academy</div><div class="ttl">Medha Onneshon Exam - 2026</div></div>'+
 '<div class="sec"><h2 style="margin-bottom:4px">Enter the Exam</h2><p style="color:var(--mut);font-size:14px;margin-bottom:14px">Use the Exam Roll and PIN from your SMS.</p>'+
 '<form id="lf" autocomplete="off" novalidate><div style="display:grid;gap:12px"><div><label class="lbl" for="r">Exam Roll</label><input class="in" id="r" type="text" autocapitalize="characters" maxlength="10" placeholder="e.g. 10001" spellcheck="false"></div>'+
 '<div><label class="lbl" for="p">6-Digit PIN</label><div class="pinw"><input class="in" id="p" type="password" inputmode="numeric" maxlength="6" placeholder="&bull;&bull;&bull;&bull;&bull;&bull;"><button type="button" id="eye">Show</button></div></div>'+
@@ -216,13 +227,13 @@ function loginView(msg){app.innerHTML='<div class="center">'+card('<div class="p
 '<p class="hint">Best way: log in at <a href="login.html">your dashboard</a>.<br>'+helpLine()+'</p></div>')+'</div>';
 $('#eye').onclick=()=>{const p=$('#p'),h=p.type==='password';p.type=h?'text':'password';$('#eye').textContent=h?'Hide':'Show'};
 $('#lf').onsubmit=e=>{e.preventDefault();const roll=normRoll($('#r').value),pin=bn2en($('#p').value).replace(/\D/g,'');const le=$('#le');
-if(!/^(\d{3,8}|D-\d{3,8})$/.test(roll)){le.textContent='Enter your Exam Roll (from your SMS).';le.hidden=false;return}
+if(!/^(\d{3,8}|[DR]-\d{3,8})$/.test(roll)){le.textContent='Enter your Exam Roll (from your SMS).';le.hidden=false;return}
 if(!/^\d{6}$/.test(pin)){le.textContent='The PIN has 6 digits. Check your SMS.';le.hidden=false;return}
 $('#lb').disabled=true;$('#lb').textContent='Checking...';A={roll:roll,pin:pin};peek(true)}}
 // ---------------------------------------------------------------- info page (segment 1)
 async function peek(fromForm){try{const t0=Date.now();const j=await post({a:'exPeek',roll:A.roll,pin:A.pin});
 if(!j||!j.ok){if(fromForm){loginView((j&&j.message)||'Could not sign in.')}else{ss('qec_auth',null);loginView(j&&j.message)}return}
-ss('qec_auth',{roll:A.roll,pin:A.pin});skew=j.now-Math.round((t0+Date.now())/2);demo=!!j.demo;infoView(j)}
+ss('qec_auth',{roll:A.roll,pin:A.pin});skew=j.now-Math.round((t0+Date.now())/2);demo=!!j.demo;review=!!j.review;infoView(j)}
 catch(e){if(fromForm)loginView('Could not reach the server. Check your internet and try again.');else app.innerHTML='<div class="center">'+card('<div class="sec"><div class="err">Could not reach the server. Check your internet.</div><button class="btn wide" style="margin-top:14px" onclick="location.reload()">Try Again</button></div>')+'</div>'}}
 let infoT=null;
 function infoView(j){clearInterval(infoT);const s=j.student,h=j.header;const st=j.state;
@@ -230,41 +241,47 @@ const bnd=x=>String(x).replace(/\d/g,d=>'০১২৩৪৫৬৭৮৯'[d]);
 const bnT=ms=>{const t=fmtT(ms),m=t.match(/(\d{1,2}):(\d{2})\s*(AM|PM)/i);if(!m)return bnd(t);const pm=/pm/i.test(m[3]);return (pm?'দুপুর ':'সকাল ')+bnd(m[1]+':'+m[2])};
 const Q=demo?['Q1–Q5','Q6–Q10','Q11–Q15','১৫']:['Q1–Q25','Q26–Q50','Q51–Q75','৭৫'];
 const rules=['প্রশ্নপত্রে মোট <b>'+Q[3]+'টি MCQ</b> প্রশ্ন রয়েছে: <b class="nw">'+Q[0]+'</b> Bangla, <b class="nw">'+Q[1]+'</b> English এবং <b class="nw">'+Q[2]+'</b> Math।',
-'প্রতিটি প্রশ্নের মান <b>১</b>। প্রতিটি প্রশ্নের চারটি Option (A, B, C, D)-এর মধ্যে একটি সঠিক উত্তর নির্বাচন করতে হবে। কোনো Negative Marking নেই।',
+'প্রতিটি প্রশ্নের মান <b>১</b>। প্রতিটি প্রশ্নের প্রদত্ত Option-গুলোর (A, B, C ...) মধ্যে একটি সঠিক উত্তর নির্বাচন করতে হবে। কোনো Negative Marking নেই।',
 'পরীক্ষা ধারাবাহিকভাবে তিনটি Section-এ হবে: <b class="nw">Bangla → English → Math</b>। একটি Section শেষ করে <b>Next</b> চাপলে পরবর্তী Section শুরু হবে।',
 'পরবর্তী Section-এ যাওয়ার পর আগের Section-এ আর ফিরে যাওয়া যাবে না এবং আগের Section-এর কোনো উত্তর পরিবর্তন করা যাবে না।',
 'চলমান Section-এ যেকোনো উত্তর পরিবর্তন করা যাবে; অন্য Option-এ ক্লিক করলেই উত্তর পরিবর্তিত হবে। প্রতিটি উত্তর স্বয়ংক্রিয়ভাবে সংরক্ষিত (Auto-save) হয়।',
-demo?'অনুশীলন পরীক্ষার সময় <b>'+bnd(j.minutes)+' মিনিট</b>। নির্ধারিত সময় শেষ হলে পরীক্ষা স্বয়ংক্রিয়ভাবে Submit হয়ে যাবে।':'পরীক্ষার সময় <b class="nw">'+bnT(j.opens)+'</b> থেকে <b class="nw">'+bnT(cShown(j))+'</b> পর্যন্ত, সকলের জন্য একই। নির্ধারিত সময় শেষ হলে পরীক্ষা স্বয়ংক্রিয়ভাবে Submit হয়ে যাবে। দেরিতে শুরু করলে অতিরিক্ত সময় দেওয়া হবে না।',
+review?'Final Review: প্রতিটি চেষ্টায় পরীক্ষার পূর্ণ সময় <b>'+bnd(j.minutes)+' মিনিট</b> (Start চাপার মুহূর্ত থেকে)। নির্ধারিত সময় শেষ হলে স্বয়ংক্রিয়ভাবে Submit হয়ে যাবে।':demo?'অনুশীলন পরীক্ষার সময় <b>'+bnd(j.minutes)+' মিনিট</b>। নির্ধারিত সময় শেষ হলে পরীক্ষা স্বয়ংক্রিয়ভাবে Submit হয়ে যাবে।':'পরীক্ষার সময় <b class="nw">'+bnT(j.opens)+'</b> থেকে <b class="nw">'+bnT(cShown(j))+'</b> পর্যন্ত, সকলের জন্য একই। নির্ধারিত সময় শেষ হলে পরীক্ষা স্বয়ংক্রিয়ভাবে Submit হয়ে যাবে। দেরিতে শুরু করলে অতিরিক্ত সময় দেওয়া হবে না।',
 'শেষ Section (Math)-এর নিচে <b class="nw">Submit Exam</b> বাটন চেপে পরীক্ষা শেষ করতে হবে। একবার Submit করার পর কোনো উত্তর পরিবর্তন করা যাবে না।',
 'Exam শুরু করার আগে অবশ্যই <b>Google Meet</b>-এ যুক্ত হতে হবে এবং পরীক্ষা শেষ হওয়া পর্যন্ত যুক্ত থাকতে হবে।',
 'পরীক্ষা চলাকালীন অন্য App বা Tab-এ যাওয়া রেকর্ড করা হবে। AI Tool কিংবা অন্য কারো সাহায্য নেওয়া সম্পূর্ণ নিষিদ্ধ।'];
 let act='';
-if(st==='demo')act=meetBtn(j.meet)+'<button class="go pulse" id="start" type="button">Start Exam <span class="bn">(এক্সাম শুরু কর)</span> &rarr;</button><p class="sbar" style="justify-content:center"><span>Demo: '+esc(j.minutes)+' minutes</span></p>';
+if(st==='review'){const pk=rvGet()||{cls:0,ver:'BV'};const ps=j.papers||[];
+act='<div class="sect" style="margin:18px 0 8px"><h2>Pick the Paper</h2><span>Final Review</span></div><div class="rvp" id="rvc">'+[1,2,3,4,5].map(c=>{const p=ps.find(x=>x.cls===c)||{};return '<button type="button" class="rvb'+(pk.cls===c?' on':'')+'" data-c="'+c+'"'+(p.ready?'':' disabled')+'>Class '+c+'<small>'+(p.ready?esc(p.n)+' MCQ':'not ready')+'</small></button>'}).join('')+'</div>'+
+'<div class="rvp rv2" id="rvv"><button type="button" class="rvb'+(pk.ver!=='EV'?' on':'')+'" data-v="BV">Bangla Version<small>BV</small></button><button type="button" class="rvb'+(pk.ver==='EV'?' on':'')+'" data-v="EV">English Version<small>EV</small></button></div>'+
+meetBtn(j.meet)+'<button class="go pulse" id="start" type="button"'+(pk.cls?'':' disabled')+'>Start Exam <span class="bn">(এক্সাম শুরু কর)</span> &rarr;</button><p class="sbar" style="justify-content:center"><span>Final Review: unlimited attempts, nothing is recorded for any student.</span></p>'}
+else if(st==='demo')act=meetBtn(j.meet)+'<button class="go pulse" id="start" type="button">Start Exam <span class="bn">(এক্সাম শুরু কর)</span> &rarr;</button><p class="sbar" style="justify-content:center"><span>Demo: '+esc(j.minutes)+' minutes</span></p>';
 else if(st==='open')act=meetBtn(j.meet)+'<button class="go pulse" id="start" type="button">Start Exam <span class="bn">(এক্সাম শুরু কর)</span> &rarr;</button><p class="sbar" id="left"></p>';
 else if(st==='progress')act=meetBtn(j.meet)+'<button class="go pulse" id="start" type="button">Continue My Exam &rarr;</button><p class="sbar" id="left"></p>';
 else if(st==='before')act=meetBtn(j.meet)+'<div class="go off" style="background:#efe7f2;color:var(--plum)">The exam opens at '+nw(fmtT(j.opens))+' on '+nw(fmtD(j.opens))+'</div><p class="sbar" style="justify-content:center"><span>Opens in <b id="cdn" class="nw"></b></span></p>';
 else if(st==='submitted'){thanks(j.at,false);return}
 else act='<div class="err" style="text-align:center">'+esc({closed:'The exam time is over.',offline:'Your exam is offline (pen and paper) at QEC Academy (Chottogram).',disabled:'The exam is not open right now.',notset:'The exam time is not set yet.'}[st]||'The exam is not open right now.')+'</div>';
 app.innerHTML='<div class="center" style="max-width:720px">'+card(header(h)+'<div class="sec">'+
-(demo?'<div class="demo"><span>&#9733;</span><span><b>Demo exam.</b> Practice only &ndash; nothing is recorded for any student.</span></div>':'')+
+(review?'<div class="demo"><span>&#9733;</span><span><b>Final Review.</b> The real paper, exactly as a student sees it. Nothing is recorded for any student.</span></div>':demo?'<div class="demo"><span>&#9733;</span><span><b>Demo exam.</b> Practice only &ndash; nothing is recorded for any student.</span></div>':'')+
 '<div class="sect" style="margin-bottom:10px"><h2>Student Information</h2><span>Please Check</span></div><div class="who">'+
 '<div class="kv"><div class="k">Name</div><div class="v">'+esc(s.name)+(s.bn?'<small class="bn" style="display:block;color:var(--mut);font-weight:600">'+esc(s.bn)+'</small>':'')+'</div></div>'+
-'<div class="kv"><div class="k">Exam Roll</div><div class="v nw">'+esc(s.roll)+'</div></div><div class="kv"><div class="k">Class</div><div class="v nw">'+esc(s.clsv||s.cls)+'</div></div></div>'+
+'<div class="kv"><div class="k">Exam Roll</div><div class="v nw">'+esc(s.roll)+'</div></div><div class="kv"><div class="k">Class</div><div class="v nw">'+esc(review?'Pick the class below':(s.clsv||s.cls))+'</div></div></div>'+
 '<p class="sbar"><span>Not you? <a href="#" id="notme" style="color:var(--plum);font-weight:800">Log Out</a></span><span>'+helpLine()+'</span></p>'+
-'<div class="sect" style="margin:18px 0 6px"><h2>Exam Rules</h2><span class="nw">'+(demo?'Practice':nw(fmtD(j.opens)))+'</span></div><ol class="rules bn">'+rules.map((r,k)=>'<li data-n="'+bnd(k+1)+'"><span>'+r+'</span></li>').join('')+'</ol>'+act+'</div>')+'</div>';
-$('#notme').onclick=e=>{e.preventDefault();ss('qec_auth',null);A=null;loginView()};
+'<div class="sect" style="margin:18px 0 6px"><h2>Exam Rules</h2><span class="nw">'+(review?'Final Review':demo?'Practice':nw(fmtD(j.opens)))+'</span></div><ol class="rules bn">'+rules.map((r,k)=>'<li data-n="'+bnd(k+1)+'"><span>'+r+'</span></li>').join('')+'</ol>'+act+'</div>')+'</div>';
+$('#notme').onclick=e=>{e.preventDefault();ss('qec_auth',null);rvSet(null);A=null;loginView()};
+if(st==='review'){const pick=rvGet()||{cls:0,ver:'BV'};const upd=()=>{rvSet(pick.cls?pick:null);app.querySelectorAll('#rvc .rvb').forEach(x=>x.classList.toggle('on',+x.dataset.c===pick.cls));app.querySelectorAll('#rvv .rvb').forEach(x=>x.classList.toggle('on',x.dataset.v===pick.ver));const sb=$('#start');if(sb)sb.disabled=!pick.cls};
+app.querySelectorAll('#rvc .rvb').forEach(x=>x.onclick=()=>{pick.cls=+x.dataset.c;upd()});app.querySelectorAll('#rvv .rvb').forEach(x=>x.onclick=()=>{pick.ver=x.dataset.v;upd()})}
 const b=$('#start');if(b)b.onclick=()=>start();
 const tickInfo=()=>{const c=$('#cdn');if(c){const ms=j.opens-nowS();if(ms<=0){clearInterval(infoT);peek(false);return}const x=Math.floor(ms/1000);const d=Math.floor(x/86400),hh=Math.floor(x%86400/3600),m=Math.floor(x%3600/60),sc=x%60;
 c.textContent=(d?d+'d ':'')+String(hh).padStart(2,'0')+':'+String(m).padStart(2,'0')+':'+String(sc).padStart(2,'0')}
-const l=$('#left');if(l&&!demo){const ms=j.closes-nowS();if(ms<=0){clearInterval(infoT);peek(false);return}l.innerHTML='<span>Time left: <b class="nw">'+Math.floor(ms/60000)+' min '+String(Math.floor(ms/1000)%60).padStart(2,'0')+' sec</b></span>'}};
+const l=$('#left');if(l&&!demo&&!review){const ms=j.closes-nowS();if(ms<=0){clearInterval(infoT);peek(false);return}l.innerHTML='<span>Time left: <b class="nw">'+Math.floor(ms/60000)+' min '+String(Math.floor(ms/1000)%60).padStart(2,'0')+' sec</b></span>'}};
 tickInfo();infoT=setInterval(tickInfo,1000)}
 // ---------------------------------------------------------------- exam
 async function start(){const b=$('#start');if(b){b.disabled=true;b.textContent='Opening the Question Paper...'}
-try{const t0=Date.now();const j=await post({a:'exStart',roll:A.roll,pin:A.pin,dev:(navigator.userAgent||'').replace(/\s+/g,' ').slice(0,80),att:demo?(ss('qec_att')||''):''},40000);
-if(!j||!j.ok){if(j&&j.state==='submitted'){thanks(j.at,false);return}if(j&&j.state){peek(false);toast(j.message||'The exam is not open.');return}throw new Error((j&&j.message)||'failed')}
+try{const t0=Date.now();const j=await post({a:'exStart',roll:A.roll,pin:A.pin,dev:(navigator.userAgent||'').replace(/\s+/g,' ').slice(0,80),att:(demo||review)?(ss('qec_att')||''):'',cls:review?(rvGet()||{}).cls:undefined,ver:review?(rvGet()||{}).ver:undefined},40000);
+if(!j||!j.ok){if(j&&j.state==='submitted'){thanks(j.at,false);return}if(j&&j.state){if(b){b.disabled=false;b.innerHTML='Start Exam <span class="bn">(এক্সাম শুরু কর)</span> &rarr;'}if(j.state!=='review')peek(false);toast(j.message||'The exam is not open.');return}throw new Error((j&&j.message)||'failed')}
 skew=j.now-Math.round((t0+Date.now())/2);openExam(j)}
 catch(e){if(b){b.disabled=false;b.textContent='Try Again →'}toast(e&&e.message&&!/HTTP|abort|fetch|network/i.test(e.message)?e.message:'Could not open the exam. Check your internet and tap again.',5000)}}
-function openExam(j){clearInterval(infoT);P=j;token=j.token;att=j.att||'';if(demo)ss('qec_att',att);
+function openExam(j){clearInterval(infoT);P=j;token=j.token;att=j.att||'';if(demo||review)ss('qec_att',att);
 const n=j.secs.reduce((s,x)=>s+x.qs.length,0);ans=(j.ans&&j.ans.length===n)?j.ans:'-'.repeat(n);sw=j.sw||0;
 const loc=lsLoad();if(loc&&loc.a&&loc.a.length===n&&loc.a!==ans&&loc.t>(j.start||0)){ans=loc.a;sw=Math.max(sw,loc.sw||0);dirty=true}
 let sg0=Math.max(+j.sg||0,loc&&loc.t>(j.start||0)?(+loc.sg||0):0);sg0=Math.min(Math.max(0,sg0),j.secs.length-1);if(sg0>(+j.sg||0))dirty=true;
@@ -281,7 +298,7 @@ function optHtml(q,k){const L='ABCD'[k];const t=pk(q.o[k],QL[q.n]),t2=second(q.o
 return '<button type="button" class="opt'+(sel?' sel':'')+'" data-q="'+q.n+'" data-l="'+L+'" aria-pressed="'+sel+'"><span class="l">'+L+'</span><span class="t"><b class="'+(isBn(t)?'bn':'en')+'">'+qf(t)+'</b>'+(t2?'<small class="en">('+qf(t2)+')</small>':'')+'</span></button>'}
 function qHtml(q){const a=ans.charAt(q.n-1)!=='-';const t=pk([q.qb,q.qe],QL[q.n]),t2=second([q.qb,q.qe],QL[q.n]);
 return '<div class="q'+(a?' ans':'')+'" id="q'+q.n+'"><div class="qt"><span class="qn">Q'+q.n+'.</span><div><div class="qb '+(isBn(t)?'bn':'en')+'">'+qf(t)+'</div>'+(t2?'<div class="qe en">('+qf(t2)+')</div>':'')+'</div><span class="mk" title="1 mark">[1]</span></div>'+
-'<div class="opts">'+[0,1,2,3].map(k=>optHtml(q,k)).join('')+'</div></div>'}
+'<div class="opts">'+(q.o||[]).map((o,k)=>(o&&(o[0]||o[1]))?optHtml(q,k):'').join('')+'</div></div>'}
 function show(i){cur=i;const s=P.secs[i];$('#tabs').querySelectorAll('.tb').forEach(b=>{const k=+b.dataset.i;b.className='tb'+(k===i?' now':(k<i?' done':''))});
 const last=i===P.secs.length-1;
 app.innerHTML=card((i===0?header(P.header):'')+'<div class="sec'+(finished?' lock':'')+'"><div class="sect"><h2>'+esc(s.name)+' <span class="bn" style="font-weight:600">('+esc(s.bn)+')</span></h2><span>Q'+s.from+' – Q'+s.to+'</span></div>'+
@@ -310,7 +327,7 @@ else if(j&&j.timeup){timeUp()}
 else{setSv('bad','Not saved yet');queueSave(8000)}}
 catch(e){setSv('bad','Offline - retrying');queueSave(6000+Math.random()*4000)}
 finally{saving=false;if(dirty&&!finished)queueSave(4000)}}
-async function reauth(){try{const j=await post({a:'exStart',roll:A.roll,pin:A.pin,dev:'reauth',att:att},30000);if(j&&j.ok){token=j.token;P.deadline=j.deadline}}catch(e){}}
+async function reauth(){try{const rp=review?(rvGet()||{}):{};const j=await post({a:'exStart',roll:A.roll,pin:A.pin,dev:'reauth',att:att,cls:rp.cls,ver:rp.ver},30000);if(j&&j.ok){token=j.token;P.deadline=j.deadline}}catch(e){}}
 function tickClock(){if(!P)return;const ms=P.deadline-nowS();const x=Math.max(0,Math.ceil(ms/1000));const m=Math.floor(x/60),s=x%60;
 $('#tt').textContent=String(m).padStart(2,'0')+':'+String(s).padStart(2,'0');$('#timer').classList.toggle('low',ms<=300000&&ms>0);
 if(ms<=0&&!finished)timeUp();if(dirty&&!saving&&Date.now()-lastSave>20000)queueSave(100)}
@@ -323,16 +340,20 @@ const m=overlay('<h3>Submit Your Exam?</h3><p>After submitting you cannot change
 $('#no').onclick=closeModal;$('#yes').onclick=()=>{finished=true;clearInterval(clock);overlay('<h3>Submitting...</h3><p>Please wait. Do not close this page.</p>');doSubmit('manual',0)}}
 async function doSubmit(how,n){if(submitting&&n===0)return;submitting=true;lsSave();
 try{const j=await post({a:'exSubmit',token:token,ans:ans,sw:sw,sg:cur,how:how},30000);
-if(j&&j.ok){submitting=false;closeModal();try{localStorage.removeItem(lsKey())}catch(e){}if(demo)ss('qec_att',null);thanks(j.at||nowS(),true);return}
+if(j&&j.ok){submitting=false;closeModal();try{localStorage.removeItem(lsKey())}catch(e){}if(demo||review)ss('qec_att',null);thanks(j.at||nowS(),true,j.review);return}
 if(j&&j.reauth){await reauth()}}
 catch(e){}
 const wait=Math.min(15000,2000*Math.pow(1.6,n))+Math.random()*2500;overlay('<h3>'+(how==='auto'?'Time Is Up':'Submitting...')+'</h3><p>Connection is slow. Trying again... Please keep this page open.</p>');
 setTimeout(()=>doSubmit(how,n+1),wait)}
-function thanks(at,fresh){finished=true;clearInterval(clock);clearInterval(infoT);closeModal();$('#xtop').hidden=true;$('#wm').hidden=true;document.body.classList.remove('noselect');
-app.innerHTML='<div class="center">'+card('<div class="thanks"><img alt="QEC Academy" src="assets/logo.png?v=7" style="height:56px;width:auto;display:block;margin:0 auto 18px"><div class="big"><svg width="38" height="38" viewBox="0 0 24 24" fill="none" stroke="#0f7a49" stroke-width="2.8"><path d="M20 6 9 17l-5-5"/></svg></div>'+
+function rvHtml(r){if(!review)return '';if(!r)return '<p style="font-size:13.5px;color:var(--mut)">Final Review attempt saved in the Exam Demo Log.</p>';
+const w=(r.wrong||[]).map(x=>{const p=String(x).split(':');return '<span class="nw">Q'+esc(p[0])+' ('+esc(p[1]).replace(/&gt;|>/,' &rarr; ')+')</span>'}).join(', ');
+return '<div class="rvres"><h3>Final Review result <small>(only this account sees it)</small></h3><div class="rvg"><div><b>'+esc(r.b)+'/'+esc(r.max.b)+'</b><span>Bangla</span></div><div><b>'+esc(r.e)+'/'+esc(r.max.e)+'</b><span>English</span></div><div><b>'+esc(r.m)+'/'+esc(r.max.m)+'</b><span>Math</span></div><div><b>'+esc(r.total)+'/'+esc(r.tmax)+'</b><span>'+(r.pass?'Pass':'Fail')+'</span></div></div>'+
+(w?'<p><b>Wrong</b> (your answer &rarr; key): '+w+'</p>':'<p><b>No wrong answers.</b></p>')+((r.blank||[]).length?'<p><b>Not answered:</b> '+r.blank.map(n=>'Q'+esc(n)).join(', ')+'</p>':'')+'</div>'}
+function thanks(at,fresh,rv){finished=true;clearInterval(clock);clearInterval(infoT);closeModal();$('#xtop').hidden=true;$('#wm').hidden=true;document.body.classList.remove('noselect');
+app.innerHTML='<div class="center">'+card('<div class="thanks"><img alt="QEC Academy" src="assets/logo.png?v=8" style="height:56px;width:auto;display:block;margin:0 auto 18px"><div class="big"><svg width="38" height="38" viewBox="0 0 24 24" fill="none" stroke="#0f7a49" stroke-width="2.8"><path d="M20 6 9 17l-5-5"/></svg></div>'+
 '<h2>Your Exam Has Been Submitted</h2><p>Thank you for joining <b>QEC Academy Medha Onneshon Exam 2026</b>.</p>'+(at?'<p style="font-size:13.5px;color:var(--mut)">Submitted at '+nw(fmtT(at))+'</p>':'')+
-(demo?'<p style="font-size:13.5px;color:var(--mut)">This was a practice exam. Nothing was recorded for any student.</p>':'<p style="font-size:13.5px;color:var(--mut)">Results will be announced on your dashboard.</p>')+
-'<div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:20px"><a class="btn" href="login.html" style="display:inline-flex;align-items:center;text-decoration:none">Back to Dashboard</a>'+(demo?'<button class="ghost" type="button" style="height:50px" onclick="location.reload()">Try the Demo Again</button>':'')+'</div></div>')+'</div>';window.scrollTo(0,0)}
+(review?rvHtml(rv):demo?'<p style="font-size:13.5px;color:var(--mut)">This was a practice exam. Nothing was recorded for any student.</p>':'<p style="font-size:13.5px;color:var(--mut)">Results will be announced on your dashboard.</p>')+
+'<div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:20px"><a class="btn" href="login.html" style="display:inline-flex;align-items:center;text-decoration:none">Back to Dashboard</a>'+(review?'<button class="ghost" type="button" style="height:50px" onclick="location.reload()">Start Another Review</button>':demo?'<button class="ghost" type="button" style="height:50px" onclick="location.reload()">Try the Demo Again</button>':'')+'</div></div>')+'</div>';window.scrollTo(0,0)}
 function watermark(s){const t=(s.roll+'  '+s.name).replace(/[<&>]/g,'');const svg='<svg xmlns="http://www.w3.org/2000/svg" width="440" height="230"><text x="20" y="140" transform="rotate(-22 220 115)" font-family="sans-serif" font-size="15" font-weight="700" fill="#5b1462">'+t+'</text></svg>';
 const w=$('#wm');w.style.backgroundImage='url("data:image/svg+xml;charset=utf-8,'+encodeURIComponent(svg)+'")';w.hidden=false}
 // ---------------------------------------------------------------- light proctoring

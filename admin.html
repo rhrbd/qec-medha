@@ -55,12 +55,15 @@ table{width:100%;border-collapse:collapse;font-size:13px}th,td{border-bottom:1px
   #print.sign td{height:30px}#print.sign th:nth-child(5){width:32%}#print.sign th:nth-child(3){width:28%}#print .foot{margin-top:8px;font-size:9px;color:#555}
   @page{size:A4;margin:12mm 10mm}
 }
+.cfm{position:fixed;inset:0;background:rgba(30,8,34,.55);display:flex;align-items:center;justify-content:center;z-index:99;padding:16px}.cfm .box{background:#fff;border-radius:16px;max-width:420px;width:100%;padding:18px;box-shadow:0 20px 50px -20px rgba(0,0,0,.6)}
+.cfm h3{margin:0 0 8px;font-size:17px}.cfm p{margin:6px 0;font-size:14px;line-height:1.5;white-space:pre-wrap;word-break:break-word}.cfm .warnb{background:#fff4dc;border:1px dashed #e7b250;color:#6b4100;border-radius:10px;padding:8px 10px;font-weight:600}.cfm .row{margin-top:14px;justify-content:flex-end}
+.cred{font-size:20px;font-weight:800;letter-spacing:.5px;font-variant-numeric:tabular-nums}
 </style></head><body>
 <header><img src="assets/mark.png" alt=""><b>QEC Medha 2026 · Control Panel</b><span class="role hide" id="who"></span></header>
 
 <section class="login card" id="login">
 <div class="ttl"><h2>Sign in</h2></div>
-<p class="note">Admin key = full control. Viewer key = read only (reports, scripts, results). Keys are in tab <b>Admin Access</b> of the master sheet.</p>
+<p class="note">Admin key = full control. Exam Controller key = all exam settings + questions (every change is confirmed). Viewer key = read only. Keys are in the private tab <b>Admin Access</b> of the master sheet.</p>
 <label for="key">Key</label><input id="key" type="password" autocomplete="off" spellcheck="false" autocapitalize="off">
 <label style="display:flex;align-items:center;gap:8px;font-weight:600;color:var(--ink)"><input id="rem" type="checkbox" style="width:auto"> Keep me signed in on this phone</label>
 <button class="btn w" id="go" type="button">Sign in</button><div id="lmsg"></div></section>
@@ -76,7 +79,7 @@ table{width:100%;border-collapse:collapse;font-size:13px}th,td{border-bottom:1px
 <div class="card adm"><div class="ttl"><h2>Correct a student</h2></div><p class="note">Saved in the Corrections tab; reaches the sheet, SMS, dashboard and exam within about a minute.</p>
 <div class="grid2"><div><label>Exam Roll</label><input id="cr" inputmode="numeric"></div><div><label>What</label><select id="cf"><option value="whatsapp">Mobile number</option><option value="name">Name</option><option value="mode">Mode (Online / Offline)</option><option value="version">Version (Bangla / English)</option><option value="cls">Class (gives a new roll)</option></select></div></div>
 <label>New value</label><input id="cv"><button class="btn w" id="cgo" type="button">Save correction</button></div>
-<div class="card adm"><div class="ttl"><h2>Allow a new online attempt</h2></div><p class="note">Clears one student's online attempt (a backup is kept). Only for real technical problems.</p>
+<div class="card ex"><div class="ttl"><h2>Allow a new online attempt</h2></div><p class="note">Clears one student's online attempt (a backup is kept). Only for real technical problems.</p>
 <div class="grid2"><div><label>Exam Roll</label><input id="rr" inputmode="numeric"></div><div><label>Type it again</label><input id="rc" inputmode="numeric"></div></div><button class="btn w warn" id="rgo" type="button">Clear the attempt</button></div>
 </section>
 
@@ -85,6 +88,7 @@ table{width:100%;border-collapse:collapse;font-size:13px}th,td{border-bottom:1px
 <div class="card"><div class="ttl"><h2>Online exam controls</h2><button class="btn sm alt sp" type="button" onclick="loadExamSet()">Reload</button></div><div id="exset"><p class="note">Loading...</p></div></div>
 <div class="card"><div class="ttl"><h2>Answer scripts</h2></div><div class="row"><input id="xr" inputmode="numeric" placeholder="Exam Roll"><button class="btn" id="xgo" type="button">Open</button></div><button class="btn w alt" id="xall" type="button">All online attempts</button></div>
 <div id="xout"></div>
+<div class="card ex"><div class="ttl"><h2>Final Review login</h2><button class="btn sm alt sp" type="button" onclick="rvCard()">Reload</button></div><div id="rvbox"><p class="note">Loading...</p></div><div id="rvset"></div></div>
 <div class="card"><div class="ttl"><h2>Question papers</h2></div><div class="seg" id="pseg"></div><div id="pout"><p class="note">Pick a paper.</p></div></div>
 </section>
 
@@ -93,15 +97,15 @@ table{width:100%;border-collapse:collapse;font-size:13px}th,td{border-bottom:1px
 <div class="card"><div class="ttl"><h2>Offline exam</h2></div><div id="offinfo"><p class="note">Loading...</p></div></div>
 <div class="card"><div class="ttl"><h2>Slot reports (PDF)</h2></div><div id="slotbtns"></div></div>
 <div class="card"><div class="ttl"><h2>Offline marks</h2></div><div class="seg" id="omseg"></div><div id="omlink"></div></div>
-<div class="card adm"><div class="ttl"><h2>Offline settings</h2></div><div id="offset"></div></div>
+<div class="card ex"><div class="ttl"><h2>Offline settings</h2></div><div id="offset"></div></div>
 </section>
 
 <!-- RESULTS -->
 <section data-p="res" class="hide">
 <div class="card"><div class="ttl"><h2>Grade sheet &amp; merit list</h2></div><p class="note">Per class, BV + EV, online + offline together. Students never see these.</p>
 <h3>Grade sheet</h3><div class="seg" id="gseg"></div><h3>Merit list</h3><div class="seg" id="mseg"></div><h3>Online attempts</h3><div class="seg" id="oseg"></div>
-<button class="btn w alt adm" id="tres" type="button">Rebuild the Grade Sheet now</button></div>
-<div class="card adm"><div class="ttl"><h2>Result rules</h2></div><div id="resset"></div></div>
+<button class="btn w alt ex" id="tres" type="button">Rebuild the Grade Sheet now</button></div>
+<div class="card ex"><div class="ttl"><h2>Result rules</h2></div><div id="resset"></div></div>
 </section>
 
 <!-- SMS -->
@@ -139,7 +143,12 @@ const API='https://script.google.com/macros/s/AKfycbzS5Ol6KGT4sCpsgNoNHBDFivjj_f
 const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
 const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 let KEY='',ROLE='',META=null,SETS=null,PAPER=null;
-const isAdm=()=>ROLE==='admin';
+const isAdm=()=>ROLE==='admin',isEx=()=>ROLE==='admin'||ROLE==='controller';
+/** Every change asks first. Exam Controller: "Are you sure? Ask the Admin beforehand." Resolves true/false. */
+function sure(title,detail){return new Promise(res=>{const d=document.createElement('div');d.className='cfm';
+d.innerHTML='<div class="box" role="dialog" aria-modal="true"><h3>'+esc(title)+'</h3>'+(detail?'<p>'+esc(detail)+'</p>':'')+(ROLE==='controller'?'<p class="warnb">Are you sure? If you are not 100% sure, ask the Admin beforehand. Every change is logged with your role.</p>':'<p class="note">This changes the live system.</p>')+
+'<div class="row"><button class="btn alt" type="button" data-n>Cancel</button><button class="btn" type="button" data-y>Yes, change it</button></div></div>';
+document.body.appendChild(d);const done=v=>{d.remove();res(v)};d.querySelector('[data-n]').onclick=()=>done(false);d.querySelector('[data-y]').onclick=()=>done(true);d.onclick=e=>{if(e.target===d)done(false)};d.querySelector('[data-y]').focus()})}
 function toast(t){const d=document.createElement('div');d.className='toast';d.textContent=t;document.body.appendChild(d);setTimeout(()=>d.remove(),3200)}
 function msg(el,j){el.innerHTML='<div class="msg '+(j.ok?'ok':'bad')+'">'+esc(j.message||(j.ok?'Done.':'Something went wrong.'))+'</div>'}
 async function call(op,extra,btn){if(btn){btn.disabled=true;btn.dataset.t=btn.innerHTML;btn.textContent='Working...'}
@@ -150,7 +159,7 @@ function kept(k){try{return localStorage.getItem(k)||sessionStorage.getItem(k)}c
 function signout(m){KEY='';ROLE='';keep('qadm2',null);$('#app').classList.add('hide');$('#nav').classList.add('hide');$('#who').classList.add('hide');$('#login').classList.remove('hide');if(m)$('#lmsg').innerHTML='<div class="msg bad">'+esc(m)+'</div>'}
 async function signin(k,quiet){KEY=k;const j=await call('me');if(!j.ok){KEY='';if(!quiet)$('#lmsg').innerHTML='<div class="msg bad">'+esc(j.message||'Wrong key.')+'</div>';return}
 ROLE=j.role;if(!quiet)keep('qadm2',k);$('#login').classList.add('hide');$('#app').classList.remove('hide');$('#nav').classList.remove('hide');
-$('#who').textContent=isAdm()?'ADMIN':'VIEWER';$('#who').classList.remove('hide');$$('.adm').forEach(e=>e.classList.toggle('hide',!isAdm()));
+$('#who').textContent=isAdm()?'ADMIN':(ROLE==='controller'?'EXAM CONTROLLER':'VIEWER');$('#who').classList.remove('hide');$$('.adm').forEach(e=>e.classList.toggle('hide',!isAdm()));$$('.ex').forEach(e=>e.classList.toggle('hide',!isEx()));
 META=await call('meta');buildSegs();show('home')}
 function show(t){$$('nav.tabs button').forEach(b=>b.classList.toggle('on',b.dataset.t===t));$$('main>section').forEach(s=>s.classList.toggle('hide',s.dataset.p!==t));window.scrollTo(0,0);$('#msgbox').innerHTML='';
 if(t==='home')home();if(t==='exam')loadExamSet();if(t==='off')offline();if(t==='res')setGroup('#resset','Results');if(t==='sms')smsPage();if(t==='more')more()}
@@ -167,13 +176,13 @@ el.innerHTML='<div class="card"><div class="ttl"><h2>Online exam</h2><span class
 '<p class="note" style="text-align:center">Updated '+esc(j.now)+'</p>'}
 // ---------------- settings renderer (one group or a filter)
 async function getSets(force){if(!SETS||force){const j=await call('settings');SETS=j.ok?j.items:[]}return SETS}
-function setRow(x){const ro=!isAdm();const inp=x.options?'<select data-id="'+x.id+'" '+(ro?'disabled':'')+'>'+x.options.map(o=>'<option'+(o===x.value?' selected':'')+'>'+esc(o)+'</option>').join('')+'</select>':'<input data-id="'+x.id+'" value="'+esc(x.value)+'" '+(ro?'readonly':'')+'>';
+function setRow(x){const ro=!x.edit;const inp=x.options?'<select data-id="'+x.id+'" '+(ro?'disabled':'')+'>'+x.options.map(o=>'<option'+(o===x.value?' selected':'')+'>'+esc(o)+'</option>').join('')+'</select>':'<input data-id="'+x.id+'" value="'+esc(x.value)+'" '+(ro?'readonly':'')+'>';
 return '<div class="set"><div class="l">'+esc(x.label)+'</div><div class="h">'+esc(x.help)+'</div><div class="row">'+inp+(ro?'':'<button class="btn sm" type="button" data-save="'+x.id+'">Save</button>')+'</div></div>'}
 async function setGroup(sel,group,filter){const el=$(sel);if(!el)return;el.innerHTML='<p class="note">Loading...</p>';const items=(await getSets(true)).filter(x=>x.group===group&&(!filter||filter(x)));
 el.innerHTML=items.length?items.map(setRow).join(''):'<p class="note">Nothing here.</p>';
-el.querySelectorAll('[data-save]').forEach(b=>b.onclick=async()=>{const x=SETS.find(s=>String(s.id)===b.dataset.save);const f=el.querySelector('[data-id="'+b.dataset.save+'"]');const r=await call('set',{id:x.id,label:x.label,value:f.value},b);toast(r.message||(r.ok?'Saved':'Problem'));if(r.ok)x.value=f.value;else setGroup(sel,group,filter)})}
+el.querySelectorAll('[data-save]').forEach(b=>b.onclick=async()=>{const x=SETS.find(s=>String(s.id)===b.dataset.save);const f=el.querySelector('[data-id="'+b.dataset.save+'"]');if(f.value===x.value){toast('No change.');return}if(!await sure('Change "'+x.label+'"?',x.group+'\nFrom: '+(x.value||'(empty)')+'\nTo: '+(f.value||'(empty)')))return;const r=await call('set',{id:x.id,label:x.label,value:f.value,sure:1},b);toast(r.message||(r.ok?'Saved':'Problem'));if(r.ok)x.value=f.value;else setGroup(sel,group,filter)})}
 // ---------------- exam
-function loadExamSet(){setGroup('#exset','Online exam')}
+function loadExamSet(){setGroup('#exset','Online exam');if(isEx())rvCard()}
 function buildSegs(){const C=[1,2,3,4,5];
 $('#gseg').innerHTML=C.map(c=>'<button type="button" onclick="report(\'grade\','+c+')">Class '+c+'</button>').join('');
 $('#mseg').innerHTML=C.map(c=>'<button type="button" onclick="report(\'merit\','+c+')">Class '+c+'</button>').join('');
@@ -191,21 +200,21 @@ const m=j.marks;el.innerHTML='<div class="card"><div class="ttl"><h2>'+esc(j.nam
 $('#xgo').onclick=openScript;
 $('#xall').onclick=()=>report('online',0);
 async function paper(p){const el=$('#pout');el.innerHTML='<p class="note">Loading...</p>';const j=await call('paper',{cls:p},null);if(!j.ok){msg(el,j);return}PAPER=Object.assign(j,{label:p});
-el.innerHTML='<div class="ttl"><span class="pill '+(j.ready?'ok':'bad')+'">'+(j.ready?'READY':'NOT READY')+'</span><span class="note">'+j.count.all+' questions · Bangla '+j.count.Bangla+' · English '+j.count.English+' · Math '+j.count.Math+'</span>'+(isAdm()?'<button class="btn sm sp" type="button" onclick="qEdit(null)">+ Add</button>':'')+'</div>'+
+el.innerHTML='<div class="ttl"><span class="pill '+(j.ready?'ok':'bad')+'">'+(j.ready?'READY':'NOT READY')+'</span><span class="note">'+j.count.all+' questions · Bangla '+j.count.Bangla+' · English '+j.count.English+' · Math '+j.count.Math+'</span>'+(isEx()?'<button class="btn sm sp" type="button" onclick="qEdit(null)">+ Add</button>':'')+'</div>'+
 (j.problems.length?'<div class="msg bad">'+esc(j.problems.join('\n'))+'</div>':'')+(j.warnings.length?'<div class="msg info">'+esc(j.warnings.join('\n'))+'</div>':'')+'<div id="qed"></div>'+
-j.qs.map(q=>'<div class="q"><div class="top"><b>Q'+q.n+'</b><span class="pill">'+esc(q.s)+'</span>'+(isAdm()?'<button class="btn sm alt sp" type="button" onclick="qEdit('+q.n+')">Edit</button>':'')+'</div>'+(q.qb?'<div class="bn">'+esc(q.qb)+'</div>':'')+(q.qe?'<div>'+esc(q.qe)+'</div>':'')+q.o.map((o,i)=>{const L='ABCD'[i];return '<span class="o '+(L===q.k?'k':'')+'"><span class="bn">'+L+'. '+esc(o[0])+(o[0]&&o[1]?' / ':'')+esc(o[1])+'</span>'+(L===q.k?' ✓':'')+'</span>'}).join('')+'</div>').join('')}
-function qEdit(n){const q=n?PAPER.qs.find(x=>x.n===n):{n:(PAPER.qs.length?Math.max(...PAPER.qs.map(x=>x.n)):0)+1,s:'Bangla',qb:'',qe:'',o:[['',''],['',''],['',''],['','']],k:''};
+j.qs.map(q=>'<div class="q"><div class="top"><b>Q'+q.n+'</b><span class="pill">'+esc(q.s)+'</span>'+(isEx()?'<button class="btn sm alt sp" type="button" onclick="qEdit('+q.n+')">Edit</button>':'')+'</div>'+(q.qb?'<div class="bn">'+esc(q.qb)+'</div>':'')+(q.qe?'<div>'+esc(q.qe)+'</div>':'')+q.o.map((o,i)=>{const L='ABCD'[i];return '<span class="o '+(L===q.k?'k':'')+'"><span class="bn">'+L+'. '+esc(o[0])+(o[0]&&o[1]?' / ':'')+esc(o[1])+'</span>'+(L===q.k?' ✓':'')+'</span>'}).join('')+'</div>').join('')}
+function qEdit(n){const q0=n?PAPER.qs.find(x=>x.n===n):null;const q=q0?Object.assign({},q0,{o:[0,1,2,3].map(i=>q0.o[i]||['',''])}):{n:(PAPER.qs.length?Math.max(...PAPER.qs.map(x=>x.n)):0)+1,s:'Bangla',qb:'',qe:'',o:[['',''],['',''],['',''],['','']],k:''};
 const box=$('#qed');const f=(id,v,ta)=>ta?'<textarea id="'+id+'" class="bn">'+esc(v)+'</textarea>':'<input id="'+id+'" class="bn" value="'+esc(v)+'">';
 box.innerHTML='<div class="q" style="border-color:var(--plum)"><div class="top"><b>'+(n?'Edit':'Add')+' Q'+q.n+'</b> · '+esc(PAPER.label)+'</div><div class="grid2"><div><label>Q No</label><input id="qn" inputmode="numeric" value="'+q.n+'" '+(n?'readonly':'')+'></div><div><label>Subject</label><select id="qs">'+['Bangla','English','Math'].map(s=>'<option'+(s===q.s?' selected':'')+'>'+s+'</option>').join('')+'</select></div></div>'+
-'<label>Question (Bangla)</label>'+f('qb',q.qb,1)+'<label>Question (English)</label>'+f('qe',q.qe,1)+[0,1,2,3].map(i=>'<div class="grid2"><div><label>'+'ABCD'[i]+' (Bangla)</label>'+f('ob'+i,q.o[i][0])+'</div><div><label>'+'ABCD'[i]+' (English)</label>'+f('oe'+i,q.o[i][1])+'</div></div>').join('')+
-'<label>Correct answer</label><select id="qk"><option value="">-</option>'+['A','B','C','D'].map(L=>'<option'+(L===q.k?' selected':'')+'>'+L+'</option>').join('')+'</select><p class="note" style="margin-top:8px">Bangla questions: fill the Bangla boxes. English questions: the English boxes. Math: both (BV sees Bangla, EV sees English).</p>'+
+'<label>Question (Bangla)</label>'+f('qb',q.qb,1)+'<label>Question (English)</label>'+f('qe',q.qe,1)+[0,1,2,3].map(i=>'<div class="grid2"><div><label>'+'ABCD'[i]+(i>1?' (Bangla, optional)':' (Bangla)')+'</label>'+f('ob'+i,q.o[i][0])+'</div><div><label>'+'ABCD'[i]+' (English)</label>'+f('oe'+i,q.o[i][1])+'</div></div>').join('')+
+'<label>Correct answer</label><select id="qk"><option value="">-</option>'+['A','B','C','D'].map(L=>'<option'+(L===q.k?' selected':'')+'>'+L+'</option>').join('')+'</select><p class="note" style="margin-top:8px">Bangla questions: fill the Bangla boxes. English questions: the English boxes. Math: both (BV sees Bangla, EV sees English). Options C and D may stay empty (Class 1 has 3 options; True/False has 2).</p>'+
 '<div class="row" style="margin-top:10px"><button class="btn" type="button" id="qsv">Save</button><button class="btn alt" type="button" onclick="$(\'#qed\').innerHTML=\'\'">Cancel</button>'+(n?'<button class="btn warn" type="button" id="qdl">Delete</button>':'')+'</div><div id="qmsg"></div></div>';
 box.scrollIntoView({behavior:'smooth',block:'start'});
-$('#qsv').onclick=async()=>{const body={paper:PAPER.label,n:Number($('#qn').value),s:$('#qs').value,qb:$('#qb').value,qe:$('#qe').value,o:[0,1,2,3].map(i=>[$('#ob'+i).value,$('#oe'+i).value]),k:$('#qk').value};const r=await call('qsave',body,$('#qsv'));msg($('#qmsg'),r);if(r.ok)setTimeout(()=>paper(PAPER.label),900)};
-if(n)$('#qdl').onclick=async()=>{if(!confirm('Delete Q'+n+'?'))return;const r=await call('qdel',{paper:PAPER.label,n:n},$('#qdl'));msg($('#qmsg'),r);if(r.ok)setTimeout(()=>paper(PAPER.label),900)}}
+$('#qsv').onclick=async()=>{const body={paper:PAPER.label,n:Number($('#qn').value),s:$('#qs').value,qb:$('#qb').value,qe:$('#qe').value,o:[0,1,2,3].map(i=>[$('#ob'+i).value,$('#oe'+i).value]),k:$('#qk').value,sure:1};if(!await sure((n?'Save the changes to ':'Add ')+'Q'+body.n+' of '+PAPER.label+'?','Correct answer: '+(body.k||'-')+'. Students taking this paper see it at once.'))return;const r=await call('qsave',body,$('#qsv'));msg($('#qmsg'),r);if(r.ok)setTimeout(()=>paper(PAPER.label),900)};
+if(n)$('#qdl').onclick=async()=>{if(!await sure('Delete Q'+n+' of '+PAPER.label+'?','Numbers must run 1, 2, 3 ... without gaps, so re-add or renumber afterwards.'))return;const r=await call('qdel',{paper:PAPER.label,n:n,sure:1},$('#qdl'));msg($('#qmsg'),r);if(r.ok)setTimeout(()=>paper(PAPER.label),900)}}
 // ---------------- offline
 async function offline(){const el=$('#offinfo');const j=await call('status');if(j.ok){const o=j.offline;el.innerHTML='<div class="kv"><div>Students</div><div><b>'+o.total+'</b></div>'+o.slots.map(x=>'<div>'+esc(x.label)+'</div><div>'+x.n+' students · '+esc(x.time)+' · report '+esc(x.report)+'</div>').join('')+'</div>'}
-if(isAdm())setGroup('#offset','Offline exam')}
+if(isEx())setGroup('#offset','Offline exam')}
 // ---------------- SMS
 async function smsPage(){const el=$('#smssum');el.innerHTML='<p class="note">Loading...</p>';const j=await call('report',{kind:'sms'});if(!j.ok){msg(el,j);return}el.innerHTML=tableHtml(j)+(j.notes&&j.notes.length?'<div class="msg bad">'+esc(j.notes.join('\n'))+'</div>':'');if(isAdm())setGroup('#smsset','SMS')}
 $('#mdel').onclick=async()=>{const j=await call('delivery',{},$('#mdel'));toast(j.ok?'Delivery status updated':(j.message||'Problem'));smsPage()};
@@ -220,10 +229,17 @@ function stuHtml(s){const ex=s.exam||{};return '<div class="card"><div class="tt
 $('#sgo').onclick=async()=>{const r=$('#sr').value.trim();if(!r)return;const el=$('#sout');el.innerHTML='<div class="card"><p class="note">Loading...</p></div>';const j=await call('student',{roll:r},$('#sgo'));if(!j.ok){msg(el,j);return}el.innerHTML=stuHtml(j.s)};
 $('#sr').addEventListener('keydown',e=>{if(e.key==='Enter')$('#sgo').click()});$('#xr').addEventListener('keydown',e=>{if(e.key==='Enter')openScript()});
 $('#cgo').onclick=async()=>{const r=$('#cr').value.trim(),v=$('#cv').value.trim();if(!r||!v)return;if(!confirm('Save this correction for '+r+'?'))return;msg($('#msgbox'),await call('correct',{roll:r,field:$('#cf').value,value:v},$('#cgo')))};
-$('#rgo').onclick=async()=>{const r=$('#rr').value.trim();if(!r)return;if(!confirm('Clear the online attempt of '+r+'? A backup is kept.'))return;msg($('#msgbox'),await call('reset',{roll:r,confirm:$('#rc').value.trim()},$('#rgo')))};
+$('#rgo').onclick=async()=>{const r=$('#rr').value.trim();if(!r)return;if(!await sure('Clear the online attempt of '+r+'?','A backup is kept. The student can start again only while the exam is open.'))return;msg($('#msgbox'),await call('reset',{roll:r,confirm:$('#rc').value.trim(),sure:1},$('#rgo')))};
 // ---------------- more
 function more(){if(isAdm())setGroup('#safeset','Safety')}
 $('#tres').onclick=async()=>{const j=await call('results',{},$('#tres'));toast(j.message||'Done')};
+// ---------------- Final Review login (exam team)
+async function rvCard(){const el=$('#rvbox');if(!el)return;el.innerHTML='<p class="note">Loading...</p>';const j=await call('review',{sure:1});if(!j.ok){msg(el,j);return}
+el.innerHTML='<p class="note">Opens the REAL paper of any class exactly as a student sees it (pick class + BV/EV). Unlimited attempts, never counted for any student; attempts appear in the hidden tab Exam Demo Log. Keep this login inside the exam team.</p>'+
+'<div class="kv" style="margin-top:8px"><div>Exam Roll</div><div class="cred">'+esc(j.roll)+'</div><div>PIN</div><div class="cred">'+esc(j.pin)+'</div><div>Status</div><div>'+(j.on?'<span class="pill ok">ALLOWED</span>':'<span class="pill bad">BLOCKED</span>')+'</div><div>Open at</div><div><a href="'+esc(j.link)+'" target="_blank" rel="noopener">'+esc(j.link.replace(/^https:\/\//,''))+'</a></div><div>Papers</div><div>'+j.papers.map(p=>'<span class="pill '+(p.ready?'ok':'bad')+'">Class '+p.cls+': '+p.n+(p.ready?' ready':' NOT ready')+'</span>').join(' ')+'</div></div>'+
+(isAdm()?'<button class="btn w alt" type="button" id="rvnew">Make a new PIN (old one stops at once)</button>':'');
+const nb=$('#rvnew');if(nb)nb.onclick=async()=>{if(!await sure('Make a new Final Review PIN?','Anyone using the old PIN is logged out of new attempts.'))return;const r=await call('reviewNew',{sure:1},nb);toast(r.message||'Done');rvCard()};
+setGroup('#rvset','Final review')}
 $('#toff').onclick=async()=>msg($('#msgbox'),await call('offline',{},$('#toff')));
 $('#tsync').onclick=async()=>msg($('#msgbox'),await call('sync',{},$('#tsync')));
 $('#out').onclick=()=>signout();
