@@ -58,6 +58,8 @@ table{width:100%;border-collapse:collapse;font-size:13px}th,td{border-bottom:1px
 .cfm{position:fixed;inset:0;background:rgba(30,8,34,.55);display:flex;align-items:center;justify-content:center;z-index:99;padding:16px}.cfm .box{background:#fff;border-radius:16px;max-width:420px;width:100%;padding:18px;box-shadow:0 20px 50px -20px rgba(0,0,0,.6)}
 .cfm h3{margin:0 0 8px;font-size:17px}.cfm p{margin:6px 0;font-size:14px;line-height:1.5;white-space:pre-wrap;word-break:break-word}.cfm .warnb{background:#fff4dc;border:1px dashed #e7b250;color:#6b4100;border-radius:10px;padding:8px 10px;font-weight:600}.cfm .row{margin-top:14px;justify-content:flex-end}
 .cred{font-size:20px;font-weight:800;letter-spacing:.5px;font-variant-numeric:tabular-nums}
+.frac{display:inline-flex;flex-direction:column;align-items:center;vertical-align:middle;margin:0 .14em;line-height:1.05;font-size:.92em}.frac>.nu{padding:0 .2em .06em;border-bottom:.09em solid currentColor}.frac>.de{padding:.06em .2em 0}
+.bx{display:inline-block;width:1.6em;height:1.1em;border:.1em solid currentColor;border-radius:.15em;vertical-align:-.2em;margin:0 .15em}
 </style></head><body>
 <header><img src="assets/mark.png" alt=""><b>QEC Medha 2026 · Control Panel</b><span class="role hide" id="who"></span></header>
 
@@ -143,6 +145,9 @@ const API='https://script.google.com/macros/s/AKfycbzS5Ol6KGT4sCpsgNoNHBDFivjj_f
 const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
 const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 let KEY='',ROLE='',META=null,SETS=null,PAPER=null;
+/** Math like the exam page: a/b as a stacked fraction, [ ] as a box, - as a minus sign. */
+function fm(t,s){let h=esc(t||'');if(s!=='Math')return h;h=h.replace(/\[\s*\]/g,'<span class="bx"></span>').replace(/([0-9\u09E6-\u09EF)\]]) [-\u2013] (?=[0-9\u09E6-\u09EF(\[])/g,'$1 \u2212 ');
+return h.replace(/(^|[^0-9\u09E6-\u09EF\/.])([0-9\u09E6-\u09EF]{1,4})\/([0-9\u09E6-\u09EF]{1,4})(?![0-9\u09E6-\u09EF\/])/g,'$1<span class="frac"><span class="nu">$2</span><span class="de">$3</span></span>')}
 const isAdm=()=>ROLE==='admin',isEx=()=>ROLE==='admin'||ROLE==='controller';
 /** Every change asks first. Exam Controller: "Are you sure? Ask the Admin beforehand." Resolves true/false. */
 function sure(title,detail){return new Promise(res=>{const d=document.createElement('div');d.className='cfm';
@@ -202,7 +207,7 @@ $('#xall').onclick=()=>report('online',0);
 async function paper(p){const el=$('#pout');el.innerHTML='<p class="note">Loading...</p>';const j=await call('paper',{cls:p},null);if(!j.ok){msg(el,j);return}PAPER=Object.assign(j,{label:p});
 el.innerHTML='<div class="ttl"><span class="pill '+(j.ready?'ok':'bad')+'">'+(j.ready?'READY':'NOT READY')+'</span><span class="note">'+j.count.all+' questions · Bangla '+j.count.Bangla+' · English '+j.count.English+' · Math '+j.count.Math+'</span>'+(isEx()?'<button class="btn sm sp" type="button" onclick="qEdit(null)">+ Add</button>':'')+'</div>'+
 (j.problems.length?'<div class="msg bad">'+esc(j.problems.join('\n'))+'</div>':'')+(j.warnings.length?'<div class="msg info">'+esc(j.warnings.join('\n'))+'</div>':'')+'<div id="qed"></div>'+
-j.qs.map(q=>'<div class="q"><div class="top"><b>Q'+q.n+'</b><span class="pill">'+esc(q.s)+'</span>'+(isEx()?'<button class="btn sm alt sp" type="button" onclick="qEdit('+q.n+')">Edit</button>':'')+'</div>'+(q.qb?'<div class="bn">'+esc(q.qb)+'</div>':'')+(q.qe?'<div>'+esc(q.qe)+'</div>':'')+q.o.map((o,i)=>{const L='ABCD'[i];return '<span class="o '+(L===q.k?'k':'')+'"><span class="bn">'+L+'. '+esc(o[0])+(o[0]&&o[1]?' / ':'')+esc(o[1])+'</span>'+(L===q.k?' ✓':'')+'</span>'}).join('')+'</div>').join('')}
+j.qs.map(q=>'<div class="q"><div class="top"><b>Q'+q.n+'</b><span class="pill">'+esc(q.s)+'</span>'+(isEx()?'<button class="btn sm alt sp" type="button" onclick="qEdit('+q.n+')">Edit</button>':'')+'</div>'+(q.qb?'<div class="bn">'+fm(q.qb,q.s)+'</div>':'')+(q.qe?'<div>'+fm(q.qe,q.s)+'</div>':'')+q.o.map((o,i)=>{const L='ABCD'[i];return '<span class="o '+(L===q.k?'k':'')+'"><span class="bn">'+L+'. '+fm(o[0],q.s)+(o[0]&&o[1]&&o[0]!==o[1]?' &nbsp;|&nbsp; '+fm(o[1],q.s):(o[0]?'':fm(o[1],q.s)))+'</span>'+(L===q.k?' ✓':'')+'</span>'}).join('')+'</div>').join('')}
 function qEdit(n){const q0=n?PAPER.qs.find(x=>x.n===n):null;const q=q0?Object.assign({},q0,{o:[0,1,2,3].map(i=>q0.o[i]||['',''])}):{n:(PAPER.qs.length?Math.max(...PAPER.qs.map(x=>x.n)):0)+1,s:'Bangla',qb:'',qe:'',o:[['',''],['',''],['',''],['','']],k:''};
 const box=$('#qed');const f=(id,v,ta)=>ta?'<textarea id="'+id+'" class="bn">'+esc(v)+'</textarea>':'<input id="'+id+'" class="bn" value="'+esc(v)+'">';
 box.innerHTML='<div class="q" style="border-color:var(--plum)"><div class="top"><b>'+(n?'Edit':'Add')+' Q'+q.n+'</b> · '+esc(PAPER.label)+'</div><div class="grid2"><div><label>Q No</label><input id="qn" inputmode="numeric" value="'+q.n+'" '+(n?'readonly':'')+'></div><div><label>Subject</label><select id="qs">'+['Bangla','English','Math'].map(s=>'<option'+(s===q.s?' selected':'')+'>'+s+'</option>').join('')+'</select></div></div>'+

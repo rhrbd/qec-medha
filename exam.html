@@ -105,6 +105,9 @@ font-weight:800;font-size:17px;color:#2d1500;background:linear-gradient(180deg,#
 @media print{body *{visibility:hidden}}
 
 body{background:#f3eff5}
+.frac{display:inline-flex;flex-direction:column;align-items:center;vertical-align:middle;margin:0 .14em;line-height:1.05;font-size:.92em;font-variant-numeric:lining-nums tabular-nums}
+.frac>.nu{padding:0 .2em .06em;border-bottom:.09em solid currentColor}.frac>.de{padding:.06em .2em 0}
+.bx{display:inline-block;width:1.6em;height:1.15em;border:.1em solid currentColor;border-radius:.15em;vertical-align:-.2em;margin:0 .15em}
 .rvp{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;margin-top:6px}.rvp.rv2{grid-template-columns:1fr 1fr;margin-top:10px}
 .rvb{border:2px solid #e3d6e8;background:#fff;color:var(--plum);border-radius:12px;padding:10px 4px;font:800 15px/1.2 inherit;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:3px}
 .rvb small{font-weight:600;font-size:11.5px;color:var(--mut)}.rvb.on{background:var(--plum);border-color:var(--plum);color:#fff}.rvb.on small{color:#f0dff3}.rvb:disabled{opacity:.45;cursor:not-allowed}
@@ -287,17 +290,21 @@ const loc=lsLoad();if(loc&&loc.a&&loc.a.length===n&&loc.a!==ans&&loc.t>(j.start|
 let sg0=Math.max(+j.sg||0,loc&&loc.t>(j.start||0)?(+loc.sg||0):0);sg0=Math.min(Math.max(0,sg0),j.secs.length-1);if(sg0>(+j.sg||0))dirty=true;
 finished=false;document.body.classList.add('noselect');$('#xtop').hidden=false;$('#xname').textContent=j.student.name+' · '+j.student.roll;
 $('#tabs').innerHTML=j.secs.map((s,i)=>'<div class="tb" data-i="'+i+'"><span>'+esc(s.name)+'</span><small><span>Q'+s.from+' – Q'+s.to+'</span></small></div>').join('');
-setLangs(j.secs,/\(EV\)/.test(j.student.clsv||''),demo);show(sg0);counts();clearInterval(clock);clock=setInterval(tickClock,500);tickClock();if(dirty)queueSave(500)}
+setLangs(j.secs,/\(EV\)/.test(j.student.clsv||''),demo);show(sg0);toTop();counts();clearInterval(clock);clock=setInterval(tickClock,500);tickClock();if(dirty)queueSave(500)}
 const isBn=t=>/[\u0980-\u09FF]/.test(t);
+function toTop(){try{if('scrollRestoration' in history)history.scrollRestoration='manual'}catch(e){}if(document.activeElement&&document.activeElement.blur)document.activeElement.blur();window.scrollTo(0,0);requestAnimationFrame(()=>window.scrollTo(0,0));setTimeout(()=>window.scrollTo(0,0),250)}
 function qf(t){return esc(t).replace(/&#39;(.{1,80}?)&#39;/g,'\u2018$1\u2019').replace(/&quot;(.{1,120}?)&quot;/g,'\u201C$1\u201D')}
-let QL={};
-function setLangs(secs,ev,dm){QL={};secs.forEach(s=>s.qs.forEach(q=>{QL[q.n]=s.name==='English'?'en':(s.name==='Math'?(dm?'both':(ev?'en':'bn')):'bn')}))}
+let QL={},QM={};
+function mf(t,math){let h=qf(t);if(!math)return h;
+h=h.replace(/\[\s*\]/g,'<span class="bx" aria-label="blank box"></span>');h=h.replace(/([0-9\u09E6-\u09EF)\]]) [-\u2013] (?=[0-9\u09E6-\u09EF(\[])/g,'$1 \u2212 ');
+return h.replace(/(^|[^0-9\u09E6-\u09EF\/.])([0-9\u09E6-\u09EF]{1,4})\/([0-9\u09E6-\u09EF]{1,4})(?![0-9\u09E6-\u09EF\/])/g,'$1<span class="frac" role="math" aria-label="$2 by $3"><span class="nu">$2</span><span class="de">$3</span></span>')}
+function setLangs(secs,ev,dm){QL={};QM={};secs.forEach(s=>s.qs.forEach(q=>{QM[q.n]=s.name==='Math';QL[q.n]=s.name==='English'?'en':(s.name==='Math'?(dm?'both':(ev?'en':'bn')):'bn')}))}
 function second(pair,l){pair=pair||['',''];return l==='both'&&pair[0]&&pair[1]&&pair[1]!==pair[0]?pair[1]:''}
 function pk(pair,l){pair=pair||['',''];return l==='en'?(pair[1]||pair[0]||''):(pair[0]||pair[1]||'')}
 function optHtml(q,k){const L='ABCD'[k];const t=pk(q.o[k],QL[q.n]),t2=second(q.o[k],QL[q.n]);const sel=ans.charAt(q.n-1)===L;
-return '<button type="button" class="opt'+(sel?' sel':'')+'" data-q="'+q.n+'" data-l="'+L+'" aria-pressed="'+sel+'"><span class="l">'+L+'</span><span class="t"><b class="'+(isBn(t)?'bn':'en')+'">'+qf(t)+'</b>'+(t2?'<small class="en">('+qf(t2)+')</small>':'')+'</span></button>'}
+return '<button type="button" class="opt'+(sel?' sel':'')+'" data-q="'+q.n+'" data-l="'+L+'" aria-pressed="'+sel+'"><span class="l">'+L+'</span><span class="t"><b class="'+(isBn(t)?'bn':'en')+'">'+mf(t,QM[q.n])+'</b>'+(t2?'<small class="en">('+mf(t2,QM[q.n])+')</small>':'')+'</span></button>'}
 function qHtml(q){const a=ans.charAt(q.n-1)!=='-';const t=pk([q.qb,q.qe],QL[q.n]),t2=second([q.qb,q.qe],QL[q.n]);
-return '<div class="q'+(a?' ans':'')+'" id="q'+q.n+'"><div class="qt"><span class="qn">Q'+q.n+'.</span><div><div class="qb '+(isBn(t)?'bn':'en')+'">'+qf(t)+'</div>'+(t2?'<div class="qe en">('+qf(t2)+')</div>':'')+'</div><span class="mk" title="1 mark">[1]</span></div>'+
+return '<div class="q'+(a?' ans':'')+'" id="q'+q.n+'"><div class="qt"><span class="qn">Q'+q.n+'.</span><div><div class="qb '+(isBn(t)?'bn':'en')+'">'+mf(t,QM[q.n])+'</div>'+(t2?'<div class="qe en">('+mf(t2,QM[q.n])+')</div>':'')+'</div><span class="mk" title="1 mark">[1]</span></div>'+
 '<div class="opts">'+(q.o||[]).map((o,k)=>(o&&(o[0]||o[1]))?optHtml(q,k):'').join('')+'</div></div>'}
 function show(i){cur=i;const s=P.secs[i];$('#tabs').querySelectorAll('.tb').forEach(b=>{const k=+b.dataset.i;b.className='tb'+(k===i?' now':(k<i?' done':''))});
 const last=i===P.secs.length-1;
@@ -310,7 +317,7 @@ function bindSec(){app.querySelectorAll('.opt').forEach(b=>b.onclick=()=>pick(+b
 app.querySelectorAll('[data-go]').forEach(b=>b.onclick=()=>{const e=document.getElementById('q'+b.dataset.go);if(e)e.scrollIntoView({behavior:'smooth',block:'start'})});
 app.querySelectorAll('[data-next]').forEach(b=>b.onclick=()=>confirmNext(+b.dataset.next));
 const se=$('#subEnd');if(se)se.onclick=confirmSubmit}
-function confirmNext(i){if(finished||i!==cur+1||i>=P.secs.length)return;closeModal();cur=i;lsSave();dirty=true;show(i);queueSave(200);window.scrollTo({top:0,behavior:'smooth'})}
+function confirmNext(i){if(finished||i!==cur+1||i>=P.secs.length)return;closeModal();cur=i;lsSave();dirty=true;show(i);queueSave(200);toTop()}
 function pick(n,L){if(finished||submitting)return;if(!P.secs[cur].qs.some(x=>x.n===n))return;if(P.deadline-nowS()<=0){timeUp();return}
 ans=ans.slice(0,n-1)+L+ans.slice(n);lsSave();dirty=true;queueSave(Math.max(4000,25000-(Date.now()-lastSave)));
 const box=document.getElementById('q'+n);if(box){const s=P.secs[cur];const q=s.qs.find(x=>x.n===n);if(q){const t=document.createElement('div');t.innerHTML=qHtml(q);box.replaceWith(t.firstChild);bindSec()}}
