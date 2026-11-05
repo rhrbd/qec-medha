@@ -152,7 +152,7 @@ document.body.appendChild(d);const done=v=>{d.remove();res(v)};d.querySelector('
 function toast(t){const d=document.createElement('div');d.className='toast';d.textContent=t;document.body.appendChild(d);setTimeout(()=>d.remove(),3200)}
 function msg(el,j){el.innerHTML='<div class="msg '+(j.ok?'ok':'bad')+'">'+esc(j.message||(j.ok?'Done.':'Something went wrong.'))+'</div>'}
 async function call(op,extra,btn){if(btn){btn.disabled=true;btn.dataset.t=btn.innerHTML;btn.textContent='Working...'}
-try{const r=await fetch(API,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(Object.assign({a:'adm',key:KEY,op:op},extra||{}))});const j=await r.json();if(j&&j.auth===false&&op!=='me')signout(j.message);return j}
+try{let j=null;for(let k=0;;k++){const r=await fetch(API,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(Object.assign({a:'adm',key:KEY,op:op},extra||{}))});const x=await r.text();try{j=JSON.parse(x);break}catch(e){if(k>=3)throw e;await new Promise(z=>setTimeout(z,800+Math.random()*1500*(k+1)))}}if(j&&j.auth===false&&op!=='me')signout(j.message);return j}
 catch(e){return {ok:false,message:'No connection. Check the internet and try again.'}}finally{if(btn){btn.disabled=false;btn.innerHTML=btn.dataset.t}}}
 function keep(k,v){try{if(v===null){localStorage.removeItem(k);sessionStorage.removeItem(k)}else($('#rem').checked?localStorage:sessionStorage).setItem(k,v)}catch(e){}}
 function kept(k){try{return localStorage.getItem(k)||sessionStorage.getItem(k)}catch(e){return null}}
