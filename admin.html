@@ -117,12 +117,13 @@ table{width:100%;border-collapse:collapse;font-size:13px}th,td{border-bottom:1px
 <div class="card"><div class="ttl"><h2>Activity log</h2><button class="btn sm alt sp" type="button" onclick="logs()">Refresh</button></div>
 <p class="note">Every login, exam start / resume / reconnect and submit with device, place and internet connection. Taken automatically from the browser and the connection; students are never asked. Newest first.</p>
 <div class="grid4"><div><label>Exam Roll</label><input id="lr" inputmode="numeric" placeholder="all"></div>
-<div><label>Event</label><select id="lev"><option value="">All events</option><option value="login">Logins</option><option value="start">Exam start / resume / reconnect</option><option value="submit">Submits</option><option value="fail">Problems (wrong PIN, refused, failed)</option></select></div>
+<div><label>Event</label><select id="lev"><option value="">All events</option><option value="login">Logins (dashboard + direct exam link)</option><option value="start">Exam start / resume / reconnect</option><option value="submit">Submits</option><option value="fail">Problems (wrong PIN, refused, failed)</option></select></div>
 <div><label>Class</label><select id="lc"><option value="">All classes</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option></select></div>
 <div><label>Mode</label><select id="lm"><option value="">All</option><option>Online</option><option>Offline</option></select></div></div>
 <div class="grid2"><div><label>From</label><input id="lf" type="datetime-local"></div><div><label>To</label><input id="lt" type="datetime-local"></div></div>
 <label>Search text (name, device, place, IP, network ...)</label><div class="row"><input id="lq" placeholder="e.g. iPhone, Dhaka, 103.12"><button class="btn" id="lgo" type="button">Search</button></div>
 <div class="seg" style="margin-top:10px" id="lquick"><button type="button" data-q="hour">Last hour</button><button type="button" data-q="today">Today</button><button type="button" data-q="exam">Exam time</button><button type="button" data-q="clear">Clear filters</button></div></div>
+<details class="card" style="padding:12px 16px"><summary style="font-weight:700;color:var(--plum);cursor:pointer">What do the events mean?</summary><div id="evhelp" style="margin-top:8px;font-size:13.5px"></div></details>
 <div id="lout"></div>
 <div class="card"><div class="ttl"><h2>Re-exams granted</h2><button class="btn sm alt sp" type="button" onclick="rxList()">Reload</button></div><div id="rxl"><p class="note">Loading...</p></div></div>
 </section>
@@ -280,7 +281,9 @@ const t=document.title;document.title=j.title.replace(/[^\w\- ]+/g,'');setTimeou
 // ---------------- verification + re-exam (student card)
 function evTable(heads,rows,max){if(!rows||!rows.length)return '<p class="note">No events recorded.</p>';const H=['Time','Event','Device','Location','IP','Network','Detail'],ix=[0,1,6,7,8,9,10];
 return '<div class="tw" style="max-height:45vh"><table><tr>'+H.map(h=>'<th>'+h+'</th>').join('')+'</tr>'+rows.slice(0,max||150).map(r=>'<tr>'+ix.map(i=>'<td>'+(i===1?evPill(r[i]):esc(r[i]))+'</td>').join('')+'</tr>').join('')+'</table></div>'}
-function evPill(e){const c=/failed|locked|refused/i.test(e)?'bad':(/^Submit/.test(e)?'ok':(/^Exam/.test(e)?'warn':''));return '<span class="pill '+c+'">'+esc(e)+'</span>'}
+const EVN={'Login':['Login (dashboard)','Signed in on the student dashboard (login.html): the normal way.'],'Login (exam page)':['Login (direct exam link)','Typed Roll + PIN on the exam page itself (exam.html) because it was opened directly: the exam link from WhatsApp / SMS / a bookmark, a new tab, or another browser. Before 10:00 it only shows the rules and the countdown; the Start button still opens at 10:00.'],'Exam started':['Exam started','Opened the question paper for the first time.'],'Exam resumed':['Exam reopened','Opened the paper again (reload, closed and reopened, or another device). Answers already saved are kept.'],'Exam reconnect':['Session renewed','The exam page renewed its connection in the background (no action by the student).'],'Exam start refused':['Start refused','Tried to open the paper when it was not allowed (before 10:00, after the end, already submitted, exam switched off).'],'Submitted':['Submitted','Submitted (Submit button or automatically at time-up, see Detail).'],'Submit (again)':['Submit repeated','Submit was pressed again after the exam was already submitted (no change).'],'Submit failed':['Submit failed','The submit request failed (the page retries; check the next rows).'],'Login failed':['Wrong Roll / PIN','A sign-in with a wrong Roll or PIN.'],'Login locked':['Locked (5 wrong PINs)','Locked for 30 minutes after 5 wrong PINs.']};
+function evPill(e){const n=EVN[e];const c=/failed|locked|refused/i.test(e)?'bad':(/^Submit/.test(e)?'ok':(/^Exam/.test(e)?'warn':''));return '<span class="pill '+c+'" title="'+esc(n?n[1]:'')+'">'+esc(n?n[0]:e)+'</span>'}
+function evPillOld(e){const c=/failed|locked|refused/i.test(e)?'bad':(/^Submit/.test(e)?'ok':(/^Exam/.test(e)?'warn':''));return '<span class="pill '+c+'">'+esc(e)+'</span>'}
 function verHtml(v,s){if(v.err)return '<div class="card"><div class="msg bad">Verification: '+esc(v.err)+'</div></div>';
 const rx=v.rx;let h='<div class="card"><div class="ttl"><h2>Verification</h2><span class="pill">'+esc(s.roll)+'</span></div><p class="note">Use this before allowing a re-exam: what the server and the log actually recorded.</p>'+
 '<h3>Facts</h3><ul style="margin:0;padding-left:18px;font-size:14px">'+(v.facts||[]).map(f=>'<li>'+esc(f)+'</li>').join('')+'</ul>'+
@@ -301,7 +304,8 @@ const o=$('#rxoff');if(o)o.onclick=async()=>{if(!await sure('Remove the re-exam 
 // ---------------- activity log page
 function dtv(ms){const d=new Date(ms-new Date().getTimezoneOffset()*60000);return d.toISOString().slice(0,16)}
 let LOGROWS=null;
-async function logs(){const el=$('#lout');el.innerHTML='<div class="card"><p class="note">Loading...</p></div>';
+function evHelp(){const el=$('#evhelp');if(el&&!el.innerHTML)el.innerHTML=Object.keys(EVN).map(k=>'<p style="margin:6px 0">'+evPill(k)+' '+esc(EVN[k][1])+'</p>').join('')}
+async function logs(){evHelp();const el=$('#lout');el.innerHTML='<div class="card"><p class="note">Loading...</p></div>';
 const tv=id=>{const v=$(id).value;return v?new Date(v).getTime():0};
 const j=await call('activity',{roll:$('#lr').value.trim(),ev:$('#lev').value,cls:$('#lc').value,mode:$('#lm').value,q:$('#lq').value.trim(),from:tv('#lf'),to:tv('#lt'),limit:1000},$('#lgo'));
 if(!j.ok){msg(el,j);return}LOGROWS=j;
