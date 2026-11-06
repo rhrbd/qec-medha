@@ -81,7 +81,7 @@ table{width:100%;border-collapse:collapse;font-size:13px}th,td{border-bottom:1px
 <div class="card adm"><div class="ttl"><h2>Correct a student</h2></div><p class="note">Saved in the Corrections tab; reaches the sheet, SMS, dashboard and exam within about a minute.</p>
 <div class="grid2"><div><label>Exam Roll</label><input id="cr" inputmode="numeric"></div><div><label>What</label><select id="cf"><option value="whatsapp">Mobile number</option><option value="name">Name</option><option value="mode">Mode (Online / Offline)</option><option value="version">Version (Bangla / English)</option><option value="cls">Class (gives a new roll)</option></select></div></div>
 <label>New value</label><input id="cv"><button class="btn w" id="cgo" type="button">Save correction</button></div>
-<div class="card ex"><div class="ttl"><h2>Allow a new online attempt</h2></div><p class="note">Clears one student's online attempt (a backup is kept). Only for real technical problems.</p>
+<div class="card ex"><div class="ttl"><h2>Allow a new online attempt</h2></div><p class="note">Only while the exam is running: clears one student's attempt (a backup is kept) so he starts again inside the common time. After the exam, use <b>Re-exam</b> on the student card (own time window).</p>
 <div class="grid2"><div><label>Exam Roll</label><input id="rr" inputmode="numeric"></div><div><label>Type it again</label><input id="rc" inputmode="numeric"></div></div><button class="btn w warn" id="rgo" type="button">Clear the attempt</button></div>
 </section>
 
@@ -104,10 +104,27 @@ table{width:100%;border-collapse:collapse;font-size:13px}th,td{border-bottom:1px
 
 <!-- RESULTS -->
 <section data-p="res" class="hide">
+<div class="card"><div class="ttl"><h2>Result publication</h2><button class="btn sm alt sp" type="button" onclick="pubCard()">Reload</button></div><div id="pubbox"><p class="note">Loading...</p></div></div>
+<div class="card"><div class="ttl"><h2>Final result sheet (management)</h2></div><div id="frbox"><p class="note">Loading...</p></div></div>
 <div class="card"><div class="ttl"><h2>Grade sheet &amp; merit list</h2></div><p class="note">Per class, BV + EV, online + offline together. Students never see these.</p>
 <h3>Grade sheet</h3><div class="seg" id="gseg"></div><h3>Merit list</h3><div class="seg" id="mseg"></div><h3>Online attempts</h3><div class="seg" id="oseg"></div>
 <button class="btn w alt ex" id="tres" type="button">Rebuild the Grade Sheet now</button></div>
 <div class="card ex"><div class="ttl"><h2>Result rules</h2></div><div id="resset"></div></div>
+</section>
+
+<!-- LOGS -->
+<section data-p="logs" class="hide">
+<div class="card"><div class="ttl"><h2>Activity log</h2><button class="btn sm alt sp" type="button" onclick="logs()">Refresh</button></div>
+<p class="note">Every login, exam start / resume / reconnect and submit with device, place and internet connection. Taken automatically from the browser and the connection; students are never asked. Newest first.</p>
+<div class="grid4"><div><label>Exam Roll</label><input id="lr" inputmode="numeric" placeholder="all"></div>
+<div><label>Event</label><select id="lev"><option value="">All events</option><option value="login">Logins</option><option value="start">Exam start / resume / reconnect</option><option value="submit">Submits</option><option value="fail">Problems (wrong PIN, refused, failed)</option></select></div>
+<div><label>Class</label><select id="lc"><option value="">All classes</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option></select></div>
+<div><label>Mode</label><select id="lm"><option value="">All</option><option>Online</option><option>Offline</option></select></div></div>
+<div class="grid2"><div><label>From</label><input id="lf" type="datetime-local"></div><div><label>To</label><input id="lt" type="datetime-local"></div></div>
+<label>Search text (name, device, place, IP, network ...)</label><div class="row"><input id="lq" placeholder="e.g. iPhone, Dhaka, 103.12"><button class="btn" id="lgo" type="button">Search</button></div>
+<div class="seg" style="margin-top:10px" id="lquick"><button type="button" data-q="hour">Last hour</button><button type="button" data-q="today">Today</button><button type="button" data-q="exam">Exam time</button><button type="button" data-q="clear">Clear filters</button></div></div>
+<div id="lout"></div>
+<div class="card"><div class="ttl"><h2>Re-exams granted</h2><button class="btn sm alt sp" type="button" onclick="rxList()">Reload</button></div><div id="rxl"><p class="note">Loading...</p></div></div>
 </section>
 
 <!-- SMS -->
@@ -135,6 +152,7 @@ table{width:100%;border-collapse:collapse;font-size:13px}th,td{border-bottom:1px
 <button data-t="exam"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/></svg>Exam</button>
 <button data-t="off"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21h18M5 21V8l7-5 7 5v13M9 21v-6h6v6"/></svg>Offline</button>
 <button data-t="res"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0z"/></svg>Results</button>
+<button data-t="logs"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>Logs</button>
 <button data-t="sms"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 5h16v11H8l-4 4z"/></svg>SMS</button>
 <button data-t="more"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="5" cy="12" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="19" cy="12" r="1.5"/></svg>More</button>
 </nav>
@@ -167,7 +185,7 @@ ROLE=j.role;if(!quiet)keep('qadm2',k);$('#login').classList.add('hide');$('#app'
 $('#who').textContent=isAdm()?'ADMIN':(ROLE==='controller'?'EXAM CONTROLLER':'VIEWER');$('#who').classList.remove('hide');$$('.adm').forEach(e=>e.classList.toggle('hide',!isAdm()));$$('.ex').forEach(e=>e.classList.toggle('hide',!isEx()));
 META=await call('meta');buildSegs();show('home')}
 function show(t){$$('nav.tabs button').forEach(b=>b.classList.toggle('on',b.dataset.t===t));$$('main>section').forEach(s=>s.classList.toggle('hide',s.dataset.p!==t));window.scrollTo(0,0);$('#msgbox').innerHTML='';
-if(t==='home')home();if(t==='exam')loadExamSet();if(t==='off')offline();if(t==='res')setGroup('#resset','Results');if(t==='sms')smsPage();if(t==='more')more()}
+if(t==='home')home();if(t==='exam')loadExamSet();if(t==='off')offline();if(t==='res'){setGroup('#resset','Results');pubCard()}if(t==='logs'){logs();rxList()}if(t==='sms')smsPage();if(t==='more')more()}
 $$('nav.tabs button').forEach(b=>b.onclick=()=>show(b.dataset.t));
 // ---------------- home
 async function home(){const el=$('[data-p="home"]');el.innerHTML='<div class="card"><p class="note">Loading...</p></div>';const j=await call('status');if(!j.ok){msg(el,j);return}
@@ -231,7 +249,7 @@ function stuHtml(s){const ex=s.exam||{};return '<div class="card"><div class="tt
 (s.slot?'<div>Offline</div><div>'+esc(s.slot.time)+' · report '+esc(s.slot.report)+'</div>':'')+'<div>Exam</div><div><b>'+esc(ex.status)+'</b>'+(ex.submitted?'<br>'+esc(ex.submitted):'')+(ex.answered?'<br>Answered '+esc(ex.answered):'')+(ex.leftPage?'<br>Left the page '+ex.leftPage+'x':'')+'</div></div>'+
 '<h3>SMS</h3>'+(s.sms.length?'<div class="tw"><table><tr><th>Time</th><th>Number</th><th>Status</th><th>Delivery</th></tr>'+s.sms.map(x=>'<tr><td>'+esc(x.time)+'</td><td>'+esc(x.num)+'</td><td>'+esc(x.status)+'</td><td>'+esc(x.delivery)+'</td></tr>').join('')+'</table></div>':'<p class="msg bad">No SMS sent yet.</p>')+
 '<div class="row" style="margin-top:10px"><button class="btn alt" type="button" onclick="$(\'#xr\').value=\''+esc(s.roll)+'\';show(\'exam\');openScript()">Answer script</button>'+(isAdm()?'<button class="btn" type="button" onclick="$(\'#mr\').value=\''+esc(s.roll)+'\';show(\'sms\')">Resend SMS</button>':'')+'</div></div>'}
-$('#sgo').onclick=async()=>{const r=$('#sr').value.trim();if(!r)return;const el=$('#sout');el.innerHTML='<div class="card"><p class="note">Loading...</p></div>';const j=await call('student',{roll:r},$('#sgo'));if(!j.ok){msg(el,j);return}el.innerHTML=stuHtml(j.s)};
+$('#sgo').onclick=async()=>{const r=$('#sr').value.trim();if(!r)return;const el=$('#sout');el.innerHTML='<div class="card"><p class="note">Loading...</p></div>';const j=await call('student',{roll:r},$('#sgo'));if(!j.ok){msg(el,j);return}el.innerHTML=stuHtml(j.s)+verHtml(j.v||{},j.s);verWire(j.s,j.v||{})};
 $('#sr').addEventListener('keydown',e=>{if(e.key==='Enter')$('#sgo').click()});$('#xr').addEventListener('keydown',e=>{if(e.key==='Enter')openScript()});
 $('#cgo').onclick=async()=>{const r=$('#cr').value.trim(),v=$('#cv').value.trim();if(!r||!v)return;if(!confirm('Save this correction for '+r+'?'))return;msg($('#msgbox'),await call('correct',{roll:r,field:$('#cf').value,value:v},$('#cgo')))};
 $('#rgo').onclick=async()=>{const r=$('#rr').value.trim();if(!r)return;if(!await sure('Clear the online attempt of '+r+'?','A backup is kept. The student can start again only while the exam is open.'))return;msg($('#msgbox'),await call('reset',{roll:r,confirm:$('#rc').value.trim(),sure:1},$('#rgo')))};
@@ -255,6 +273,62 @@ const j=await call('report',{kind:kind,cls:cls||0,slot:slot||0});if(!j.ok){msg(b
 box.innerHTML='<div class="card"><div class="ttl"><h2>'+esc(j.title)+'</h2><button class="btn sm sp" type="button" id="pdf">Download PDF</button></div><p class="note" style="margin-bottom:10px">'+esc(j.sub)+'</p>'+tableHtml(j)+'</div>';
 $('#pdf').onclick=()=>{const p=$('#print');p.className=j.sign?'sign':'';p.innerHTML='<div class="ph"><img src="assets/logo.png" alt=""><div><h1>'+esc(j.title)+'</h1><div class="sub">QEC Academy · Medha Onneshon 2026 · '+esc(j.sub)+'</div></div></div><table><tr>'+j.heads.map(h=>'<th>'+esc(h)+'</th>').join('')+'</tr>'+j.rows.map(r=>'<tr>'+r.map(c=>'<td>'+esc(c)+'</td>').join('')+'</tr>').join('')+'</table><div class="foot">Printed '+esc(j.made)+' · QEC Academy</div>';
 const t=document.title;document.title=j.title.replace(/[^\w\- ]+/g,'');setTimeout(()=>{window.print();document.title=t},150)}}
+// ---------------- verification + re-exam (student card)
+function evTable(heads,rows,max){if(!rows||!rows.length)return '<p class="note">No events recorded.</p>';const H=['Time','Event','Device','Location','IP','Network','Detail'],ix=[0,1,6,7,8,9,10];
+return '<div class="tw" style="max-height:45vh"><table><tr>'+H.map(h=>'<th>'+h+'</th>').join('')+'</tr>'+rows.slice(0,max||150).map(r=>'<tr>'+ix.map(i=>'<td>'+(i===1?evPill(r[i]):esc(r[i]))+'</td>').join('')+'</tr>').join('')+'</table></div>'}
+function evPill(e){const c=/failed|locked|refused/i.test(e)?'bad':(/^Submit/.test(e)?'ok':(/^Exam/.test(e)?'warn':''));return '<span class="pill '+c+'">'+esc(e)+'</span>'}
+function verHtml(v,s){if(v.err)return '<div class="card"><div class="msg bad">Verification: '+esc(v.err)+'</div></div>';
+const rx=v.rx;let h='<div class="card"><div class="ttl"><h2>Verification</h2><span class="pill">'+esc(s.roll)+'</span></div><p class="note">Use this before allowing a re-exam: what the server and the log actually recorded.</p>'+
+'<h3>Facts</h3><ul style="margin:0;padding-left:18px;font-size:14px">'+(v.facts||[]).map(f=>'<li>'+esc(f)+'</li>').join('')+'</ul>'+
+'<h3>Warning signs</h3>'+((v.flags||[]).length?'<div class="msg bad" style="margin-top:0">'+v.flags.map(esc).join('\n')+'</div>':'<div class="msg ok" style="margin-top:0">No warning signs.</div>')+
+'<div class="kv" style="margin-top:10px"><div>Devices</div><div>'+(v.devices&&v.devices.length?v.devices.map(esc).join('<br>'):'-')+'</div><div>Places</div><div>'+(v.places&&v.places.length?v.places.map(esc).join('<br>'):'-')+'</div><div>IP addresses</div><div>'+(v.ips&&v.ips.length?v.ips.map(esc).join(', '):'-')+'</div><div>Exam window</div><div>'+esc((v.window||{}).open||'')+' – '+esc((v.window||{}).close||'')+'</div><div>Earlier attempts kept</div><div>'+(v.backups||0)+'</div></div>'+
+(rx?'<div class="msg info"><b>Re-exam #'+rx.n+'</b> '+(rx.active?'<span class="pill ok">OPEN / UPCOMING</span>':'<span class="pill">ENDED</span>')+'\n'+esc(rx.open)+' – '+esc(rx.close)+' ('+rx.min+' min, '+(rx.keep?'continuing saved answers':'fresh paper')+')\nReason: '+esc(rx.why)+'\nGranted '+esc(rx.at)+' by '+esc(rx.by)+'</div>'+(isEx()?'<button class="btn w alt" type="button" id="rxoff">Remove this re-exam window</button>':''):'')+
+'<h3>Timeline</h3>'+evTable(v.heads,v.events)+'</div>';
+if(isEx()&&!/offline/i.test(s.mode||''))h+='<div class="card"><div class="ttl"><h2>Allow a re-exam</h2></div><p class="note">The student gets his own time window. The earlier attempt is kept as a backup and replaced by the new one in the results. Grant only after checking the facts above.</p>'+
+'<div class="grid2"><div><label>Minutes</label><input id="rxm" inputmode="numeric" value="'+(v.full||35)+'"></div><div><label>Start (today)</label><input id="rxs" placeholder="empty = now, or e.g. 2:30 PM"></div></div>'+
+'<label>Answers</label><select id="rxk"><option value="fresh">Start fresh (empty answer sheet)</option><option value="continue">Continue with the saved answers</option></select>'+
+'<label>Reason (what went wrong, what you checked)</label><textarea id="rxw" placeholder="e.g. power cut at 10:12, last save 10:11, confirmed by parent call"></textarea>'+
+'<label>Type the Exam Roll again</label><input id="rxc" inputmode="numeric"><button class="btn w warn" type="button" id="rxgo">Allow re-exam</button><div id="rxmsg"></div></div>';
+return h}
+function verWire(s,v){const g=$('#rxgo');if(g)g.onclick=async()=>{const body={roll:s.roll,minutes:$('#rxm').value.trim(),start:$('#rxs').value.trim(),keep:$('#rxk').value,why:$('#rxw').value.trim(),confirm:$('#rxc').value.trim(),sure:1};
+if(!body.why){toast('Write the reason first.');return}if(!await sure('Allow a re-exam for '+s.roll+' ('+s.name+')?',(body.start?'Starts '+body.start:'Starts NOW')+', '+(body.minutes||'')+' minutes, '+(body.keep==='continue'?'continuing the saved answers':'fresh answer sheet')+'.\nThe earlier attempt is kept as a backup.'))return;
+const r=await call('reexam',body,g);msg($('#rxmsg'),r);if(r.ok)setTimeout(()=>$('#sgo').click(),1500)};
+const o=$('#rxoff');if(o)o.onclick=async()=>{if(!await sure('Remove the re-exam window of '+s.roll+'?','An attempt already made stays as it is.'))return;const r=await call('reexamOff',{roll:s.roll,sure:1},o);toast(r.message||'Done');$('#sgo').click()}}
+// ---------------- activity log page
+function dtv(ms){const d=new Date(ms-new Date().getTimezoneOffset()*60000);return d.toISOString().slice(0,16)}
+let LOGROWS=null;
+async function logs(){const el=$('#lout');el.innerHTML='<div class="card"><p class="note">Loading...</p></div>';
+const tv=id=>{const v=$(id).value;return v?new Date(v).getTime():0};
+const j=await call('activity',{roll:$('#lr').value.trim(),ev:$('#lev').value,cls:$('#lc').value,mode:$('#lm').value,q:$('#lq').value.trim(),from:tv('#lf'),to:tv('#lt'),limit:1000},$('#lgo'));
+if(!j.ok){msg(el,j);return}LOGROWS=j;
+const cnt=Object.keys(j.counts).sort((a,b)=>j.counts[b]-j.counts[a]).map(k=>evPill(k)+' <b>'+j.counts[k]+'</b>').join(' &nbsp; ');
+el.innerHTML='<div class="card"><div class="ttl"><h2>'+j.total+' event(s) · '+j.students+' student(s)</h2><button class="btn sm alt sp" type="button" id="lcsv">CSV</button><button class="btn sm" type="button" id="lpdf">PDF</button></div><p class="note" style="margin-bottom:8px">'+cnt+(j.cut?'<br>Showing the newest 1000 - narrow the filters to see older ones.':'')+'</p>'+
+(j.rows.length?'<div class="tw"><table><tr>'+j.heads.map(h=>'<th>'+esc(h)+'</th>').join('')+'</tr>'+j.rows.map(r=>'<tr>'+r.map((c,i)=>'<td>'+(i===1?evPill(c):(i===2&&/^\d+$/.test(c)?'<a href="#" data-roll="'+esc(c)+'">'+esc(c)+'</a>':esc(c)))+'</td>').join('')+'</tr>').join('')+'</table></div>':'<p class="note">Nothing matches.</p>')+'<p class="note" style="margin-top:8px">'+esc(j.note||'')+'</p></div>';
+el.querySelectorAll('[data-roll]').forEach(a=>a.onclick=e=>{e.preventDefault();$('#sr').value=a.dataset.roll;show('stu');$('#sgo').click()});
+$('#lcsv').onclick=()=>{const q=v=>'"'+String(v==null?'':v).replace(/"/g,'""')+'"';const csv=[j.heads].concat(j.rows).map(r=>r.map(q).join(',')).join('\r\n');const a=document.createElement('a');a.href=URL.createObjectURL(new Blob(['﻿'+csv],{type:'text/csv'}));a.download='activity-log.csv';document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},500)};
+$('#lpdf').onclick=()=>printTable('Activity Log',j.total+' events · '+j.students+' students',j.heads.slice(0,11),j.rows)}
+function printTable(title,sub,heads,rows){const p=$('#print');p.className='';p.innerHTML='<div class="ph"><img src="assets/logo.png" alt=""><div><h1>'+esc(title)+'</h1><div class="sub">QEC Academy · Medha Onneshon 2026 · '+esc(sub)+'</div></div></div><table><tr>'+heads.map(h=>'<th>'+esc(h)+'</th>').join('')+'</tr>'+rows.map(r=>'<tr>'+r.map(c=>'<td>'+esc(c)+'</td>').join('')+'</tr>').join('')+'</table><div class="foot">Printed '+esc(new Date().toLocaleString())+' · QEC Academy</div>';
+const t=document.title;document.title=title.replace(/[^\w\- ]+/g,'');setTimeout(()=>{window.print();document.title=t},150)}
+$('#lgo').onclick=logs;['#lr','#lq'].forEach(s=>$(s).addEventListener('keydown',e=>{if(e.key==='Enter')logs()}));
+$('#lquick').querySelectorAll('button').forEach(b=>b.onclick=()=>{const q=b.dataset.q,now=Date.now();
+if(q==='clear'){['#lr','#lq','#lf','#lt'].forEach(s=>$(s).value='');['#lev','#lc','#lm'].forEach(s=>$(s).value='')}
+else if(q==='hour'){$('#lf').value=dtv(now-3600000);$('#lt').value=''}
+else if(q==='today'){const d=new Date();d.setHours(0,0,0,0);$('#lf').value=dtv(d.getTime());$('#lt').value=''}
+else if(q==='exam'){$('#lf').value='2026-11-07T09:30';$('#lt').value='2026-11-07T11:15'}logs()});
+async function rxList(){const el=$('#rxl');const j=await call('reexams');if(!j.ok){msg(el,j);return}el.innerHTML=j.rows.length?tableHtml(j):'<p class="note">No re-exam granted.</p>'}
+// ---------------- result publication + final sheet
+async function pubCard(){const el=$('#pubbox'),fr=$('#frbox');const j=await call('pubinfo');if(!j.ok){msg(el,j);return}
+el.innerHTML=(j.on?'<div class="msg ok" style="margin-top:0"><b>PUBLISHED</b> on '+esc(j.at)+' by '+esc(j.by)+' · '+j.n+' results visible on the student dashboards'+(j.notFinal?' ('+j.notFinal+' see "not ready")':'')+'</div>':'<div class="msg bad" style="margin-top:0"><b>NOT PUBLISHED</b>: students see no marks, no result, no answers'+(j.off?' (hidden again '+esc(j.off)+')':'')+'.</div>')+
+'<p class="note" style="margin-top:8px">Publishing shows each student only his own marks (Bangla, English, Math, total), Pass / Fail and merit position on the dashboard. Answer keys and answer scripts are never shown. If marks change after publishing, press Publish again.</p>'+
+(isAdm()?'<div class="row" style="margin-top:10px">'+(j.on?'<button class="btn alt" type="button" id="pubre">Publish again (refresh)</button><button class="btn warn" type="button" id="puboff">Hide results</button>':'<button class="btn" type="button" id="pubon">Publish results</button>')+'</div>':'<p class="note">Only the Admin key can publish.</p>');
+const go=async(btn)=>{if(!await sure('Publish the results to the students?','Every student will see his marks, Pass / Fail and merit position on the dashboard right away.'))return;let r=await call('publish',{on:1,sure:1},btn);
+if(!r.ok&&r.needForce){if(!await sure('Some results are not final',r.message+'\n\nPublish anyway?'))return;r=await call('publish',{on:1,force:1,sure:1},btn)}msg($('#msgbox'),r);pubCard()};
+if($('#pubon'))$('#pubon').onclick=()=>go($('#pubon'));if($('#pubre'))$('#pubre').onclick=()=>go($('#pubre'));
+if($('#puboff'))$('#puboff').onclick=async()=>{if(!await sure('Hide the results from the students?','The dashboard stops showing results at once.'))return;const r=await call('publish',{on:0,sure:1},$('#puboff'));msg($('#msgbox'),r);pubCard()};
+const f=j.final;fr.innerHTML='<p class="note">A separate Google Sheet for management: one tab per class plus All Classes, logo, merit position, Pass / Fail, signature lines (Exam Controller, CEO). Updates itself every few minutes. Share that file with management.</p>'+
+(f&&f.url?'<a class="btn w alt" href="'+esc(f.url)+'" target="_blank" rel="noopener">Open the final result sheet</a><h3>Print-ready PDF</h3><div class="seg">'+f.pdfs.map(x=>'<a class="btn sm alt" style="text-decoration:none" href="'+esc(x.url)+'" target="_blank" rel="noopener">'+esc(x.label)+'</a>').join('')+'</div>':'<p class="msg info">Not created yet.</p>')+
+(isEx()?'<button class="btn w alt" type="button" id="frgo">Rebuild it now</button>':'');
+if($('#frgo'))$('#frgo').onclick=async()=>{const r=await call('final',{sure:1},$('#frgo'));msg($('#msgbox'),r);pubCard()}}
 // ---------------- start
 $('#go').onclick=()=>{const k=$('#key').value.trim();if(k)signin(k)};$('#key').addEventListener('keydown',e=>{if(e.key==='Enter')$('#go').click()});
 const saved=kept('qadm2');if(saved){$('#rem').checked=true;signin(saved,true)}
