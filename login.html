@@ -106,7 +106,7 @@ font-weight:800;font-size:17px;color:#2d1500;background:linear-gradient(180deg,#
 .rcard{grid-column:1/-1}.rbody{padding:0 20px 18px}.rtop{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin:4px 0 12px}
 .rbadge{display:inline-block;font-weight:800;font-size:15px;padding:8px 16px;border-radius:999px}.rbadge.pass{background:#e3f6ec;color:#0f7a49}.rbadge.fail{background:#fde8e8;color:#b3261e}.rbadge.abs{background:#eee;color:#555}
 .rmerit{display:flex;flex-direction:column;line-height:1.1}.rmerit b{font-size:26px;color:var(--plum,#5b1462)}.rmerit span{font-size:12px;color:#6f6177;font-weight:700}
-.rtab{width:100%;border-collapse:collapse;font-size:15px}.rtab td{padding:9px 4px;border-bottom:1px solid #eee3f1}.rtab td:last-child{text-align:right}.rtab tr.tot td{border-bottom:0;font-size:16px}
+.rtab{width:100%;max-width:560px;border-collapse:collapse;font-size:15px}.rtab td{padding:9px 4px;border-bottom:1px solid #eee3f1}.rtab td:last-child{text-align:right}.rtab tr.tot td{border-bottom:0;font-size:16px}
 .rmsg{margin:6px 0;font-size:15px}.rnote{margin:10px 0 0;font-size:12px;color:#6f6177}
 
 .prof{display:flex;gap:15px;align-items:center;padding:18px 20px}
@@ -207,7 +207,7 @@ if(st==='offline'){const oe=j.exam||{};return '<section class="exc"><span class=
 (oe.report?'<p class="exnote" style="margin-top:8px">Reporting Time: <b class="nw" style="color:#fff">'+esc(oe.report)+'</b></p>':'')+
 '<p class="exnote ctr" style="margin-top:8px">Centre: '+esc(pl.type==='venue'?pl.value:'QEC Academy (Chottogram)')+'</p><p class="exnote" style="margin-top:8px">Pen and paper exam. Bring your Exam Roll.</p></section>'}
 if(st==='submitted'){return '<section class="exc done"><span class="eyebrow" style="color:#bff0d6">&#10003; Exam Taken</span><h2>Your Exam Has Been Submitted</h2>'+
-'<p class="when">Your answers were submitted'+(ex.at?' at '+nw(fmtT(ex.at)):'')+'.</p><p class="exnote">Results will be announced here on your dashboard.</p></section>'}
+'<p class="when">Your answers were submitted'+(ex.at?' at '+nw(fmtT(ex.at)):'')+'.</p><p class="exnote">'+(j.result?'Your result is shown above.':'Results will be announced here on your dashboard.')+'</p></section>'}
 if(st==='closed'){return '<section class="exc closed"><span class="eyebrow" style="color:#e3dbe8">'+ICO+'Exam Ended</span><h2>You Have Not Taken the Exam</h2><p class="when">The online exam ('+examWhen(ex)+') has ended. No answers were submitted with this Exam Roll.</p><p class="exnote">Questions? Call the helpline.</p></section>'}
 if(st==='none'){return '<section class="exc"><span class="eyebrow">'+ICO+'Online Exam</span><h2>Exam Details Coming Soon</h2><p class="exnote">The exam link will appear here.</p></section>'}
 h='<span class="eyebrow">'+ICO+'Online Exam</span><h2>'+(st==='before'?'Your Exam Starts In':(st==='progress'?'Your Exam Is Running':'The Exam Is Open Now'))+'</h2><p class="when">'+examWhen(ex)+'</p>';
