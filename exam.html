@@ -1,7 +1,7 @@
 <!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>QEC Medha Onneshon Exam 2026</title><meta name="description" content="Online exam."><meta name="robots" content="noindex"><meta name="theme-color" content="#5b1462">
-<link rel="icon" type="image/png" href="assets/mark.png?v=12"><link rel="apple-touch-icon" href="assets/mark180.png?v=12">
-<link rel="preload" href="assets/kalpurush.woff?v=12" as="font" type="font/woff" crossorigin><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="icon" type="image/png" href="assets/mark.png?v=13"><link rel="apple-touch-icon" href="assets/mark180.png?v=13">
+<link rel="preload" href="assets/kalpurush.woff?v=13" as="font" type="font/woff" crossorigin><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Hind+Siliguri:wght@400;500;600;700&family=Noto+Serif:wght@400;600&display=swap" rel="stylesheet">
 <style>
 :root{--plum:#5b1462;--plum2:#7a2484;--plumd:#36093c;--amber:#f3ae3c;--amber2:#ffc864;--ink:#1c1421;--mut:#6c6273;--line:#ece6ef;--bg:#f5f1f7;--card:#fff;
@@ -11,7 +11,7 @@
 html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
 body{background:radial-gradient(1200px 500px at 50% -200px,#efe6f3,transparent 70%),var(--bg);color:var(--ink);font:400 15px/1.55 "Plus Jakarta Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;-webkit-font-smoothing:antialiased;min-height:100vh;display:flex;flex-direction:column;
 overflow-wrap:break-word;word-break:normal;hyphens:none;-webkit-hyphens:none}
-@font-face{font-family:"Kalpurush";src:url(assets/kalpurush.woff?v=12) format("woff");font-display:swap;unicode-range:U+0980-09FF,U+200C-200D,U+25CC}
+@font-face{font-family:"Kalpurush";src:url(assets/kalpurush.woff?v=13) format("woff");font-display:swap;unicode-range:U+0980-09FF,U+200C-200D,U+25CC}
 .bn{font-family:"Kalpurush","Hind Siliguri","Plus Jakarta Sans",sans-serif;font-weight:400}
 .en{font-family:"Noto Serif",Georgia,"Times New Roman",serif}
 .nw{white-space:nowrap}
@@ -232,12 +232,12 @@ function rvGet(){try{const x=JSON.parse(sessionStorage.getItem(RVK)||'null');ret
 function rvSet(x){try{if(x)sessionStorage.setItem(RVK,JSON.stringify(x));else sessionStorage.removeItem(RVK)}catch(e){}}
 function lsSave(){try{localStorage.setItem(lsKey(),JSON.stringify({a:ans,sw:sw,sg:cur,t:Date.now()}))}catch(e){}}
 function lsLoad(){try{return JSON.parse(localStorage.getItem(lsKey())||'null')}catch(e){return null}}
-function header(h){return '<div class="phead"><img alt="QEC Academy" src="assets/logo.png?v=12"><div class="org">'+esc(h.org)+'</div><div class="ttl">'+esc(h.title)+'</div>'+
+function header(h){return '<div class="phead"><img alt="QEC Academy" src="assets/logo.png?v=13"><div class="org">'+esc(h.org)+'</div><div class="ttl">'+esc(h.title)+'</div>'+
 '<div class="cls">Class: '+esc(String(h.cls||'').replace(/\s*\(.*\)\s*/,''))+'</div><div class="fm"><span class="nw">Full Marks: '+esc(h.marks)+'</span><span class="nw">Time: '+esc(h.minutes)+' Minutes</span></div></div>'}
 function card(inner){return '<div class="paper">'+inner+'</div>'}
 function helpLine(){return 'Need help? <a href="tel:'+HELP.local+'" style="color:var(--plum);font-weight:800;text-decoration:none" class="nw">'+HELP.display+'</a>'}
 // ---------------------------------------------------------------- sign in (WhatsApp-link route)
-function loginView(msg){app.innerHTML='<div class="center">'+card('<div class="phead"><img alt="QEC Academy" src="assets/logo.png?v=12"><div class="org">QEC Academy</div><div class="ttl">Medha Onneshon Exam - 2026</div></div>'+
+function loginView(msg){app.innerHTML='<div class="center">'+card('<div class="phead"><img alt="QEC Academy" src="assets/logo.png?v=13"><div class="org">QEC Academy</div><div class="ttl">Medha Onneshon Exam - 2026</div></div>'+
 '<div class="sec"><h2 style="margin-bottom:4px">Enter the Exam</h2><p style="color:var(--mut);font-size:14px;margin-bottom:14px">Use the Exam Roll and PIN from your SMS.</p>'+
 '<form id="lf" autocomplete="off" novalidate><div style="display:grid;gap:12px"><div><label class="lbl" for="r">Exam Roll</label><input class="in" id="r" type="text" autocapitalize="characters" maxlength="10" placeholder="e.g. 10001" spellcheck="false"></div>'+
 '<div><label class="lbl" for="p">6-Digit PIN</label><div class="pinw"><input class="in" id="p" type="password" inputmode="numeric" maxlength="6" placeholder="&bull;&bull;&bull;&bull;&bull;&bull;"><button type="button" id="eye">Show</button></div></div>'+
@@ -250,7 +250,7 @@ if(!/^\d{6}$/.test(pin)){le.textContent='The PIN has 6 digits. Check your SMS.';
 $('#lb').disabled=true;$('#lb').textContent='Checking...';A={roll:roll,pin:pin};peek(true)}}
 // ---------------------------------------------------------------- info page (segment 1)
 async function peek(fromForm){try{const t0=Date.now();const j=await post({a:'exPeek',roll:A.roll,pin:A.pin,lg:fromForm?1:undefined,ci:fromForm?ci():undefined});
-if(!j||!j.ok){if(fromForm){loginView((j&&j.message)||'Could not sign in.')}else{ss('qec_auth',null);loginView(j&&j.message)}return}
+if(!j||!j.ok){if(fromForm){const a0=A;loginView((j&&j.message)||'Could not sign in.');if(j&&j.locked){try{$('#r').value=a0.roll}catch(e){}}}else if(j&&j.locked){const a0=A;loginView(j.message);try{$('#r').value=a0.roll;$('#p').value=a0.pin}catch(e){}}else{ss('qec_auth',null);loginView(j&&j.message)}return}
 ss('qec_auth',{roll:A.roll,pin:A.pin});skew=j.now-Math.round((t0+Date.now())/2);demo=!!j.demo;review=!!j.review;infoView(j)}
 catch(e){if(fromForm)loginView('Could not reach the server. Check your internet and try again.');else app.innerHTML='<div class="center">'+card('<div class="sec"><div class="err">Could not reach the server. Check your internet.</div><button class="btn wide" style="margin-top:14px" onclick="location.reload()">Try Again</button></div>')+'</div>'}}
 let infoT=null;
@@ -374,7 +374,7 @@ catch(e){}
 const wait=Math.min(15000,2000*Math.pow(1.6,n))+Math.random()*2500;overlay('<h3>'+(how==='auto'?'Time Is Up':'Submitting...')+'</h3><p>Connection is slow. Trying again... Please keep this page open.</p>');
 setTimeout(()=>doSubmit(how,n+1),wait)}
 function thanks(at,fresh){finished=true;clearInterval(clock);clearInterval(infoT);closeModal();$('#xtop').hidden=true;$('#wm').hidden=true;document.body.classList.remove('noselect');
-app.innerHTML='<div class="center">'+card('<div class="thanks"><img alt="QEC Academy" src="assets/logo.png?v=12" style="height:56px;width:auto;display:block;margin:0 auto 18px"><div class="big"><svg width="38" height="38" viewBox="0 0 24 24" fill="none" stroke="#0f7a49" stroke-width="2.8"><path d="M20 6 9 17l-5-5"/></svg></div>'+
+app.innerHTML='<div class="center">'+card('<div class="thanks"><img alt="QEC Academy" src="assets/logo.png?v=13" style="height:56px;width:auto;display:block;margin:0 auto 18px"><div class="big"><svg width="38" height="38" viewBox="0 0 24 24" fill="none" stroke="#0f7a49" stroke-width="2.8"><path d="M20 6 9 17l-5-5"/></svg></div>'+
 '<h2>Your Exam Has Been Submitted</h2><p>Thank you for joining <b>QEC Academy Medha Onneshon Exam 2026</b>.</p>'+(at?'<p style="font-size:13.5px;color:var(--mut)">Submitted at '+nw(fmtT(at))+'</p>':'')+
 (demo?'<p style="font-size:13.5px;color:var(--mut)">This was a practice exam. Nothing was recorded for any student.</p>':'<p style="font-size:13.5px;color:var(--mut)">Results will be announced on your dashboard.</p>')+
 '<div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:20px"><a class="btn" href="login.html" style="display:inline-flex;align-items:center;text-decoration:none">Back to Dashboard</a>'+(demo?'<button class="ghost" type="button" style="height:50px" onclick="location.reload()">Try the Demo Again</button>':'')+'</div></div>')+'</div>';window.scrollTo(0,0)}
