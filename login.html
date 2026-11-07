@@ -1,7 +1,7 @@
 <!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>QEC Medha Onneshon 2026 | Student Login</title><meta name="description" content="Student dashboard: exam roll, online exam and updates."><meta name="robots" content="noindex"><meta name="theme-color" content="#5b1462">
-<link rel="icon" type="image/png" href="assets/mark.png?v=14"><link rel="apple-touch-icon" href="assets/mark180.png?v=14">
-<link rel="preload" href="assets/kalpurush.woff?v=14" as="font" type="font/woff" crossorigin><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="icon" type="image/png" href="assets/mark.png?v=15"><link rel="apple-touch-icon" href="assets/mark180.png?v=15">
+<link rel="preload" href="assets/kalpurush.woff?v=15" as="font" type="font/woff" crossorigin><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Hind+Siliguri:wght@400;500;600;700&family=Noto+Serif:wght@400;600&display=swap" rel="stylesheet">
 <style>
 :root{--plum:#5b1462;--plum2:#7a2484;--plumd:#36093c;--amber:#f3ae3c;--amber2:#ffc864;--ink:#1c1421;--mut:#6c6273;--line:#ece6ef;--bg:#f5f1f7;--card:#fff;
@@ -11,7 +11,7 @@
 html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
 body{background:radial-gradient(1200px 500px at 50% -200px,#efe6f3,transparent 70%),var(--bg);color:var(--ink);font:400 15px/1.55 "Plus Jakarta Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;-webkit-font-smoothing:antialiased;min-height:100vh;display:flex;flex-direction:column;
 overflow-wrap:break-word;word-break:normal;hyphens:none;-webkit-hyphens:none}
-@font-face{font-family:"Kalpurush";src:url(assets/kalpurush.woff?v=14) format("woff");font-display:swap;unicode-range:U+0980-09FF,U+200C-200D,U+25CC}
+@font-face{font-family:"Kalpurush";src:url(assets/kalpurush.woff?v=15) format("woff");font-display:swap;unicode-range:U+0980-09FF,U+200C-200D,U+25CC}
 .bn{font-family:"Kalpurush","Hind Siliguri","Plus Jakarta Sans",sans-serif;font-weight:400}
 .en{font-family:"Noto Serif",Georgia,"Times New Roman",serif}
 .nw{white-space:nowrap}
@@ -126,7 +126,7 @@ font-weight:800;font-size:17px;color:#2d1500;background:linear-gradient(180deg,#
 .roll .v{font-size:22px;letter-spacing:.04em}
 @media(min-width:900px){.g1{grid-template-columns:1fr!important}}
 @media(min-width:900px){.dash{grid-template-columns:7fr 5fr;align-items:start}.dash .exc{grid-column:1/-1}.prof{padding:20px 22px}.ph{flex-basis:84px;width:84px;height:84px;font-size:28px}}
-</style></head><body><header class="top"><div class="bar"><a class="logo" href="./" aria-label="QEC Academy home"><img alt="QEC Academy" src="assets/logo.png?v=14"></a><a class="ghostl" href="./">Check Registration</a></div>
+</style></head><body><header class="top"><div class="bar"><a class="logo" href="./" aria-label="QEC Academy home"><img alt="QEC Academy" src="assets/logo.png?v=15"></a><a class="ghostl" href="./">Check Registration</a></div>
 <div class="hero"><h1>QEC Medha Onneshon <i>2026</i></h1><p class="sub bn">QEC মেধা অন্বেষণ ২০২৬</p><p class="lead">Log in with your Exam Roll and PIN to see your exam and updates.</p></div></header><main>
 <section class="card pad narrow" id="loginCard"><h2 style="margin-bottom:4px">Student Login</h2><p style="color:var(--mut);font-size:14px;margin-bottom:16px">Your dashboard and exam link.</p>
 <form id="f" autocomplete="off" novalidate><div style="display:grid;gap:13px">
@@ -210,6 +210,10 @@ if(st==='submitted'){return '<section class="exc done"><span class="eyebrow" sty
 '<p class="when">Your answers were submitted'+(ex.at?' at '+nw(fmtT(ex.at)):'')+'.</p><p class="exnote">'+(j.result?'Your result is shown above.':'Results will be announced here on your dashboard.')+'</p></section>'}
 if(st==='closed'){return '<section class="exc closed"><span class="eyebrow" style="color:#e3dbe8">'+ICO+'Exam Ended</span><h2>You Have Not Taken the Exam</h2><p class="when">The online exam ('+examWhen(ex)+') has ended. No answers were submitted with this Exam Roll.</p><p class="exnote">Questions? Call the helpline.</p></section>'}
 if(st==='none'){return '<section class="exc"><span class="eyebrow">'+ICO+'Online Exam</span><h2>Exam Details Coming Soon</h2><p class="exnote">The exam link will appear here.</p></section>'}
+if(ex.late&&(st==='open'||st==='progress')){const mn=esc(ex.minutes||35);return '<section class="exc"><span class="eyebrow">'+ICO+'Online Exam</span><h2>'+(st==='progress'?'Your Exam Is Running':'Your Exam Is Ready')+'</h2>'+
+'<p class="when">'+(st==='progress'?'Your '+mn+'-minute timer is running.':'Exam time: <b>'+mn+' minutes</b>')+'</p>'+
+'<a class="go pulse" href="exam.html">'+(st==='progress'?'Continue My Exam &rarr;':'Start Exam <span class="bn">(এক্সাম শুরু কর)</span> &rarr;')+'</a>'+
+(st==='progress'?'<p class="exnote" id="left"></p>':'<p class="exnote bn">Start Exam চাপার মুহূর্ত থেকে তোমার '+mn+' মিনিট শুরু হবে। ভালো ইন্টারনেট সংযোগ নিশ্চিত করে শুরু কর।</p>')+'</section>'}
 h='<span class="eyebrow">'+ICO+'Online Exam</span><h2>'+(st==='before'?'Your Exam Starts In':(st==='progress'?'Your Exam Is Running':'The Exam Is Open Now'))+'</h2><p class="when">'+examWhen(ex)+'</p>';
 if(st==='before')h+='<div class="cd" id="cd">'+cdHtml(ex.opens-nowS())+'</div>'+(ex.late?'':meetBtn(ex.meet))+'<div class="go off">The Exam Button Opens at '+nw(fmtT(ex.opens))+'</div>';
 else h+=(ex.late?'':meetBtn(ex.meet))+'<a class="go pulse" href="exam.html">'+(st==='progress'?'Continue My Exam &rarr;':'Start Exam <span class="bn">(এক্সাম শুরু কর)</span> &rarr;')+'</a><p class="exnote" id="left"></p>';
@@ -230,8 +234,8 @@ const g=safeUrl(j.group),hl=j.helpline||HELP;
 let place='';
 if(online)place=kv('Mode','<span class="nw"><span class="dot" style="background:#2f6fd6;margin-right:7px"></span>Online Exam</span>');
 else place=(ex.report?kv('Reporting Time','<span class="nw">'+esc(ex.report)+'</span>'):'')+'<div class="kv"><div class="k">Exam Centre</div><div class="v ctr">'+esc(pl.type==='venue'?pl.value:'To be announced')+'</div></div>';
-const xe=j.ex;const date=xe&&xe.set&&online?nw(fmtD(xe.opens)):esc(ex.date||'To be announced');const time=xe&&xe.set&&online?nw(fmtT(xe.opens))+' – '+nw(fmtT(cShown(xe))):(ex.time?nw(ex.time):'To be announced');
-const tips=online?['Charge your phone, tablet or laptop fully.','Use a stable internet connection (Wi-Fi or mobile data).','Log in by <span class="nw">9:50 AM</span> and join the Google Meet before you start.','Keep pen and paper ready for rough work.']:['Reach the exam centre by your Reporting Time.','Bring pen, pencil, eraser and your Exam Roll.','Keep the helpline number with you.'];
+const xe=j.ex;const date=xe&&xe.set&&online?nw(fmtD(xe.opens)):esc(ex.date||'To be announced');const time=xe&&xe.late&&online?esc(xe.minutes||35)+' minutes (from your Start)':xe&&xe.set&&online?nw(fmtT(xe.opens))+' – '+nw(fmtT(cShown(xe))):(ex.time?nw(ex.time):'To be announced');
+const tips=online?['Charge your phone, tablet or laptop fully.','Use a stable internet connection (Wi-Fi or mobile data).',(xe&&xe.late?'Your '+esc(xe.minutes||35)+' minutes begin when you press Start Exam. Do not reload or close the page during the exam.':'Log in by <span class="nw">9:50 AM</span> and join the Google Meet before you start.'),'Keep pen and paper ready for rough work.']:['Reach the exam centre by your Reporting Time.','Bring pen, pencil, eraser and your Exam Roll.','Keep the helpline number with you.'];
 $('#dash').innerHTML='<div class="dash">'+resultCard()+examCard()+'<div class="col">'+
 '<div class="card"><div class="prof"><div class="ph">'+photo+'</div><div style="min-width:0"><h2>'+esc(s.name)+'</h2>'+(s.bn?'<p class="bnn bn">'+esc(s.bn)+'</p>':'')+
 '<div class="chips"><span class="chip">'+esc(s.clsv||s.cls||'')+'</span><span class="chip"><span class="dot" style="background:'+(online?'#2f6fd6':'#d98f17')+'"></span>'+esc(s.mode||'-')+'</span>'+(j.review?'<span class="chip" style="background:#fff1d6;color:#7a4b00">Final Review</span>':j.demo?'<span class="chip" style="background:#fff1d6;color:#7a4b00">Demo</span>':'<span class="chip" style="background:#e7f6ee;color:#0f7a49">&#10003; Enrolled</span>')+'</div></div></div>'+
@@ -248,7 +252,7 @@ $('#lo').onclick=logout;$('#rf').onclick=()=>{if(creds)doLogin(creds.roll,creds.
 $('#cp').onclick=()=>{try{navigator.clipboard.writeText(s.roll);$('#cp').textContent='Copied';setTimeout(()=>{const c=$('#cp');if(c)c.textContent='Copy'},1500)}catch(e){}};
 clearInterval(tick);let last=data.ex?exState(data.ex):'';
 tick=setInterval(()=>{if(!data||!data.ex)return;const ex=data.ex,st=exState(ex);if(st!==last){last=st;render();return}
-const c=$('#cd');if(c)c.innerHTML=cdHtml(ex.opens-nowS());const l=$('#left');if(l){const ms=ex.closes-nowS();const m=Math.max(0,Math.floor(ms/60000)),x=Math.max(0,Math.floor(ms/1000)%60);l.innerHTML='Time left: <b class="nw">'+m+' min '+pad2(x)+' sec</b>'}},1000)}
+const c=$('#cd');if(c)c.innerHTML=cdHtml(ex.opens-nowS());const l=$('#left');if(l){const ms=(ex.late?cShown(ex):ex.closes)-nowS();const m=Math.max(0,Math.floor(ms/60000)),x=Math.max(0,Math.floor(ms/1000)%60);l.innerHTML='Time left: <b class="nw">'+m+' min '+pad2(x)+' sec</b>'}},1000)}
 $('#eye').onclick=()=>{const p=$('#pin'),h=p.type==='password';p.type=h?'text':'password';$('#eye').textContent=h?'Hide':'Show'};
 $('#f').addEventListener('submit',ev=>{ev.preventDefault();const roll=normRoll($('#roll').value),pin=bn2en($('#pin').value).replace(/\D/g,'');
 if(!/^(\d{3,8}|[DR]-\d{3,8})$/.test(roll)){showErr('Enter your Exam Roll (from your SMS).');return}
