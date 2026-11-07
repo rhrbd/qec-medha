@@ -18,6 +18,7 @@ nav.tabs button svg{width:22px;height:22px}nav.tabs button.on{color:var(--plum);
 @media(min-width:900px){body{padding-bottom:0;padding-left:96px}nav.tabs{top:52px;bottom:0;right:auto;width:96px;flex-direction:column;justify-content:flex-start;gap:6px;border-top:0;border-right:1px solid var(--line);padding:12px 8px}nav.tabs button{flex:none;padding:10px 4px}}
 main{max-width:860px;margin:0 auto;padding:14px 14px 24px}
 .card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:16px;margin:0 0 12px;box-shadow:0 8px 22px -18px rgba(60,10,70,.55)}
+details.lated{padding:14px 16px}details.lated>summary{display:flex;align-items:center;gap:10px;flex-wrap:wrap;cursor:pointer;list-style:none;font-weight:700;color:var(--plum);font-size:15.5px}details.lated>summary::-webkit-details-marker{display:none}details.lated>summary::before{content:"\25B8";font-size:13px;transition:transform .15s}details.lated[open]>summary::before{transform:rotate(90deg)}.lsum{margin-left:auto;font-size:12.5px;font-weight:600;padding:3px 10px;border-radius:99px;background:#eee;color:#555}.lsum.on{background:#e6f4ec;color:#0f6b41}
 .ttl{display:flex;align-items:center;gap:8px;margin:0 0 12px}.ttl h2{font-size:15.5px;margin:0;color:var(--plum)}.ttl .sp{margin-left:auto}
 h3{font-size:13px;margin:14px 0 6px;color:var(--mut);text-transform:uppercase;letter-spacing:.5px}
 label{display:block;font-size:12px;font-weight:700;color:var(--mut);margin:10px 0 4px}
@@ -97,11 +98,11 @@ table{width:100%;border-collapse:collapse;font-size:13px}th,td{border-bottom:1px
 
 <!-- STUDENTS -->
 <section data-p="stu" class="hide">
-<div class="card"><div class="ttl"><h2>Late exam: never started</h2><button class="btn sm alt sp" type="button" onclick="lateCard()">Reload</button></div>
-<p class="note">Online students who never opened the question paper (no attempt on the server). While the late window is open they log in as usual, press Start Exam and get their <b>own</b> timer from their start. Students who started and had a problem are not here: use Re-exam on their student card.</p>
-<div id="latebox"><p class="note">Loading...</p></div></div>
 <div class="card"><div class="ttl"><h2>Find a student</h2></div><p class="note" style="margin:-6px 0 8px">Search by Exam Roll, student name (English or Bangla), father / mother name, school, or any part of a mobile number.</p><div class="row"><input id="sr" placeholder="Roll, name or mobile, e.g. 30070 / Rafa / 01712"><button class="btn" id="sgo" type="button">Open</button></div></div>
 <div id="sout"></div>
+<details class="card lated" id="latecard"><summary><span class="lt">Late exam: never started</span><span id="latesum" class="lsum"></span></summary>
+<div class="ttl" style="margin-top:12px"><p class="note" style="margin:0">Online students who never opened the question paper (no attempt on the server). While the late window is open they log in as usual, press Start Exam and get their <b>own</b> timer from their start. Students who started and had a problem are not here: use Re-exam on their student card.</p><button class="btn sm alt sp" type="button" onclick="lateCard()">Reload</button></div>
+<div id="latebox"><p class="note">Loading...</p></div></details>
 <div class="card adm"><div class="ttl"><h2>Correct a student</h2></div><p class="note">Saved in the Corrections tab; reaches the sheet, SMS, dashboard and exam within about a minute.</p>
 <div class="grid2"><div><label>Exam Roll</label><input id="cr" inputmode="numeric"></div><div><label>What</label><select id="cf"><option value="whatsapp">Mobile number</option><option value="name">Name</option><option value="mode">Mode (Online / Offline)</option><option value="version">Version (Bangla / English)</option><option value="cls">Class (gives a new roll)</option></select></div></div>
 <label>New value</label><input id="cv"><button class="btn w" id="cgo" type="button">Save correction</button></div>
@@ -214,7 +215,7 @@ ROLE=j.role;if(!quiet)keep('qadm2',k);$('#login').classList.add('hide');$('#app'
 $('#who').textContent=isAdm()?'ADMIN':(ROLE==='controller'?'EXAM CONTROLLER':'VIEWER');$('#who').classList.remove('hide');$$('.adm').forEach(e=>e.classList.toggle('hide',!isAdm()));$$('.ex').forEach(e=>e.classList.toggle('hide',!isEx()));
 META=await call('meta');buildSegs();show('home')}
 function show(t){$$('nav.tabs button').forEach(b=>b.classList.toggle('on',b.dataset.t===t));$$('main>section').forEach(s=>s.classList.toggle('hide',s.dataset.p!==t));window.scrollTo(0,0);$('#msgbox').innerHTML='';
-if(t==='home')home();if(t==='exam')loadExamSet();if(t==='off')offline();if(t==='res'){setGroup('#resset','Results');pubCard()}if(t==='logs'){logs();rxList()}if(t==='stu')lateCard();if(t==='sms')smsPage();if(t==='more')more()}
+if(t==='home')home();if(t==='exam')loadExamSet();if(t==='off')offline();if(t==='res'){setGroup('#resset','Results');pubCard()}if(t==='logs'){logs();rxList()}if(t==='stu'){lateCard();setTimeout(()=>{const q=$('#sr');if(q&&!q.value&&matchMedia('(hover:hover)').matches)q.focus()},50)}if(t==='sms')smsPage();if(t==='more')more()}
 $$('nav.tabs button').forEach(b=>b.onclick=()=>show(b.dataset.t));
 // ---------------- home
 async function home(){const el=$('[data-p="home"]');el.innerHTML='<div class="card"><p class="note">Loading...</p></div>';const j=await call('status');if(!j.ok){msg(el,j);return}
@@ -381,7 +382,8 @@ el.innerHTML=(j.open?'<div class="msg ok" style="margin-top:0"><b>OPEN</b>: they
 (isEx()?'<div class="grid2"><div><label>Start deadline</label><input id="lu" placeholder="e.g. 1:00 PM or 07-Nov-2026 3:30 PM" value="'+esc(j.until?j.until.replace(/:\d\d (AM|PM)$/,' $1'):'')+'"></div><div><label>Minutes each</label><input id="lmn" inputmode="numeric" value="'+j.min+'"></div></div><div class="row" style="margin-top:8px"><button class="btn" type="button" id="lsv">Open / change deadline</button><button class="btn alt" type="button" id="lcl">Close late window</button></div><div id="lmsg"></div>':'')+
 '<p class="note" style="margin:10px 0 6px">'+Object.keys(cnt).map(k=>esc(k)+': <b>'+cnt[k]+'</b>').join(' · ')+'</p>'+
 (j.rows.length?'<div class="tw" style="max-height:50vh"><table><tr>'+j.heads.map(h=>'<th>'+esc(h)+'</th>').join('')+'</tr>'+j.rows.map(r=>'<tr>'+r.map((c,i)=>'<td>'+(i===0?'<a href="#" data-lr="'+esc(c)+'">'+esc(c)+'</a>':esc(c))+'</td>').join('')+'</tr>').join('')+'</table></div><button class="btn sm alt" type="button" id="lpdf" style="margin-top:8px">PDF</button>':'<p class="note">Nobody in this group.</p>');
-el.querySelectorAll('[data-lr]').forEach(a=>a.onclick=e=>{e.preventDefault();$('#sr').value=a.dataset.lr;openStu(a.dataset.lr)});
+const ls=$('#latesum');if(ls){const ns=cnt['Not started']||0;ls.className='lsum'+(j.open?' on':'');ls.textContent=(j.open?'Open until '+j.until:'Closed')+' · '+ns+' not started'}
+el.querySelectorAll('[data-lr]').forEach(a=>a.onclick=e=>{e.preventDefault();$('#sr').value=a.dataset.lr;openStu(a.dataset.lr);$('#sr').scrollIntoView({behavior:'smooth',block:'start'})});
 if($('#lpdf'))$('#lpdf').onclick=()=>printTable('Late exam - never started',(j.open?'Open until '+j.until:'Closed')+' · '+j.min+' min each',j.heads,j.rows);
 const save=async(v)=>{const mn=$('#lmn').value.trim();if(!await sure(v==='CLOSE'?'Close the late window?':'Open the late window until '+v+'?',v==='CLOSE'?'Nobody new can start. Students already started keep their own time.':'Students who never started can start until '+v+', each with '+mn+' minutes.'))return;const r=await call('lateSet',{until:v,min:mn,sure:1},$('#lsv'));msg($('#lmsg'),r);if(r.ok)setTimeout(lateCard,800)};
 if($('#lsv'))$('#lsv').onclick=()=>{const v=$('#lu').value.trim();if(!v){toast('Type the deadline, e.g. 1:00 PM');return}save(v)};
