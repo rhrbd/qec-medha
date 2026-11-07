@@ -76,6 +76,9 @@ table{width:100%;border-collapse:collapse;font-size:13px}th,td{border-bottom:1px
 
 <!-- STUDENTS -->
 <section data-p="stu" class="hide">
+<div class="card"><div class="ttl"><h2>Late exam: never started</h2><button class="btn sm alt sp" type="button" onclick="lateCard()">Reload</button></div>
+<p class="note">Online students who never opened the question paper (no attempt on the server). While the late window is open they log in as usual, press Start Exam and get their <b>own</b> timer from their start. Students who started and had a problem are not here: use Re-exam on their student card.</p>
+<div id="latebox"><p class="note">Loading...</p></div></div>
 <div class="card"><div class="ttl"><h2>Find a student</h2></div><p class="note" style="margin:-6px 0 8px">Search by Exam Roll, student name (English or Bangla), father / mother name, school, or any part of a mobile number.</p><div class="row"><input id="sr" placeholder="Roll, name or mobile, e.g. 30070 / Rafa / 01712"><button class="btn" id="sgo" type="button">Open</button></div></div>
 <div id="sout"></div>
 <div class="card adm"><div class="ttl"><h2>Correct a student</h2></div><p class="note">Saved in the Corrections tab; reaches the sheet, SMS, dashboard and exam within about a minute.</p>
@@ -190,7 +193,7 @@ ROLE=j.role;if(!quiet)keep('qadm2',k);$('#login').classList.add('hide');$('#app'
 $('#who').textContent=isAdm()?'ADMIN':(ROLE==='controller'?'EXAM CONTROLLER':'VIEWER');$('#who').classList.remove('hide');$$('.adm').forEach(e=>e.classList.toggle('hide',!isAdm()));$$('.ex').forEach(e=>e.classList.toggle('hide',!isEx()));
 META=await call('meta');buildSegs();show('home')}
 function show(t){$$('nav.tabs button').forEach(b=>b.classList.toggle('on',b.dataset.t===t));$$('main>section').forEach(s=>s.classList.toggle('hide',s.dataset.p!==t));window.scrollTo(0,0);$('#msgbox').innerHTML='';
-if(t==='home')home();if(t==='exam')loadExamSet();if(t==='off')offline();if(t==='res'){setGroup('#resset','Results');pubCard()}if(t==='logs'){logs();rxList()}if(t==='sms')smsPage();if(t==='more')more()}
+if(t==='home')home();if(t==='exam')loadExamSet();if(t==='off')offline();if(t==='res'){setGroup('#resset','Results');pubCard()}if(t==='logs'){logs();rxList()}if(t==='stu')lateCard();if(t==='sms')smsPage();if(t==='more')more()}
 $$('nav.tabs button').forEach(b=>b.onclick=()=>show(b.dataset.t));
 // ---------------- home
 async function home(){const el=$('[data-p="home"]');el.innerHTML='<div class="card"><p class="note">Loading...</p></div>';const j=await call('status');if(!j.ok){msg(el,j);return}
@@ -349,6 +352,18 @@ const f=j.final;fr.innerHTML='<p class="note">A separate Google Sheet for manage
 (f&&f.url?'<a class="btn w alt" href="'+esc(f.url)+'" target="_blank" rel="noopener">Open the final result sheet</a><h3>Print-ready PDF</h3><div class="seg">'+f.pdfs.map(x=>'<a class="btn sm alt" style="text-decoration:none" href="'+esc(x.url)+'" target="_blank" rel="noopener">'+esc(x.label)+'</a>').join('')+'</div>':'<p class="msg info">Not created yet.</p>')+
 (isEx()?'<button class="btn w alt" type="button" id="frgo">Rebuild it now</button>':'');
 if($('#frgo'))$('#frgo').onclick=async()=>{const r=await call('final',{sure:1},$('#frgo'));msg($('#msgbox'),r);pubCard()}}
+// ---------------- late window (never started)
+async function lateCard(){const el=$('#latebox');const j=await call('late');if(!j.ok){msg(el,j);return}
+const cnt={};j.rows.forEach(r=>{const k=r[3].split(',')[0].split(' ')[0]==='Late:'?r[3].split(',')[0]:r[3].split(' ')[0]==='Late:'?r[3]:r[3];const g=/^Late: submitted/.test(r[3])?'Submitted (late)':/^Late: in progress/.test(r[3])?'In progress (late)':'Not started';cnt[g]=(cnt[g]||0)+1});
+el.innerHTML=(j.open?'<div class="msg ok" style="margin-top:0"><b>OPEN</b>: they can start until <b>'+esc(j.until)+'</b>, each with '+j.min+' minutes from his own start.</div>':'<div class="msg bad" style="margin-top:0"><b>CLOSED</b>'+(j.until?' (deadline was '+esc(j.until)+')':'')+'. Set a deadline to open it.</div>')+
+(isEx()?'<div class="grid2"><div><label>Start deadline</label><input id="lu" placeholder="e.g. 1:00 PM or 07-Nov-2026 3:30 PM" value="'+esc(j.until?j.until.replace(/:\d\d (AM|PM)$/,' $1'):'')+'"></div><div><label>Minutes each</label><input id="lmn" inputmode="numeric" value="'+j.min+'"></div></div><div class="row" style="margin-top:8px"><button class="btn" type="button" id="lsv">Open / change deadline</button><button class="btn alt" type="button" id="lcl">Close late window</button></div><div id="lmsg"></div>':'')+
+'<p class="note" style="margin:10px 0 6px">'+Object.keys(cnt).map(k=>esc(k)+': <b>'+cnt[k]+'</b>').join(' · ')+'</p>'+
+(j.rows.length?'<div class="tw" style="max-height:50vh"><table><tr>'+j.heads.map(h=>'<th>'+esc(h)+'</th>').join('')+'</tr>'+j.rows.map(r=>'<tr>'+r.map((c,i)=>'<td>'+(i===0?'<a href="#" data-lr="'+esc(c)+'">'+esc(c)+'</a>':esc(c))+'</td>').join('')+'</tr>').join('')+'</table></div><button class="btn sm alt" type="button" id="lpdf" style="margin-top:8px">PDF</button>':'<p class="note">Nobody in this group.</p>');
+el.querySelectorAll('[data-lr]').forEach(a=>a.onclick=e=>{e.preventDefault();$('#sr').value=a.dataset.lr;openStu(a.dataset.lr)});
+if($('#lpdf'))$('#lpdf').onclick=()=>printTable('Late exam - never started',(j.open?'Open until '+j.until:'Closed')+' · '+j.min+' min each',j.heads,j.rows);
+const save=async(v)=>{const mn=$('#lmn').value.trim();if(!await sure(v==='CLOSE'?'Close the late window?':'Open the late window until '+v+'?',v==='CLOSE'?'Nobody new can start. Students already started keep their own time.':'Students who never started can start until '+v+', each with '+mn+' minutes.'))return;const r=await call('lateSet',{until:v,min:mn,sure:1},$('#lsv'));msg($('#lmsg'),r);if(r.ok)setTimeout(lateCard,800)};
+if($('#lsv'))$('#lsv').onclick=()=>{const v=$('#lu').value.trim();if(!v){toast('Type the deadline, e.g. 1:00 PM');return}save(v)};
+if($('#lcl'))$('#lcl').onclick=()=>save('CLOSE')}
 // ---------------- start
 $('#go').onclick=()=>{const k=$('#key').value.trim();if(k)signin(k)};$('#key').addEventListener('keydown',e=>{if(e.key==='Enter')$('#go').click()});
 const saved=kept('qadm2');if(saved){$('#rem').checked=true;signin(saved,true)}
