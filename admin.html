@@ -53,6 +53,27 @@ table{width:100%;border-collapse:collapse;font-size:13px}th,td{border-bottom:1px
   #print .ph img{height:34px}#print h1{font-size:15px;margin:0}#print .sub{font-size:10px;color:#333;margin:2px 0 8px}
   #print table{font-size:10.5px}#print th{background:#eee!important;color:#000;-webkit-print-color-adjust:exact;print-color-adjust:exact;position:static}#print td,#print th{border:1px solid #999;padding:4px 5px}
   #print.sign td{height:30px}#print.sign th:nth-child(5){width:32%}#print.sign th:nth-child(3){width:28%}#print .foot{margin-top:8px;font-size:9px;color:#555}
+#print.offp{font:10px/1.35 'Helvetica Neue',Arial,sans-serif}
+#print.offp table.ot{width:100%;border-collapse:collapse}
+#print.offp thead{display:table-header-group}#print.offp tfoot{display:table-footer-group}
+#print.offp tr{page-break-inside:avoid;break-inside:avoid}
+#print.offp .lh{text-align:center;padding:2px 0 6px;border-bottom:2.5px solid #5b1462;margin-bottom:6px}
+#print.offp .lh img{height:46px;display:block;margin:0 auto 3px}
+#print.offp .lh .t1{font-size:16px;font-weight:800;color:#5b1462;letter-spacing:.3px}
+#print.offp .lh .t2{font-size:11.5px;font-weight:800;letter-spacing:1.6px;margin-top:2px}
+#print.offp .lh .t3{font-size:8.5px;color:#444;margin-top:3px}
+#print.offp .lh .t4{font-size:8.5px;margin-top:4px;font-weight:700}
+#print.offp .lh .t4.pv{color:#a3262a}#print.offp .lh .t4.pb{color:#0f6b41}
+#print.offp td.hd,#print.offp td.fd{border:0;padding:0}
+#print.offp th{background:#5b1462!important;color:#fff!important;font-size:9px;padding:4px 3px;border:1px solid #5b1462;text-align:center}
+#print.offp tbody td{border:1px solid #cdbfd3;padding:3px 4px;font-size:9.5px;text-align:center}
+#print.offp tbody td.nm{text-align:left}#print.offp tbody td.rm{text-align:left;font-size:8px;color:#444}
+#print.offp tbody tr:nth-child(even) td{background:#faf7fb!important}
+#print.offp td.pass{color:#0f6b41;font-weight:800}#print.offp td.fail{color:#a3262a;font-weight:800}#print.offp td.abs{color:#666;font-weight:700}
+#print.offp .sig{display:flex;justify-content:space-between;padding:34px 40px 0}
+#print.offp .sig div{width:34%;text-align:center;font-weight:800;font-size:10px;border-top:1.2px solid #21132a;padding-top:4px}
+#print.offp .ft{text-align:center;font-size:7.5px;color:#777;margin-top:8px}
+#print.offp .rl{font-size:8px;color:#555;text-align:center;margin:6px 0 0}
   @page{size:A4;margin:12mm 10mm}
 }
 .cfm{position:fixed;inset:0;background:rgba(30,8,34,.55);display:flex;align-items:center;justify-content:center;z-index:99;padding:16px}.cfm .box{background:#fff;border-radius:16px;max-width:420px;width:100%;padding:18px;box-shadow:0 20px 50px -20px rgba(0,0,0,.6)}
@@ -350,7 +371,8 @@ if($('#pubon'))$('#pubon').onclick=()=>go($('#pubon'));if($('#pubre'))$('#pubre'
 if($('#puboff'))$('#puboff').onclick=async()=>{if(!await sure('Hide the results from the students?','The dashboard stops showing results at once.'))return;const r=await call('publish',{on:0,sure:1},$('#puboff'));msg($('#msgbox'),r);pubCard()};
 const f=j.final;fr.innerHTML='<p class="note">A separate Google Sheet for management: one tab per class plus All Classes, logo, merit position, Pass / Fail, signature lines (Exam Controller, CEO). Updates itself every few minutes. Share that file with management.</p>'+
 (f&&f.url?'<a class="btn w alt" href="'+esc(f.url)+'" target="_blank" rel="noopener">Open the final result sheet</a><h3>Print-ready PDF</h3><div class="seg">'+f.pdfs.map(x=>'<a class="btn sm alt" style="text-decoration:none" href="'+esc(x.url)+'" target="_blank" rel="noopener">'+esc(x.label)+'</a>').join('')+'</div>':'<p class="msg info">Not created yet.</p>')+
-(isEx()?'<button class="btn w alt" type="button" id="frgo">Rebuild it now</button>':'');
+'<h3>Official PDF (logo, header and signatures on every page)</h3><div class="seg">'+[1,2,3,4,5].map(c=>'<button class="btn sm" type="button" data-op="'+c+'">Class '+c+'</button>').join('')+'<button class="btn sm" type="button" data-op="0">All classes</button></div><p class="note">Opens the print window: choose <b>Save as PDF</b>, paper A4. Each page repeats the letterhead, the column titles and the signature lines.</p>'+(isEx()?'<button class="btn w alt" type="button" id="frgo">Rebuild it now</button>':'');
+fr.querySelectorAll('[data-op]').forEach(b=>b.onclick=()=>officialPdf(b.dataset.op,b));
 if($('#frgo'))$('#frgo').onclick=async()=>{const r=await call('final',{sure:1},$('#frgo'));msg($('#msgbox'),r);pubCard()}}
 // ---------------- late window (never started)
 async function lateCard(){const el=$('#latebox');const j=await call('late');if(!j.ok){msg(el,j);return}
@@ -364,6 +386,16 @@ if($('#lpdf'))$('#lpdf').onclick=()=>printTable('Late exam - never started',(j.o
 const save=async(v)=>{const mn=$('#lmn').value.trim();if(!await sure(v==='CLOSE'?'Close the late window?':'Open the late window until '+v+'?',v==='CLOSE'?'Nobody new can start. Students already started keep their own time.':'Students who never started can start until '+v+', each with '+mn+' minutes.'))return;const r=await call('lateSet',{until:v,min:mn,sure:1},$('#lsv'));msg($('#lmsg'),r);if(r.ok)setTimeout(lateCard,800)};
 if($('#lsv'))$('#lsv').onclick=()=>{const v=$('#lu').value.trim();if(!v){toast('Type the deadline, e.g. 1:00 PM');return}save(v)};
 if($('#lcl'))$('#lcl').onclick=()=>save('CLOSE')}
+// ---------------- official result PDF (browser print: thead / tfoot repeat on every page)
+async function officialPdf(cls,btn){const j=await call('finalData',{cls:cls},btn);if(!j.ok){toast(j.message||'Problem');return}
+const n=j.heads.length,c=j.counts,ri=j.heads.indexOf('Result'),ni=j.heads.indexOf('Student Name'),mi=j.heads.indexOf('Remarks');
+const p=$('#print');p.className='offp';
+p.innerHTML='<table class="ot"><thead><tr><td class="hd" colspan="'+n+'"><div class="lh"><img src="assets/logo.png" alt="QEC Academy"><div class="t1">Medha Onneshon 2026</div><div class="t2">FINAL RESULT &middot; '+esc(j.title.toUpperCase())+'</div>'+
+'<div class="t3">'+(j.date?'Exam date: '+esc(j.date)+' &nbsp;|&nbsp; ':'')+esc(j.fm)+' &nbsp;|&nbsp; Students '+c.students+' &middot; Appeared '+c.appeared+' &middot; Passed '+c.pass+' &middot; Failed '+c.fail+' &middot; Absent '+c.absent+'</div>'+
+'<div class="t4 '+(j.published?'pb':'pv')+'">'+esc(j.status)+'</div></div></td></tr><tr>'+j.heads.map(h=>'<th>'+esc(h)+'</th>').join('')+'</tr></thead>'+
+'<tfoot><tr><td class="fd" colspan="'+n+'"><div class="sig"><div>Exam Controller</div><div>CEO, QEC Academy</div></div><div class="ft">QEC Academy, Chattogram &middot; Medha Onneshon 2026 &middot; Printed '+esc(new Date().toLocaleString('en-GB',{day:'2-digit',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'}))+'</div></td></tr></tfoot>'+
+'<tbody>'+j.rows.map(r=>'<tr>'+r.map((v,i)=>'<td class="'+(i===ni?'nm':i===mi?'rm':i===ri?({Pass:'pass',Fail:'fail',Absent:'abs'}[v]||''):'')+'">'+esc(v)+'</td>').join('')+'</tr>').join('')+'</tbody></table><p class="rl">'+esc(j.rule)+'</p>';
+const t=document.title;document.title='QEC Medha 2026 - Final Result - '+j.title.replace(/[^\w\- ]+/g,'');setTimeout(()=>{window.print();document.title=t},300)}
 // ---------------- start
 $('#go').onclick=()=>{const k=$('#key').value.trim();if(k)signin(k)};$('#key').addEventListener('keydown',e=>{if(e.key==='Enter')$('#go').click()});
 const saved=kept('qadm2');if(saved){$('#rem').checked=true;signin(saved,true)}
