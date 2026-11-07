@@ -103,11 +103,62 @@ font-weight:800;font-size:17px;color:#2d1500;background:linear-gradient(180deg,#
 @media(max-width:599px){.bar{padding:12px 16px}.hero{padding:6px 16px 66px}main{padding:0 16px 24px}.logo img{height:28px}.cta{padding:9px 14px;font-size:13px}.ghostl{padding:8px 12px;font-size:12.5px}
 .lead{display:none}.pad{padding:17px}.grid{grid-template-columns:1fr}.exc{padding:17px}.cd{gap:6px}}
 @media print{body *{visibility:hidden}}
-.rcard{grid-column:1/-1}.rbody{padding:0 20px 18px}.rtop{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin:4px 0 12px}
-.rbadge{display:inline-block;font-weight:800;font-size:15px;padding:8px 16px;border-radius:999px}.rbadge.pass{background:#e3f6ec;color:#0f7a49}.rbadge.fail{background:#fde8e8;color:#b3261e}.rbadge.abs{background:#eee;color:#555}
-.rmerit{display:flex;flex-direction:column;line-height:1.1}.rmerit b{font-size:26px;color:var(--plum,#5b1462)}.rmerit span{font-size:12px;color:#6f6177;font-weight:700}
-.rtab{width:100%;max-width:560px;border-collapse:collapse;font-size:15px}.rtab td{padding:9px 4px;border-bottom:1px solid #eee3f1}.rtab td:last-child{text-align:right}.rtab tr.tot td{border-bottom:0;font-size:16px}
-.rmsg{margin:6px 0;font-size:15px}.rnote{margin:10px 0 0;font-size:12px;color:#6f6177}
+.notice{grid-column:1/-1;display:flex;gap:14px;align-items:flex-start;padding:16px 18px;border-radius:var(--r);background:linear-gradient(135deg,#fff7e4,#fffdf8 70%);border:1px solid #f3d595;box-shadow:var(--sh)}
+.notice .ni{flex:0 0 42px;height:42px;border-radius:13px;background:linear-gradient(180deg,var(--amber2),var(--amber));display:flex;align-items:center;justify-content:center;color:#3a1d00;box-shadow:0 8px 18px -10px rgba(243,174,60,.95)}
+.notice .nt{min-width:0}.notice .nt b{display:block;font-size:11.5px;font-weight:800;letter-spacing:.09em;text-transform:uppercase;color:#8a5300;margin:1px 0 3px}
+.notice .nt p{font-size:15px;line-height:1.6;color:#3a2c12;white-space:pre-line}
+.notice.pub{background:linear-gradient(135deg,#e9f8f0,#fbfffd 70%);border-color:#b9e6cd}.notice.pub .ni{background:linear-gradient(180deg,#3cc489,#0f7a49);color:#fff;box-shadow:0 8px 18px -10px rgba(15,122,73,.9)}.notice.pub .nt b{color:#0f6b41}.notice.pub .nt p{color:#163a29}
+.rcard{grid-column:1/-1;overflow:hidden}
+.rhead{position:relative;overflow:hidden;color:#fff;padding:20px 20px 22px;background:linear-gradient(150deg,#2a0730,#4a1052 50%,#7a2484)}
+.rhead:before{content:"";position:absolute;inset:0;background:radial-gradient(420px 200px at 100% -20%,rgba(243,174,60,.45),transparent 65%),radial-gradient(300px 160px at -10% 120%,rgba(255,255,255,.10),transparent 70%);pointer-events:none}
+.rhead>*{position:relative}
+.rhead .eb{display:inline-flex;align-items:center;gap:7px;font-size:11.5px;font-weight:800;letter-spacing:.11em;text-transform:uppercase;color:var(--amber2)}
+.rhead .eb i{width:8px;height:8px;border-radius:50%;background:var(--amber2);box-shadow:0 0 0 4px rgba(255,200,100,.25)}
+.rhead h2{font-size:clamp(21px,3.2vw,27px);line-height:1.2;margin-top:6px;letter-spacing:-.01em}
+.rhead .who{font-size:13.5px;opacity:.86;margin-top:3px}
+.rstats{display:grid;grid-template-columns:repeat(auto-fit,minmax(128px,1fr));gap:10px;margin-top:16px}
+.rst{background:rgba(255,255,255,.10);border:1px solid rgba(255,255,255,.20);border-radius:15px;padding:12px 14px;backdrop-filter:blur(2px)}
+.rst .k{font-size:10.5px;font-weight:800;letter-spacing:.09em;text-transform:uppercase;opacity:.82}
+.rst .v{font-size:27px;font-weight:800;line-height:1.15;margin-top:3px;font-variant-numeric:tabular-nums}
+.rst .v small{font-size:13px;font-weight:700;opacity:.82;margin-left:2px}
+.rst.merit{background:linear-gradient(160deg,rgba(255,200,100,.30),rgba(255,200,100,.10));border-color:rgba(255,200,100,.55)}.rst.merit .v{color:#ffd88a}
+.rst.pass .v{color:#a6f3c9}.rst.fail .v{color:#ffcdcd;font-size:22px}
+.rbody{padding:16px 20px 20px}
+.rlbl{font-size:12px;font-weight:800;letter-spacing:.09em;text-transform:uppercase;color:var(--plum2);margin:2px 0 6px}
+.sbar{display:grid;grid-template-columns:74px 1fr 62px;gap:12px;align-items:center;padding:7px 0;font-size:14.5px}
+.sbar .tr{height:10px;border-radius:99px;background:#f0e8f3;overflow:hidden}.sbar .tr i{display:block;height:100%;border-radius:99px;background:linear-gradient(90deg,var(--plum2),var(--plum));transition:width .6s}
+.sbar .sv{text-align:right;font-variant-numeric:tabular-nums}.sbar .sv b{font-size:15.5px}
+.rtot{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-top:8px;padding-top:12px;border-top:1px solid var(--line);font-size:15px}.rtot b{font-size:18px;color:var(--plum)}
+.rbtn{margin-top:16px;width:100%;display:flex;align-items:center;justify-content:center;gap:9px;min-height:52px;border-radius:15px;border:0;background:linear-gradient(180deg,var(--amber2),var(--amber));color:#2d1500;font-weight:800;font-size:15.5px;box-shadow:0 0 0 4px rgba(243,174,60,.18),0 12px 24px -12px rgba(243,174,60,.95)}
+.rbtn:disabled{opacity:.7}
+.rmsg{margin:4px 0;font-size:15px;line-height:1.6}.rnote{margin:12px 0 0;font-size:12px;color:var(--mut)}
+.rxm{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.28);border-radius:14px;padding:11px 14px;margin:2px 0 14px;font-size:14.5px;line-height:1.55;white-space:pre-line}
+.svw{position:fixed;inset:0;z-index:60;background:var(--bg);display:flex;flex-direction:column}
+.svh{background:linear-gradient(150deg,#2a0730,#5b1462);color:#fff;padding:12px 16px calc(10px + 0px);display:flex;align-items:center;gap:12px;padding-top:max(12px,env(safe-area-inset-top))}
+.svh .t{min-width:0;flex:1}.svh .t b{display:block;font-size:16px;line-height:1.25}.svh .t span{font-size:12.5px;opacity:.85}
+.svh button{flex:0 0 auto;border:1px solid rgba(255,255,255,.4);background:rgba(255,255,255,.12);color:#fff;border-radius:999px;padding:8px 15px;font-weight:800;font-size:13.5px}
+.svs{display:flex;gap:8px;overflow-x:auto;padding:12px 16px 4px;scrollbar-width:none}.svs::-webkit-scrollbar{display:none}
+.svs button{flex:0 0 auto;border:1px solid var(--line);background:#fff;color:var(--ink);border-radius:999px;padding:7px 13px;font-weight:700;font-size:13px;white-space:nowrap}
+.svs button.on{background:var(--plum);border-color:var(--plum);color:#fff}
+.svsum{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding:8px 16px 4px}
+.svsum div{background:#fff;border:1px solid var(--line);border-radius:13px;padding:8px 10px;text-align:center}.svsum b{display:block;font-size:18px;color:var(--plum);font-variant-numeric:tabular-nums}.svsum span{font-size:11.5px;color:var(--mut);font-weight:700}
+.svl{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:8px 16px calc(24px + env(safe-area-inset-bottom))}
+.svl .inner{max-width:760px;margin:0 auto;display:grid;gap:10px}
+.sq{background:#fff;border:1px solid var(--line);border-left:5px solid #bbb;border-radius:14px;padding:12px 14px}
+.sq.ok{border-left-color:#1f9d62}.sq.no{border-left-color:#d23b3b}.sq.sk{border-left-color:#c7b9cc}
+.sq .qh{display:flex;gap:8px;align-items:flex-start}.sq .qn{font-weight:800;color:var(--plum);flex:0 0 auto}.sq .qx{flex:1;min-width:0;font-size:15px;line-height:1.55}
+.sq .tag{flex:0 0 auto;font-size:11px;font-weight:800;padding:3px 8px;border-radius:99px;white-space:nowrap}.sq.ok .tag{background:#e3f6ec;color:#0f7a49}.sq.no .tag{background:#fde8e8;color:#b3261e}.sq.sk .tag{background:#f1ecf3;color:#6c6273}
+.sq ol{list-style:none;padding:0;margin:9px 0 0;display:grid;gap:6px}
+.sq li{display:flex;gap:9px;align-items:flex-start;padding:7px 10px;border-radius:10px;background:#faf7fb;font-size:14.5px;line-height:1.5}
+.sq li .l{flex:0 0 24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:12.5px;background:#ece3f0;color:var(--plum)}
+.sq li .ot{flex:1;min-width:0}.sq li em{font-style:normal;font-size:11.5px;font-weight:800;white-space:nowrap;margin-left:6px}
+.sq li.key{background:#e7f6ee}.sq li.key .l{background:#1f9d62;color:#fff}.sq li.key em{color:#0f7a49}
+.sq li.bad{background:#fdecec}.sq li.bad .l{background:#d23b3b;color:#fff}.sq li.bad em{color:#b3261e}
+.sq .all{margin-top:8px;font-size:12.5px;color:#0f6b41;font-weight:700}
+.svx{padding:40px 16px;text-align:center;color:var(--mut)}
+.frac{display:inline-flex;flex-direction:column;align-items:center;vertical-align:middle;margin:0 .14em;line-height:1.05;font-size:.92em}.frac>.nu{padding:0 .2em .06em;border-bottom:.09em solid currentColor}.frac>.de{padding:.06em .2em 0}
+.bx{display:inline-block;width:1.4em;height:1.1em;border:.09em solid currentColor;border-radius:.15em;vertical-align:-.15em;margin:0 .12em}
+body.lock{overflow:hidden}
 
 .prof{display:flex;gap:15px;align-items:center;padding:18px 20px}
 .ph{flex:0 0 72px;width:72px;height:72px;border-radius:20px;background:linear-gradient(135deg,var(--plum2),var(--plum));color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:24px;overflow:hidden}
@@ -207,27 +258,72 @@ if(st==='offline'){const oe=j.exam||{};return '<section class="exc"><span class=
 (oe.report?'<p class="exnote" style="margin-top:8px">Reporting Time: <b class="nw" style="color:#fff">'+esc(oe.report)+'</b></p>':'')+
 '<p class="exnote ctr" style="margin-top:8px">Centre: '+esc(pl.type==='venue'?pl.value:'QEC Academy (Chottogram)')+'</p><p class="exnote" style="margin-top:8px">Pen and paper exam. Bring your Exam Roll.</p></section>'}
 if(st==='submitted'){return '<section class="exc done"><span class="eyebrow" style="color:#bff0d6">&#10003; Exam Taken</span><h2>Your Exam Has Been Submitted</h2>'+
-'<p class="when">Your answers were submitted'+(ex.at?' at '+nw(fmtT(ex.at)):'')+'.</p><p class="exnote">'+(j.result?'Your result is shown above.':'Results will be announced here on your dashboard.')+'</p></section>'}
+'<p class="when">Your answers were submitted'+(ex.at?' at '+nw(fmtT(ex.at)):'')+'.</p><p class="exnote">'+(j.result?'Your result is shown above.':'Results will be shown here on your dashboard after they are published.')+'</p></section>'}
 if(st==='closed'){return '<section class="exc closed"><span class="eyebrow" style="color:#e3dbe8">'+ICO+'Exam Ended</span><h2>You Have Not Taken the Exam</h2><p class="when">The online exam ('+examWhen(ex)+') has ended. No answers were submitted with this Exam Roll.</p><p class="exnote">Questions? Call the helpline.</p></section>'}
 if(st==='none'){return '<section class="exc"><span class="eyebrow">'+ICO+'Online Exam</span><h2>Exam Details Coming Soon</h2><p class="exnote">The exam link will appear here.</p></section>'}
-if(ex.late&&(st==='open'||st==='progress')){const mn=esc(ex.minutes||35);return '<section class="exc"><span class="eyebrow">'+ICO+'Online Exam</span><h2>'+(st==='progress'?'Your Exam Is Running':'Your Exam Is Ready')+'</h2>'+
+const RXM=(ex.rx||ex.late)&&dashCfg()&&String(dashCfg().rxMsg||'').trim()?'<div class="rxm'+(isBnT(dashCfg().rxMsg)?' bn':'')+'">'+esc(String(dashCfg().rxMsg).trim())+'</div>':'';
+if(ex.late&&(st==='open'||st==='progress')){const mn=esc(ex.minutes||35);return '<section class="exc">'+RXM+'<span class="eyebrow">'+ICO+'Online Exam</span><h2>'+(st==='progress'?'Your Exam Is Running':'Your Exam Is Ready')+'</h2>'+
 '<p class="when">'+(st==='progress'?'Your '+mn+'-minute timer is running.':'Exam time: <b>'+mn+' minutes</b>')+'</p>'+
 '<a class="go pulse" href="exam.html">'+(st==='progress'?'Continue My Exam &rarr;':'Start Exam <span class="bn">(এক্সাম শুরু কর)</span> &rarr;')+'</a>'+
 (st==='progress'?'<p class="exnote" id="left"></p>':'<p class="exnote bn">Start Exam চাপার মুহূর্ত থেকে তোমার '+mn+' মিনিট শুরু হবে। ভালো ইন্টারনেট সংযোগ নিশ্চিত করে শুরু কর।</p>')+'</section>'}
-h='<span class="eyebrow">'+ICO+'Online Exam</span><h2>'+(st==='before'?'Your Exam Starts In':(st==='progress'?'Your Exam Is Running':'The Exam Is Open Now'))+'</h2><p class="when">'+examWhen(ex)+'</p>';
+h=RXM+'<span class="eyebrow">'+ICO+'Online Exam</span><h2>'+(st==='before'?'Your Exam Starts In':(st==='progress'?'Your Exam Is Running':'The Exam Is Open Now'))+'</h2><p class="when">'+examWhen(ex)+'</p>';
 if(st==='before')h+='<div class="cd" id="cd">'+cdHtml(ex.opens-nowS())+'</div>'+((ex.late||ex.rx)?'':meetBtn(ex.meet))+'<div class="go off">The Exam Button Opens at '+nw(fmtT(ex.opens))+'</div>';
 else h+=((ex.late||ex.rx)?'':meetBtn(ex.meet))+'<a class="go pulse" href="exam.html">'+(st==='progress'?'Continue My Exam &rarr;':'Start Exam <span class="bn">(এক্সাম শুরু কর)</span> &rarr;')+'</a><p class="exnote" id="left"></p>';
 h+='<p class="exnote">Strict time: the exam ends at '+nw(fmtT(cShown(ex)))+' for everyone. Joining late means less time. Log in a few minutes early.</p>';
 return '<section class="exc">'+h+'</section>'}
 function ordn(n){const v=n%100;return n+(v>=11&&v<=13?'th':({1:'st',2:'nd',3:'rd'}[n%10]||'th'))}
-function resultCard(){const r=data&&data.result;if(!r)return '';
-const pub=r.at?'<p class="rnote">Published '+nw(fmtD(r.at))+'</p>':'';
-if(!r.ready)return '<section class="card rcard"><div class="secth">Exam Result</div><div class="rbody"><p class="rmsg">Your result is not ready yet. Please check again later or call the helpline.</p>'+pub+'</div></section>';
-if(r.absent)return '<section class="card rcard"><div class="secth">Exam Result</div><div class="rbody"><div class="rbadge abs">Absent</div><p class="rmsg">No exam was recorded for this Exam Roll.</p>'+pub+'</div></section>';
-const f=r.full||{b:25,e:25,m:25},row=(k,v,t)=>'<tr><td>'+k+'</td><td><b>'+esc(v)+'</b> / '+esc(t)+'</td></tr>';
-return '<section class="card rcard"><div class="secth">Exam Result</div><div class="rbody"><div class="rtop"><div class="rbadge '+(r.pass?'pass':'fail')+'">'+(r.pass?'Passed':'Not Passed')+'</div>'+
-(r.merit?'<div class="rmerit"><b>'+esc(ordn(r.merit))+'</b><span>Merit Position · Class '+esc(r.cls)+'</span></div>':'')+'</div>'+
-'<table class="rtab">'+row('Bangla',r.b,f.b)+row('English',r.e,f.e)+row('Math',r.m,f.m)+'<tr class="tot"><td>Total</td><td><b>'+esc(r.total)+'</b> / '+esc(r.tfull||(f.b+f.e+f.m))+' &nbsp;('+esc(r.pct)+'%)</td></tr></table>'+pub+'</div></section>'}
+function dashCfg(){return (data&&data.dash)||null}
+function persWin(ex){if(!ex||!(ex.rx||ex.late))return false;const st=exState(ex);return st==='before'||st==='open'||st==='progress'}
+function showExam(){const d=dashCfg(),ex=data&&data.ex;if(!d||data.demo||data.review)return true;if(Number(d.exam)===1)return true;return persWin(ex)}
+function noticeCard(){const d=dashCfg();if(!d||persWin(data.ex))return '';const pub=!!data.result;const t=String(pub?(d.notice2||''):(d.notice||'')).trim();if(!t)return '';
+const ico=pub?'<svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>':'<svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M3 11v2a1 1 0 0 0 1 1h2l5 4V6L6 10H4a1 1 0 0 0-1 1Z"/><path d="M15.5 8.5a5 5 0 0 1 0 7M18.5 5.5a9 9 0 0 1 0 13"/></svg>';
+return '<section class="notice'+(pub?' pub':'')+'" role="status"><div class="ni">'+ico+'</div><div class="nt"><b>'+(pub?'Update':'Notice')+'</b><p class="'+(isBnT(t)?'bn':'')+'">'+esc(t)+'</p></div></section>'}
+const isBnT=t=>/[ঀ-৿]/.test(t);
+function resultCard(){const r=data&&data.result;if(!r)return '';const s=data.student||{};
+const pub=r.at?'<p class="rnote">Published on '+nw(fmtD(r.at))+'</p>':'';
+const head=(h,sub)=>'<div class="rhead"><span class="eb"><i></i>Result Published</span><h2>'+h+'</h2><p class="who">'+esc(s.name||'')+' · Roll '+nw(s.roll||'')+(r.cls?' · Class '+esc(r.cls):'')+'</p>'+(sub||'')+'</div>';
+if(!r.ready)return '<section class="card rcard">'+head('Medha Onneshon 2026 Result')+'<div class="rbody"><p class="rmsg">Your result is not ready yet. Please check again a little later or call the helpline.</p>'+pub+'</div></section>';
+if(r.absent)return '<section class="card rcard">'+head('Medha Onneshon 2026 Result','<div class="rstats"><div class="rst"><div class="k">Status</div><div class="v">Absent</div></div></div>')+'<div class="rbody"><p class="rmsg">No exam was recorded for this Exam Roll.</p>'+pub+'</div></section>';
+const hasM=r.total!==undefined&&r.total!==null;const f=r.full||{b:25,e:25,m:25};const tf=r.tfull||(f.b+f.e+f.m);
+let st='';
+if(r.merit)st+='<div class="rst merit"><div class="k">Merit Position</div><div class="v">'+esc(ordn(r.merit))+'</div><div class="k" style="margin-top:2px;opacity:.75">Class '+esc(r.cls)+'</div></div>';
+if(hasM)st+='<div class="rst"><div class="k">Total Marks</div><div class="v">'+esc(r.total)+'<small>/ '+esc(tf)+'</small></div><div class="k" style="margin-top:2px;opacity:.75">'+esc(r.pct)+'%</div></div>';
+if(r.pass!==undefined)st+='<div class="rst '+(r.pass?'pass':'fail')+'"><div class="k">Result</div><div class="v">'+(r.pass?'Passed':'Not Passed')+'</div></div>';
+const h=head(r.merit?'Congratulations!':(r.pass?'Well Done!':'Medha Onneshon 2026 Result'),st?'<div class="rstats">'+st+'</div>':'');
+let b='';
+if(hasM){const bar=(k,v,t)=>{const pc=t?Math.max(0,Math.min(100,Math.round(100*(Number(v)||0)/t))):0;return '<div class="sbar"><span>'+k+'</span><span class="tr"><i style="width:'+pc+'%"></i></span><span class="sv"><b>'+esc(v)+'</b> / '+esc(t)+'</span></div>'};
+b+='<div class="rlbl">Subject Marks</div>'+bar('Bangla',r.b,f.b)+bar('English',r.e,f.e)+bar('Math',r.m,f.m)+'<div class="rtot"><span>Total</span><span><b>'+esc(r.total)+'</b> / '+esc(tf)+' &nbsp;·&nbsp; '+esc(r.pct)+'%</span></div>'}
+else if(!st)b+='<p class="rmsg">Your result has been published. More details will be shared soon.</p>';
+if(r.script)b+='<button class="rbtn" id="vs" type="button"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" aria-hidden="true"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6M8 13h8M8 17h5"/></svg>View My Answer Script</button><p class="rmsg" id="vsm" role="alert" style="color:#b3261e;font-size:13.5px;text-align:center" hidden></p>';
+return '<section class="card rcard">'+h+'<div class="rbody">'+b+pub+'</div></section>'}
+function sf(t,math){let h=esc(t).replace(/&#39;(.{1,80}?)&#39;/g,'‘$1’').replace(/&quot;(.{1,120}?)&quot;/g,'“$1”');if(!math)return h;
+h=h.replace(/\[\s*\]/g,'<span class="bx" aria-label="blank box"></span>').replace(/([0-9০-৯)\]]) [-–] (?=[0-9০-৯(\[])/g,'$1 − ');
+return h.replace(/(^|[^0-9০-৯\/.])([0-9০-৯]{1,4})\/([0-9০-৯]{1,4})(?![0-9০-৯\/])/g,'$1<span class="frac" role="math" aria-label="$2 by $3"><span class="nu">$2</span><span class="de">$3</span></span>')}
+let SV=null;
+function closeScript(fromPop){const w=$('#svw');if(!w)return;w.remove();document.body.classList.remove('lock');if(!fromPop&&history.state&&history.state.sv)history.back()}
+window.addEventListener('popstate',()=>closeScript(true));
+async function openScript(){if(!creds)return;const b=$('#vs');if(b){b.disabled=true;b.textContent='Loading your answer script...'}
+let j=null;try{j=await post({a:'myScript',roll:creds.roll,pin:creds.pin},25000)}catch(e){j={ok:false,message:'Could not reach the server. Check your internet and try again.'}}
+if(b){b.disabled=false;b.textContent='View My Answer Script'}
+if(!j||!j.ok){const m=$('#vsm');if(m){m.textContent=(j&&j.message)||'Could not open the answer script.';m.hidden=false}return}const m0=$('#vsm');if(m0)m0.hidden=true;
+SV={j:j,f:'all'};const w=document.createElement('div');w.id='svw';w.className='svw';w.setAttribute('role','dialog');w.setAttribute('aria-label','Answer script');document.body.appendChild(w);document.body.classList.add('lock');
+try{history.pushState({sv:1},'')}catch(e){}drawScript()}
+function drawScript(){const w=$('#svw');if(!w||!SV)return;const j=SV.j,f=SV.f;const subs=['Bangla','English','Math'].filter(x=>j.sum[x]);
+const got=subs.reduce((a,x)=>a+j.sum[x].got,0),of=subs.reduce((a,x)=>a+j.sum[x].of,0);
+const wr=j.qs.filter(q=>q.a&&!q.ok).length,sk=j.qs.filter(q=>!q.a).length;
+const tabs=[['all','All ('+j.qs.length+')']].concat(subs.map(x=>[x,x+' ('+j.sum[x].got+'/'+j.sum[x].of+')'])).concat([['wrong','Wrong ('+wr+')'],['skip','Not answered ('+sk+')']]);
+const list=j.qs.filter(q=>f==='all'||(f==='wrong'?(q.a&&!q.ok):f==='skip'?!q.a:q.s===f));
+const L='ABCD';
+const qh=q=>{const cls=q.ok?'ok':(q.a?'no':'sk');const tag=q.ok?'Correct':(q.a?'Wrong':'Not answered');const m=q.s==='Math';
+return '<div class="sq '+cls+'"><div class="qh"><span class="qn">Q'+q.n+'.</span><div class="qx '+(isBnT(q.q)?'bn':'')+'">'+sf(q.q,m)+'</div><span class="tag">'+tag+'</span></div><ol>'+
+q.o.map((o,i)=>{const l=L[i],key=q.k==='*'||String(q.k).indexOf(l)>=0,mine=q.a===l;const c=key?'key':(mine?'bad':'');
+return '<li class="'+c+'"><span class="l">'+l+'</span><span class="ot '+(isBnT(o)?'bn':'')+'">'+sf(o,m)+(mine?'<em>· Your answer</em>':'')+(key&&q.k!=='*'?'<em>· Correct</em>':'')+'</span></li>'}).join('')+'</ol>'+
+(q.k==='*'?'<p class="all">This question gives the mark to everyone.</p>':'')+'</div>'};
+w.innerHTML='<div class="svh"><div class="t"><b>My Answer Script</b><span>'+esc(j.name)+' · Roll '+esc(j.roll)+' · Class '+esc(j.cls)+' ('+esc(j.ver)+')</span></div><button type="button" id="svc">Close</button></div>'+
+'<div class="svsum"><div><b>'+got+'/'+of+'</b><span>Correct</span></div><div><b>'+wr+'</b><span>Wrong</span></div><div><b>'+sk+'</b><span>Not answered</span></div></div>'+
+'<div class="svs">'+tabs.map(t=>'<button type="button" data-f="'+t[0]+'" class="'+(t[0]===f?'on':'')+'">'+esc(t[1])+'</button>').join('')+'</div>'+
+'<div class="svl" id="svl"><div class="inner">'+(list.length?list.map(qh).join(''):'<div class="svx">No questions here.</div>')+'</div></div>';
+$('#svc').onclick=()=>closeScript(false);w.querySelectorAll('[data-f]').forEach(x=>x.onclick=()=>{SV.f=x.dataset.f;drawScript();const l=$('#svl');if(l)l.scrollTop=0})}
 function render(){const j=data,s=j.student||{},ex=j.exam||{},pl=ex.place||{};const online=/online/i.test(s.mode||'');
 const photo=/^data:image\/(png|jpeg|jpg|gif|webp);base64,/.test(s.photo||'')?'<img alt="" src="'+s.photo+'">':esc(initials(s.name));
 const g=safeUrl(j.group),hl=j.helpline||HELP;
@@ -236,19 +332,20 @@ if(online)place=kv('Mode','<span class="nw"><span class="dot" style="background:
 else place=(ex.report?kv('Reporting Time','<span class="nw">'+esc(ex.report)+'</span>'):'')+'<div class="kv"><div class="k">Exam Centre</div><div class="v ctr">'+esc(pl.type==='venue'?pl.value:'To be announced')+'</div></div>';
 const xe=j.ex;const date=xe&&xe.set&&online?nw(fmtD(xe.opens)):esc(ex.date||'To be announced');const time=xe&&xe.late&&online?esc(xe.minutes||35)+' minutes (from your Start)':xe&&xe.set&&online?nw(fmtT(xe.opens))+' – '+nw(fmtT(cShown(xe))):(ex.time?nw(ex.time):'To be announced');
 const tips=online?['Charge your phone, tablet or laptop fully.','Use a stable internet connection (Wi-Fi or mobile data).',(xe&&xe.late?'Your '+esc(xe.minutes||35)+' minutes begin when you press Start Exam. Do not reload or close the page during the exam.':'Log in by <span class="nw">9:50 AM</span> and join the Google Meet before you start.'),'Keep pen and paper ready for rough work.']:['Reach the exam centre by your Reporting Time.','Bring pen, pencil, eraser and your Exam Roll.','Keep the helpline number with you.'];
-$('#dash').innerHTML='<div class="dash">'+resultCard()+examCard()+'<div class="col">'+
+const SE=showExam();
+$('#dash').innerHTML='<div class="dash">'+noticeCard()+resultCard()+(SE?examCard():'')+'<div class="col">'+
 '<div class="card"><div class="prof"><div class="ph">'+photo+'</div><div style="min-width:0"><h2>'+esc(s.name)+'</h2>'+(s.bn?'<p class="bnn bn">'+esc(s.bn)+'</p>':'')+
-'<div class="chips"><span class="chip">'+esc(s.clsv||s.cls||'')+'</span><span class="chip"><span class="dot" style="background:'+(online?'#2f6fd6':'#d98f17')+'"></span>'+esc(s.mode||'-')+'</span>'+(j.review?'<span class="chip" style="background:#fff1d6;color:#7a4b00">Final Review</span>':j.demo?'<span class="chip" style="background:#fff1d6;color:#7a4b00">Demo</span>':'<span class="chip" style="background:#e7f6ee;color:#0f7a49">&#10003; Enrolled</span>')+'</div></div></div>'+
+'<div class="chips"><span class="chip">'+esc(s.clsv||s.cls||'')+'</span><span class="chip"><span class="dot" style="background:'+(online?'#2f6fd6':'#d98f17')+'"></span>'+esc(s.mode||'-')+'</span>'+(xe&&xe.status==='submitted'&&!j.review&&!j.demo?'<span class="chip" style="background:#e7f6ee;color:#0f7a49">&#10003; Exam Submitted</span>':'')+(j.review?'<span class="chip" style="background:#fff1d6;color:#7a4b00">Final Review</span>':j.demo?'<span class="chip" style="background:#fff1d6;color:#7a4b00">Demo</span>':'<span class="chip" style="background:#e7f6ee;color:#0f7a49">&#10003; Enrolled</span>')+'</div></div></div>'+
 '<div style="padding:0 20px 20px"><div class="kv roll"><div class="k">Exam Roll</div><div class="v"><span class="nw">'+esc(s.roll)+'</span><button class="copy" id="cp" type="button">Copy</button></div></div></div></div>'+
-'<div class="card"><div class="secth">Before the Exam</div><ul class="tips">'+tips.map(t=>'<li><span>'+t+'</span></li>').join('')+'</ul></div></div>'+
-'<div class="card"><div class="secth">Exam Details</div><div class="grid g1" style="padding:0 20px 14px">'+kv('Date',date)+kv(online?'Time':'Exam Time',time)+'<div style="grid-column:1/-1;display:grid">'+place+'</div></div>'+
-(ex.note?'<p class="upd">'+esc(ex.note)+'</p>':'')+
+(SE?'<div class="card"><div class="secth">Before the Exam</div><ul class="tips">'+tips.map(t=>'<li><span>'+t+'</span></li>').join('')+'</ul></div>':'')+'</div>'+
+(SE?'<div class="card"><div class="secth">Exam Details</div><div class="grid g1" style="padding:0 20px 14px">'+kv('Date',date)+kv(online?'Time':'Exam Time',time)+'<div style="grid-column:1/-1;display:grid">'+place+'</div></div>':'<div class="card"><div class="secth">Updates &amp; Help</div><p class="upd" style="font-size:13.5px;color:#4a3f50;padding-bottom:12px">All updates come in your WhatsApp group and here on your dashboard.</p>')+
+(ex.note&&SE?'<p class="upd">'+esc(ex.note)+'</p>':'')+
 '<div class="acts">'+(g?'<a class="wa full" href="'+esc(g)+'" target="_blank" rel="noopener">Join WhatsApp Group</a>':'')+
 '<a class="ghost full" href="tel:'+esc(hl.local)+'">Helpline '+nw(hl.display||hl.local)+'</a>'+
 '<button class="ghost" id="rf" type="button">Refresh</button><button class="ghost" id="lo" type="button">Log Out</button></div>'+
 '<div class="upd">'+(g?'':'<span class="nw">WhatsApp group link: coming soon.</span><br>')+'<span class="nw">Updated '+esc(j.updated||'')+'</span></div></div></div>';
 $('#loginCard').hidden=true;$('#dash').hidden=false;
-$('#lo').onclick=logout;$('#rf').onclick=()=>{if(creds)doLogin(creds.roll,creds.pin,true)};
+$('#lo').onclick=logout;if($('#vs'))$('#vs').onclick=openScript;$('#rf').onclick=()=>{if(creds)doLogin(creds.roll,creds.pin,true)};
 $('#cp').onclick=()=>{try{navigator.clipboard.writeText(s.roll);$('#cp').textContent='Copied';setTimeout(()=>{const c=$('#cp');if(c)c.textContent='Copy'},1500)}catch(e){}};
 clearInterval(tick);let last=data.ex?exState(data.ex):'';
 tick=setInterval(()=>{if(!data||!data.ex)return;const ex=data.ex,st=exState(ex);if(st!==last){last=st;render();return}

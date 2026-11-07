@@ -20,6 +20,7 @@ main{max-width:860px;margin:0 auto;padding:14px 14px 24px}
 .card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:16px;margin:0 0 12px;box-shadow:0 8px 22px -18px rgba(60,10,70,.55)}
 details.lated{padding:14px 16px}details.lated>summary{display:flex;align-items:center;gap:10px;flex-wrap:wrap;cursor:pointer;list-style:none;font-weight:700;color:var(--plum);font-size:15.5px}details.lated>summary::-webkit-details-marker{display:none}details.lated>summary::before{content:"\25B8";font-size:13px;transition:transform .15s}details.lated[open]>summary::before{transform:rotate(90deg)}.lsum{margin-left:auto;font-size:12.5px;font-weight:600;padding:3px 10px;border-radius:99px;background:#eee;color:#555}.lsum.on{background:#e6f4ec;color:#0f6b41}
 .ttl{display:flex;align-items:center;gap:8px;margin:0 0 12px}.ttl h2{font-size:15.5px;margin:0;color:var(--plum)}.ttl .sp{margin-left:auto}
+label.dtg{display:flex;gap:11px;align-items:flex-start;padding:10px 12px;border:1px solid #e6dcea;border-radius:12px;margin:0 0 8px;cursor:pointer;background:#fff;color:var(--ink);font-weight:400}label.dtg input{width:20px;height:20px;flex:0 0 20px;margin:1px 0 0;accent-color:var(--plum)}label.dtg b{display:block;font-size:14.5px}label.dtg small{display:block;color:var(--mut);font-size:12.5px;line-height:1.45;margin-top:1px}label.dtg:has(input:checked){border-color:#c79bd0;background:#fbf6fc}.dwin{background:#f7f2f8;border-radius:12px;padding:10px 12px;font-size:13.5px;line-height:1.55;margin-top:12px}
 h3{font-size:13px;margin:14px 0 6px;color:var(--mut);text-transform:uppercase;letter-spacing:.5px}
 label{display:block;font-size:12px;font-weight:700;color:var(--mut);margin:10px 0 4px}
 input,select,textarea{width:100%;font:15px system-ui;padding:10px 11px;border:1px solid #d9cce0;border-radius:10px;background:#fff;color:var(--ink)}
@@ -130,6 +131,7 @@ table{width:100%;border-collapse:collapse;font-size:13px}th,td{border-bottom:1px
 <!-- RESULTS -->
 <section data-p="res" class="hide">
 <div class="card"><div class="ttl"><h2>Result publication</h2><button class="btn sm alt sp" type="button" onclick="pubCard()">Reload</button></div><div id="pubbox"><p class="note">Loading...</p></div></div>
+<div class="card" id="dashcard"><div class="ttl"><h2>Student dashboard</h2><button class="btn sm alt sp" type="button" onclick="dashCard()">Reload</button></div><p class="note" style="margin:-6px 0 6px">What every student sees after login: notices, the exam card and how much of the result. Saved changes reach students at their next refresh (within 3 minutes). The result itself is never shown before <b>Publish</b>.</p><div id="dashbox"><p class="note">Loading...</p></div></div>
 <div class="card"><div class="ttl"><h2>Final result sheet (management)</h2></div><div id="frbox"><p class="note">Loading...</p></div></div>
 <div class="card"><div class="ttl"><h2>Grade sheet &amp; merit list</h2></div><p class="note">Per class, BV + EV, online + offline together. Students never see these.</p>
 <h3>Grade sheet</h3><div class="seg" id="gseg"></div><h3>Merit list</h3><div class="seg" id="mseg"></div><h3>Online attempts</h3><div class="seg" id="oseg"></div>
@@ -215,7 +217,7 @@ ROLE=j.role;if(!quiet)keep('qadm2',k);$('#login').classList.add('hide');$('#app'
 $('#who').textContent=isAdm()?'ADMIN':(ROLE==='controller'?'EXAM CONTROLLER':'VIEWER');$('#who').classList.remove('hide');$$('.adm').forEach(e=>e.classList.toggle('hide',!isAdm()));$$('.ex').forEach(e=>e.classList.toggle('hide',!isEx()));
 META=await call('meta');buildSegs();show('home')}
 function show(t){$$('nav.tabs button').forEach(b=>b.classList.toggle('on',b.dataset.t===t));$$('main>section').forEach(s=>s.classList.toggle('hide',s.dataset.p!==t));window.scrollTo(0,0);$('#msgbox').innerHTML='';
-if(t==='home')home();if(t==='exam')loadExamSet();if(t==='off')offline();if(t==='res'){setGroup('#resset','Results');pubCard()}if(t==='logs'){logs();rxList()}if(t==='stu'){lateCard();setTimeout(()=>{const q=$('#sr');if(q&&!q.value&&matchMedia('(hover:hover)').matches)q.focus()},50)}if(t==='sms')smsPage();if(t==='more')more()}
+if(t==='home')home();if(t==='exam')loadExamSet();if(t==='off')offline();if(t==='res'){setGroup('#resset','Results');pubCard();dashCard()}if(t==='logs'){logs();rxList()}if(t==='stu'){lateCard();setTimeout(()=>{const q=$('#sr');if(q&&!q.value&&matchMedia('(hover:hover)').matches)q.focus()},50)}if(t==='sms')smsPage();if(t==='more')more()}
 $$('nav.tabs button').forEach(b=>b.onclick=()=>show(b.dataset.t));
 // ---------------- home
 async function home(){const el=$('[data-p="home"]');el.innerHTML='<div class="card"><p class="note">Loading...</p></div>';const j=await call('status');if(!j.ok){msg(el,j);return}
@@ -362,6 +364,26 @@ else if(q==='today'){const d=new Date();d.setHours(0,0,0,0);$('#lf').value=dtv(d
 else if(q==='exam'){$('#lf').value='2026-11-07T09:30';$('#lt').value='2026-11-07T11:15'}logs()});
 async function rxList(){const el=$('#rxl');const j=await call('reexams');if(!j.ok){msg(el,j);return}el.innerHTML=j.rows.length?tableHtml(j):'<p class="note">No re-exam granted.</p>'}
 // ---------------- result publication + final sheet
+async function dashCard(){const el=$('#dashbox');const j=await call('dash');if(!j.ok){msg(el,j);return}const c=j.cfg,ed=isEx(),dis=ed?'':' disabled';
+const tg=(id,lbl,help,on)=>'<label class="dtg"><input type="checkbox" id="'+id+'"'+(Number(on)===1?' checked':'')+dis+'><span><b>'+lbl+'</b><small>'+help+'</small></span></label>';
+const ta=(id,lbl,help,v,ph)=>'<label>'+lbl+'</label><textarea id="'+id+'" rows="3" maxlength="700" placeholder="'+esc(ph)+'"'+dis+'>'+esc(v||'')+'</textarea><p class="note" style="margin:3px 0 12px">'+help+'</p>';
+el.innerHTML='<h3>Messages to students</h3>'+
+ta('dn1','Notice (before results are published)','Shown at the top of every dashboard until you press Publish. Empty = no notice. Bangla or English, line breaks are kept.',c.notice,'e.g. Results will be published soon. You will be informed in your WhatsApp group.')+
+ta('dn2','Message after results are published','Shown above the result once published. Empty = no message.',c.notice2,'e.g. Congratulations to all participants! Prize-giving details will follow.')+
+ta('drx','Message for re-exam / late-exam students','Shown inside their exam card while their own exam window is open.',c.rxMsg,'e.g. You have a special exam window...')+
+'<h3>Exam card</h3>'+tg('dex','Show exam date, time and the exam card to everybody','Off (exam over) = hidden for everyone. Students with an open re-exam or late window always see their own exam card with their time.',c.exam)+
+'<h3>The published result shows</h3>'+tg('dpa','Passed / Not passed','The result badge.',c.pass)+tg('dme','Merit position','Class-wise merit position (only students who have one).',c.merit)+tg('dma','Subject marks and total','Bangla, English, Math, total and %.',c.marks)+
+tg('dsc','Answer script (question-wise)','A "View My Answer Script" button for online students: every question with their answer and the correct answer. Off = nobody can open it.',c.script)+
+(ed?'<button class="btn w" id="dsv" type="button">Save dashboard settings</button>':'<p class="note">Viewer: read only.</p>')+'<div id="dmsg"></div>'+
+'<p class="note" style="margin-top:8px">'+(j.at?'Last saved '+esc(j.at)+(c.by?' by '+esc(c.by):''):'Using the default settings (never saved).')+'</p><div class="dwin" id="dwin">Personal exam windows: loading...</div>';
+if(ed)$('#dsv').onclick=async()=>{const v={notice:$('#dn1').value,notice2:$('#dn2').value,rxMsg:$('#drx').value,exam:$('#dex').checked?1:0,pass:$('#dpa').checked?1:0,merit:$('#dme').checked?1:0,marks:$('#dma').checked?1:0,script:$('#dsc').checked?1:0};
+const on=k=>v[k]?'ON':'off';const det='Exam card: '+on('exam')+'\nResult: pass/fail '+on('pass')+' · merit '+on('merit')+' · marks '+on('marks')+' · answer script '+on('script')+'\nNotice: '+(v.notice.trim()?v.notice.trim().slice(0,120):'(none)')+'\nAfter publish: '+(v.notice2.trim()?v.notice2.trim().slice(0,120):'(none)');
+if(!await sure('Save the student dashboard settings?',det))return;const r=await call('dashSet',Object.assign(v,{sure:1}),$('#dsv'));msg($('#dmsg'),r);if(r.ok)toast('Saved')};
+const [rx,lt]=await Promise.all([call('reexams'),call('late')]);const w=$('#dwin');if(!w)return;
+const now=Date.now(),act=(rx.ok?rx.rows:[]);
+w.innerHTML='<b>Personal exam windows</b> (re-exam / late group): '+(act.length?act.length+' re-exam window(s): '+act.slice(0,12).map(r=>'<a href="#" data-dr="'+esc(r[0])+'">'+esc(r[0])+'</a> ('+esc(r[1])+' – '+esc(r[2])+')').join(', ')+(act.length>12?' ...':''):'no re-exam windows')+
+' · Late window: '+(lt.ok?(lt.open?'<b style="color:#0f6b41">OPEN</b> until '+esc(lt.until):'closed'):'?')+'.<br><span class="note">To give a new window: Students tab → open the student → <b>Re-exam</b>. Late group (never started): Students tab → <b>Late exam</b>.</span>';
+w.querySelectorAll('[data-dr]').forEach(a=>a.onclick=e=>{e.preventDefault();show('stu');$('#sr').value=a.dataset.dr;openStu(a.dataset.dr)})}
 async function pubCard(){const el=$('#pubbox'),fr=$('#frbox');const j=await call('pubinfo');if(!j.ok){msg(el,j);return}
 el.innerHTML=(j.on?'<div class="msg ok" style="margin-top:0"><b>PUBLISHED</b> on '+esc(j.at)+' by '+esc(j.by)+' · '+j.n+' results visible on the student dashboards'+(j.notFinal?' ('+j.notFinal+' see "not ready")':'')+'</div>':'<div class="msg bad" style="margin-top:0"><b>NOT PUBLISHED</b>: students see no marks, no result, no answers'+(j.off?' (hidden again '+esc(j.off)+')':'')+'.</div>')+
 '<p class="note" style="margin-top:8px">Publishing shows each student only his own marks (Bangla, English, Math, total), Pass / Fail and merit position on the dashboard. Answer keys and answer scripts are never shown. If marks change after publishing, press Publish again.</p>'+
